@@ -1,0 +1,3 @@
+[submodule "mods/mobs"]
+	path = mods/mobs
+	url = https://github.com/Bremaweb/mobs.git
