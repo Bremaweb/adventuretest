@@ -1,0 +1,4 @@
+[-Licensing for Glowcrystals mod-]
+
+Code license: LGPLv2/latest
+Media License: CC0
