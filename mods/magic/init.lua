@@ -8,7 +8,7 @@ dofile(magicpath.."/api.lua")
 
 function magic.update_magic(player,name)
 	local s = skills.get_skill(name,SKILL_MAGIC)
-	local baseAdj = 5
+	local baseAdj = 2
 	if magic.player_magic[name] ~= nil then
 		if default.player_get_animation(player) == "lay" then
 			baseAdj = baseAdj + 3
@@ -34,3 +34,7 @@ end
 minetest.register_on_shutdown(function()
 	default.serialize_to_file(magic_file,magic.player_magic)
 end)
+
+
+-- load magic spells
+dofile(magicpath.."/thunder.lua")

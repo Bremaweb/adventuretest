@@ -119,6 +119,14 @@ minetest.register_on_respawnplayer(function (player)
 	player_lastpos[name] = player:getpos()
 end)
 
+minetest.register_on_joinplayer(function (player)
+	local name = player:get_player_name()
+	if player_stamina[name] == nil then
+		player_stamina[name] = 20
+		player_lastpos[name] = player:getpos()
+	end
+end)
+
 minetest.register_on_shutdown(function()
 	default.serialize_to_file(stamina_file,player_stamina)
 end)
