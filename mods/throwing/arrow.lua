@@ -65,7 +65,8 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 					self.object:remove()
 				end
 			else
-				local damage = 3
+				local skill = skills.get_skill(hitter:get_player_name(),SKILL_ARROW)
+				local damage = self.max_damage * ( skill.level / skills.get_def(SKILL_ARROW)['max_level'] )
 				obj:punch(hitter, 1.0, {
 					full_punch_interval=1.0,
 					damage_groups={fleshy=damage},

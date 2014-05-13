@@ -38,3 +38,5 @@ end)
 
 -- load magic spells
 dofile(magicpath.."/thunder.lua")
+dofile(magicpath.."/magicmissle.lua")
+dofile(magicpath.."/heal.lua")

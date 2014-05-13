@@ -43,7 +43,13 @@ function magic.register_spell(def)
 		end
 		print("wand spell good")
 		-- register the wand tool
-		
+		minetest.register_tool("magic:wand_"..def.id,{
+			description = def.desc,
+			inventory_image = def.wand_texture,
+		    stack_max = 1,
+			on_use = def.on_use,
+			sounds = def.sounds,
+		})
 	end
 	
 	minetest.log("action","Registered spell "..tostring(def.desc))
@@ -51,11 +57,19 @@ end
 
 function magic.cast(id,name,target)
 	if magic._spells[id] ~= nil then
-		if magic._spells[id].type == "cast" then
+		local spell = magic._spells[id]
+		if spell.type == "cast" then
 			local sk = skills.get_skill(name,SKILL_MAGIC)
+			local skb = skills.get_def(SKILL_MAGIC)
+			local mana = spell.max_mana - ( ( (sk.level - spell.level) / skb.max_level ) * 10 )
 			if sk.level >= magic._spells[id].level then
-				minetest.chat_send_player(name,"You cast "..magic._spells[id].desc)
-				magic._spells[id].on_cast(magic._spells[id],name,target)
+				if magic.player_magic[name] >= mana then
+					magic.player_magic[name] = magic.player_magic[name] - mana
+					minetest.chat_send_player(name,"You cast "..spell.desc)
+					spell.on_cast(spell,name,target)
+				else
+					minetest.chat_send_player(name,"You don't have enough magic!")
+				end
 			else
 				minetest.chat_send_player(name,"You are not a high enough level to cast "..magic._spells[id].desc)
 			end
@@ -77,9 +91,6 @@ minetest.register_chatcommand("cast",{
 		if id == nil and target == nil then
 			id = param
 		end
-		print("'"..tostring(id).."'")
-		print("'"..tostring(name).."'")
-		print("'"..tostring(target).."'")
 		magic.cast(id,name,target)
 	end,
 })

@@ -13,15 +13,18 @@ local throwing_shoot_arrow = function(itemstack, player)
 				if not minetest.setting_getbool("creative_mode") then
 					player:get_inventory():remove_item("main", arrow[1])
 				end
+				local weapon = player:get_wielded_item()
+				local weapon_def = weapon:get_definition() 
+								
 				local playerpos = player:getpos()
 				local obj = minetest.env:add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, arrow[2])
 				local dir = player:get_look_dir()
 				obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
-				obj:setacceleration({x=dir.x*-3, y=-10, z=dir.z*-3})
+				obj:setacceleration({x=dir.x*-3, y=weapon_def.drop_rate, z=dir.z*-3})
 				obj:setyaw(player:get_look_yaw()+math.pi)
 				obj:get_luaentity().player = player
+				obj:get_luaentity().max_damage = obj:get_luaentity().max_damage + weapon_def.damage_modifier
 				minetest.sound_play("throwing_sound", {object=player})
-				--obj:get_luaentity().player = player
 				obj:get_luaentity().node = player:get_inventory():get_stack("main", 1):get_name()
 				if itemstack:get_definition().reload_time ~= nil then
 					shoot_timer[player:get_player_name()] = itemstack:get_definition().reload_time 
@@ -54,8 +57,9 @@ minetest.register_tool("throwing:bow_wood", {
 	end,
 	sounds = {[0]="throwing_arrow_hit1",[1]="throwing_arrow_hit2"},
 	reload_time = 3,
-	arrow_damage = 3,
+	damage_modifier = 0,
 	skill = SKILL_WOOD,
+	drop_rate = -8,
 })
 
 minetest.register_craft({
@@ -81,8 +85,9 @@ minetest.register_tool("throwing:bow_steel", {
 	end,
 	sounds = {[0]="throwing_arrow_hit1",[1]="throwing_arrow_hit2"},
 	reload_time = 2,
-	arrow_damage = 6,
+	damage_modifier = 5,
 	skill = SKILL_STEEL,
+	drop_rate = -4,
 })
 
 minetest.register_craft({

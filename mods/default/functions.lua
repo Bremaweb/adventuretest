@@ -136,7 +136,9 @@ function on_dignode(pos, node, digger)
 	-- STAMINA
 	if digger ~= nil and digger ~= "" then
 		local name= digger:get_player_name()
-		player_stamina[name] = player_stamina[name] - 0.1
+		if player_stamina[name] ~= nil then
+			player_stamina[name] = player_stamina[name] - 0.1
+		end
 	end
 	
 end

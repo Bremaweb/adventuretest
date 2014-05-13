@@ -81,6 +81,47 @@ minetest.register_craftitem("potions:bones", {
 	end,
 })
 
+minetest.register_craftitem("potions:magic_replenish1", {
+	description = "Level 1 Magic Replenisher",
+	stack_max=99,
+	liquids_pointable = false,
+	inventory_image = "potion_magic.png",
+	on_use = function ( itemstack,player,pointed_thing )
+		local name = player:get_player_name()
+		magic.player_magic[name] = magic.player_magic[name] + 5
+		itemstack:take_item()
+		return itemstack
+	end,
+})
+
+minetest.register_craftitem("potions:magic_replenish2", {
+	description = "Level 2 Magic Replenisher",
+	stack_max=99,
+	liquids_pointable = false,
+	inventory_image = "potion_magic2.png",
+	on_use = function ( itemstack,player,pointed_thing )
+		local name = player:get_player_name()
+		magic.player_magic[name] = magic.player_magic[name] + 10
+		itemstack:take_item()
+		return itemstack
+	end,
+})
+
+minetest.register_craftitem("potions:magic_replenish3", {
+	description = "Level 3 Magic Replenisher",
+	stack_max=99,
+	liquids_pointable = false,
+	inventory_image = "potion_magic3.png",
+	on_use = function ( itemstack,player,pointed_thing )
+		local name = player:get_player_name()
+		magic.player_magic[name] = 20
+		itemstack:take_item()
+		return itemstack
+	end,
+})
+
+
+
 local ground_items = {
 	{ "flowers:dandelion_white", "ground_dandelion_white", "Ground White Dandelion" },
 	{ "flowers:dandelion_yellow", "ground_dandelion_yellow", "Ground Yellow Dandelion" },

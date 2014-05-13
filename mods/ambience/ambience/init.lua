@@ -55,6 +55,7 @@ local sound_vol = 1
 local last_x_pos = 0
 local last_y_pos = 0
 local last_z_pos = 0
+local on_node
 local node_under_feet
 local node_at_upper_body
 local node_at_lower_body
@@ -262,6 +263,7 @@ local atleast_nodes_in_grid = function(pos, search_distance, height, node_name, 
 end
 
 local get_immediate_nodes = function(pos)
+	on_node = minetest.get_node(pos).name
 	pos.y = pos.y-1
 	node_under_feet = minetest.env:get_node(pos).name
 	pos.y = pos.y-3
@@ -305,7 +307,8 @@ local get_ambience = function(player)
 			return {water=water, water_frequent=water_frequent}
 		end
 	elseif node_at_upper_body == "air" then
-		if string.find(node_at_lower_body, "default:water") or string.find(node_under_feet, "default:water") then
+		--[[
+		if ( string.find(node_at_lower_body, "default:water") or string.find(node_under_feet, "default:water") ) and on_node ~= "default:ice" then
 		    --minetest.chat_send_all("bottom counted as water")
 			--we found air at upperbody, and water at lower body.  Now there are 4 possibilities:
 			--Key: under feet, moving or not
@@ -338,7 +341,8 @@ local get_ambience = function(player)
 					standing_in_water = true
 				end			
 		    end
-		end	
+		end
+		]]	
 	end
 --	minetest.chat_send_all("----------")
 --	if not player_is_moving_horiz then

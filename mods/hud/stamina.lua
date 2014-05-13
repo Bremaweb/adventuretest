@@ -39,8 +39,18 @@ function hud.update_stamina(p,name)
 					p:set_hp(p:get_hp()-1)
 				end
 				
-				if player_stamina[name] > 20 then
+				if player_stamina[name] >= 20 then
 					player_stamina[name] = 20
+					if anim.animation == "lay" then
+						-- wake them up
+						default.player_set_animation(p, "stand")
+						p:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
+						if player_sleephuds[name] ~= nil then
+							p:hud_remove(player_sleephuds[name])
+							player_sleephuds[name] = nil
+						end
+						minetest.chat_send_player(name,"You feel fully energized!")
+					end
 				end
 				if player_stamina[name] < 3 then
 					affects.affectPlayer(name,"tired")
