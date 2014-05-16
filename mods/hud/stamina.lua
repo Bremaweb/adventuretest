@@ -9,6 +9,12 @@ function hud.update_stamina(p,name)
 		local pos = p:getpos()
 		if player_lastpos[name] ~= nil then
 			if player_stamina[name] ~= nil then
+				
+				if minetest.check_player_privs(name, {immortal=true}) then
+					player_stamina[name] = 20
+					return
+				end
+				
 				local anim = default.player_get_animation(p)
 				local adj = 0.25
 				if anim.animation == "lay" then

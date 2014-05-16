@@ -6,7 +6,7 @@ minetest.register_item(":", {
 	wield_image = "wieldhand.png",
 	wield_scale = {x=1,y=1,z=2.5},
 	tool_capabilities = {
-		full_punch_interval = 0.9,
+		full_punch_interval = 1.1,
 		max_drop_level = 0,
 		groupcaps = {
 			crumbly = {times={[2]=3.00, [3]=0.70}, uses=0, maxlevel=1},
@@ -59,7 +59,7 @@ minetest.register_tool("default:pick_steel", {
 		},
 		damage_groups = {fleshy=4},
 	},
-	skill = SKILL_IRON,
+	skill = SKILL_METAL,
 })
 minetest.register_tool("default:pick_bronze", {
 	description = "Bronze Pickaxe",
@@ -72,7 +72,7 @@ minetest.register_tool("default:pick_bronze", {
 		},
 		damage_groups = {fleshy=4},
 	},
-	skill = SKILL_COPPER,
+	skill = SKILL_METAL,
 })
 minetest.register_tool("default:pick_mese", {
 	description = "Mese Pickaxe",
@@ -85,7 +85,7 @@ minetest.register_tool("default:pick_mese", {
 		},
 		damage_groups = {fleshy=5},
 	},
-	skill = SKILL_MESE,
+	skill = SKILL_CRYSTAL,
 })
 minetest.register_tool("default:pick_diamond", {
 	description = "Diamond Pickaxe",
@@ -98,7 +98,7 @@ minetest.register_tool("default:pick_diamond", {
 		},
 		damage_groups = {fleshy=5},
 	},
-	skill = SKILL_DIAMOND,
+	skill = SKILL_CRYSTAL,
 })
 
 --
@@ -146,7 +146,7 @@ minetest.register_tool("default:shovel_steel", {
 		damage_groups = {fleshy=3},
 	},
 	sounds = {[0]="default_shovel_steel",[1]="default_shovel_steel2",[2]="default_shovel_steel3"},
-	skill = SKILL_IRON,
+	skill = SKILL_METAL,
 })
 minetest.register_tool("default:shovel_bronze", {
 	description = "Bronze Shovel",
@@ -161,7 +161,7 @@ minetest.register_tool("default:shovel_bronze", {
 		damage_groups = {fleshy=3},
 	},
 	sounds = {[0]="default_shovel_steel",[1]="default_shovel_steel2",[2]="default_shovel_steel3"},
-	skill = SKILL_COPPER,
+	skill = SKILL_METAL,
 })
 minetest.register_tool("default:shovel_mese", {
 	description = "Mese Shovel",
@@ -175,7 +175,7 @@ minetest.register_tool("default:shovel_mese", {
 		},
 		damage_groups = {fleshy=4},
 	},
-	skill = SKILL_MESE,
+	skill = SKILL_CRYSTAL,
 })
 minetest.register_tool("default:shovel_diamond", {
 	description = "Diamond Shovel",
@@ -189,7 +189,7 @@ minetest.register_tool("default:shovel_diamond", {
 		},
 		damage_groups = {fleshy=4},
 	},
-	skill = SKILL_DIAMOND,
+	skill = SKILL_CRYSTAL,
 })
 
 --
@@ -233,7 +233,7 @@ minetest.register_tool("default:axe_steel", {
 		},
 		damage_groups = {fleshy=4},
 	},
-	skill = SKILL_IRON,
+	skill = SKILL_METAL,
 })
 minetest.register_tool("default:axe_bronze", {
 	description = "Bronze Axe",
@@ -246,7 +246,7 @@ minetest.register_tool("default:axe_bronze", {
 		},
 		damage_groups = {fleshy=4},
 	},
-	skill = SKILL_COPPER + SKILL_IRON,
+	skill = SKILL_METAL,
 })
 minetest.register_tool("default:axe_mese", {
 	description = "Mese Axe",
@@ -259,7 +259,7 @@ minetest.register_tool("default:axe_mese", {
 		},
 		damage_groups = {fleshy=6},
 	},
-	skill = SKILL_MESE,
+	skill = SKILL_CRYSTAL,
 })
 minetest.register_tool("default:axe_diamond", {
 	description = "Diamond Axe",
@@ -272,7 +272,7 @@ minetest.register_tool("default:axe_diamond", {
 		},
 		damage_groups = {fleshy=7},
 	},
-	skill = SKILL_DIAMOND,
+	skill = SKILL_CRYSTAL,
 })
 
 --
@@ -283,12 +283,12 @@ minetest.register_tool("default:club_wood", {
 	description = "Wooden Club",
 	inventory_image = "default_tool_woodclub.png",
 	tool_capabilities = {
-		full_punch_interval = 1.1,
+		full_punch_interval = 0.8,
 		max_drop_level=0,
 		groupcaps={
 			snappy={times={[2]=1.6, [3]=0.40}, uses=10, maxlevel=1},
 		},
-		damage_groups = {fleshy=2},
+		damage_groups = {fleshy=1},
 	},
 	skill=SKILL_WOOD,
 	sounds = {[0]="default_sword_wood",[1]="default_sword_wood2"},	
@@ -297,7 +297,7 @@ minetest.register_tool("default:club_stone", {
 	description = "Stone Club",
 	inventory_image = "default_tool_stoneclub.png",
 	tool_capabilities = {
-		full_punch_interval = 1.5,
+		full_punch_interval = 1.7,
 		max_drop_level=0,
 		groupcaps={
 			snappy={times={[2]=1.4, [3]=0.40}, uses=20, maxlevel=1},
@@ -311,14 +311,14 @@ minetest.register_tool("default:sword_steel", {
 	description = "Steel Sword",
 	inventory_image = "default_tool_steelsword.png",
 	tool_capabilities = {
-		full_punch_interval = 0.8,
+		full_punch_interval = 0.9,
 		max_drop_level=1,
 		groupcaps={
 			snappy={times={[1]=2.5, [2]=1.20, [3]=0.35}, uses=30, maxlevel=2},
 		},
 		damage_groups = {fleshy=6},
 	},
-	skill=SKILL_IRON,
+	skill=SKILL_METAL,
 	sounds = {[0]="default_sword_steel",[1]="default_sword_steel2"},
 })
 minetest.register_tool("default:sword_bronze", {
@@ -330,36 +330,36 @@ minetest.register_tool("default:sword_bronze", {
 		groupcaps={
 			snappy={times={[1]=2.5, [2]=1.20, [3]=0.35}, uses=40, maxlevel=2},
 		},
-		damage_groups = {fleshy=6},
+		damage_groups = {fleshy=7},
 	},
 	sounds = {[0]="default_sword_steel",[1]="default_sword_steel2"},
-	skill=SKILL_IRON + SKILL_COPPER,
+	skill=SKILL_METAL,
 })
 minetest.register_tool("default:sword_mese", {
 	description = "Mese Sword",
 	inventory_image = "default_tool_mesesword.png",
 	tool_capabilities = {
-		full_punch_interval = 0.7,
+		full_punch_interval = 0.6,
 		max_drop_level=1,
 		groupcaps={
 			snappy={times={[1]=2.0, [2]=1.00, [3]=0.35}, uses=30, maxlevel=3},
 		},
 		damage_groups = {fleshy=7},
 	},
-	skill=SKILL_MESE,
+	skill=SKILL_CRYSTAL,
 	sounds = {[0]="default_sword_steel",[1]="default_sword_steel2"},
 })
 minetest.register_tool("default:sword_diamond", {
 	description = "Diamond Sword",
 	inventory_image = "default_tool_diamondsword.png",
 	tool_capabilities = {
-		full_punch_interval = 0.7,
+		full_punch_interval = 0.6,
 		max_drop_level=1,
 		groupcaps={
 			snappy={times={[1]=1.90, [2]=0.90, [3]=0.30}, uses=40, maxlevel=3},
 		},
 		damage_groups = {fleshy=8},
 	},
-	skill=SKILL_DIAMOND,
+	skill=SKILL_CRYSTAL,
 	sounds = {[0]="default_sword_steel",[1]="default_sword_steel2"},
 })

@@ -16,7 +16,7 @@ minetest.register_tool("3d_armor:helmet_steel", {
 	inventory_image = "3d_armor_inv_helmet_steel.png",
 	groups = {armor_head=10, armor_heal=0, armor_use=500 },
 	wear = 0,
-	skill=SKILL_STEEL,
+	skill=SKILL_METAL,
 })
 
 minetest.register_tool("3d_armor:helmet_bronze", {
@@ -24,7 +24,7 @@ minetest.register_tool("3d_armor:helmet_bronze", {
 	inventory_image = "3d_armor_inv_helmet_bronze.png",
 	groups = {armor_head=10, armor_heal=6, armor_use=250},
 	wear = 0,
-	skill = SKILL_STEEL + SKILL_COPPER,
+	skill = SKILL_METAL,
 })
 
 minetest.register_tool("3d_armor:helmet_diamond", {
@@ -32,7 +32,7 @@ minetest.register_tool("3d_armor:helmet_diamond", {
 	inventory_image = "3d_armor_inv_helmet_diamond.png",
 	groups = {armor_head=15, armor_heal=12, armor_use=100 },
 	wear = 0,
-	skill = SKILL_DIAMOND,
+	skill = SKILL_CRYSTAL,
 })
 
 if use_moreores then
@@ -61,7 +61,7 @@ minetest.register_tool("3d_armor:chestplate_steel", {
 	groups = {armor_torso=15, armor_heal=0, armor_use=500 },
 	wear = 0,
 	physics = { speed = -0.03 },
-	skill = SKILL_STEEL,
+	skill = SKILL_METAL,
 })
 
 minetest.register_tool("3d_armor:chestplate_bronze", {
@@ -70,7 +70,7 @@ minetest.register_tool("3d_armor:chestplate_bronze", {
 	groups = {armor_torso=15, armor_heal=6, armor_use=250 },
 	wear = 0,
 	physics = { speed = -0.03 },
-	skill = SKILL_STEEL + SKILL_COPPER
+	skill = SKILL_METAL,
 })
 
 minetest.register_tool("3d_armor:chestplate_diamond", {
@@ -79,7 +79,7 @@ minetest.register_tool("3d_armor:chestplate_diamond", {
 	groups = {armor_torso=20, armor_heal=12, armor_use=100 },
 	wear = 0,
 	physics = { speed = -0.04 },
-	skill = SKILL_DIAMOND,
+	skill = SKILL_CRYSTAL,
 })
 
 if use_moreores then
@@ -108,7 +108,7 @@ minetest.register_tool("3d_armor:leggings_steel", {
 	groups = {armor_legs=15, armor_heal=0, armor_use=500 },
 	wear = 0,
 	physics = { speed = -0.08 },
-	skill = SKILL_STEEL,
+	skill = SKILL_METAL,
 })
 
 minetest.register_tool("3d_armor:leggings_bronze", {
@@ -116,7 +116,7 @@ minetest.register_tool("3d_armor:leggings_bronze", {
 	inventory_image = "3d_armor_inv_leggings_bronze.png",
 	groups = {armor_legs=15, armor_heal=6, armor_use=250 },
 	wear = 0,
-	skill = SKILL_STEEL + SKILL_COPPER,
+	skill = SKILL_METAL,
 })
 
 minetest.register_tool("3d_armor:leggings_diamond", {
@@ -125,7 +125,7 @@ minetest.register_tool("3d_armor:leggings_diamond", {
 	groups = {armor_legs=20, armor_heal=12, armor_use=100 },
 	wear = 0,
 	physics = { speed = -0.09 },
-	skill = SKILL_DIAMOND,
+	skill = SKILL_CRYSTAL,
 })
 
 if use_moreores then
@@ -154,7 +154,7 @@ minetest.register_tool("3d_armor:boots_steel", {
 	groups = {armor_feet=10, armor_heal=0, armor_use=500 },
 	wear = 0,
 	physics = { speed = -0.07 },
-	skill = SKILL_STEEL,
+	skill = SKILL_METAL,
 })
 
 minetest.register_tool("3d_armor:boots_bronze", {
@@ -163,7 +163,7 @@ minetest.register_tool("3d_armor:boots_bronze", {
 	groups = {armor_feet=10, armor_heal=6, armor_use=250 },
 	wear = 0,
 	physics = { speed = -0.07 },
-	skill = SKILL_STEEL + SKILL_COPPER
+	skill = SKILL_METAL
 })
 
 minetest.register_tool("3d_armor:boots_diamond", {
@@ -172,7 +172,7 @@ minetest.register_tool("3d_armor:boots_diamond", {
 	groups = {armor_feet=15, armor_heal=12, armor_use=100 },
 	wear = 0,
 	physics = { speed = -0.08 },
-	skill = SKILL_DIAMOND,
+	skill = SKILL_CRYSTAL,
 })
 
 if use_moreores then

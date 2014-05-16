@@ -320,9 +320,9 @@ minetest.after(2.5, function()
 		 if main_timer > HUD_TICK then main_timer = 0 end
 		 for _,player in ipairs(minetest.get_connected_players()) do
 			local name = player:get_player_name()
-
+			local immortal = minetest.check_player_privs(name, {immortal=true})
 			-- only proceed if damage is enabled
-			if minetest.setting_getbool("enable_damage") then
+			if minetest.setting_getbool("enable_damage") and not immortal then
 			 local h = tonumber(hud.hunger[name])
 			 local hp = player:get_hp()
 			 if HUD_ENABLE_HUNGER and timer > 4 then

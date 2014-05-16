@@ -24,7 +24,7 @@ minetest.register_craftitem("default:coal_lump", {
 minetest.register_craftitem("default:iron_lump", {
 	description = "Iron Lump",
 	inventory_image = "default_iron_lump.png",
-	groups = {skill=SKILL_IRON},
+	groups = {skill=SKILL_METAL},
 })
 
 minetest.register_craftitem("default:copper_lump", {
@@ -59,31 +59,31 @@ minetest.register_craftitem("default:clay_lump", {
 minetest.register_craftitem("default:steel_ingot", {
 	description = "Steel Ingot",
 	inventory_image = "default_steel_ingot.png",
-	groups = {skill=SKILL_IRON},
+	groups = {skill=SKILL_METAL},
 })
 
 minetest.register_craftitem("default:copper_ingot", {
 	description = "Copper Ingot",
 	inventory_image = "default_copper_ingot.png",
-	groups = {skill=SKILL_COPPER},
+	groups = {skill=SKILL_METAL},
 })
 
 minetest.register_craftitem("default:bronze_ingot", {
 	description = "Bronze Ingot",
 	inventory_image = "default_bronze_ingot.png",
-	groups = {skill=SKILL_BRONZE},
+	groups = {skill=SKILL_METAL},
 })
 
 minetest.register_craftitem("default:gold_ingot", {
 	description = "Gold Ingot",
 	inventory_image = "default_gold_ingot.png",
-	groups = {skill=SKILL_GOLD},
+	groups = {skill=SKILL_METAL},
 })
 
 minetest.register_craftitem("default:mese_crystal_fragment", {
 	description = "Mese Crystal Fragment",
 	inventory_image = "default_mese_crystal_fragment.png",
-	groups = {skill=SKILL_MESE},
+	groups = {skill=SKILL_CRYSTAL},
 })
 
 minetest.register_craftitem("default:clay_brick", {

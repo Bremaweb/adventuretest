@@ -49,6 +49,7 @@ function magic.register_spell(def)
 		    stack_max = 1,
 			on_use = def.on_use,
 			sounds = def.sounds,
+			skill = SKILL_MAGIC,
 		})
 	end
 	

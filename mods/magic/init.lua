@@ -7,6 +7,10 @@ magic.player_magic = default.deserialize_from_file(magic_file)
 dofile(magicpath.."/api.lua")
 
 function magic.update_magic(player,name)
+	if minetest.check_player_privs(name, {immortal=true}) then
+		magic.player_magic[name] = 20
+		return
+	end
 	local s = skills.get_skill(name,SKILL_MAGIC)
 	local baseAdj = 2
 	if magic.player_magic[name] ~= nil then

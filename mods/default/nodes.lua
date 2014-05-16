@@ -36,7 +36,7 @@ minetest.register_node("default:stone_with_iron", {
 	groups = {cracky=2},
 	drop = 'default:iron_lump',
 	sounds = default.node_sound_stone_defaults(),
-	skill=SKILL_IRON,
+	skill=SKILL_METAL,
 })
 
 minetest.register_node("default:stone_with_copper", {
@@ -46,7 +46,7 @@ minetest.register_node("default:stone_with_copper", {
 	groups = {cracky=2},
 	drop = 'default:copper_lump',
 	sounds = default.node_sound_stone_defaults(),
-	skill=SKILL_COPPER,
+	skill=SKILL_METAL,
 })
 
 minetest.register_node("default:stone_with_mese", {
@@ -56,7 +56,7 @@ minetest.register_node("default:stone_with_mese", {
 	groups = {cracky=1},
 	drop = "default:mese_crystal",
 	sounds = default.node_sound_stone_defaults(),
-	skill=SKILL_MESE,
+	skill=SKILL_CRYSTAL,
 })
 
 minetest.register_node("default:stone_with_gold", {

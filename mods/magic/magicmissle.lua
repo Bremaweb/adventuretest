@@ -32,6 +32,7 @@ MAGICMISSLE_ENTITY.on_step = function(self, dtime)
 						full_punch_interval=1.0,
 						damage_groups={fleshy=damage},
 					}, nil)
+					hitparticles(pos)
 					self.object:remove()
 				end
 			else
@@ -43,6 +44,7 @@ MAGICMISSLE_ENTITY.on_step = function(self, dtime)
 						full_punch_interval=1.0,
 						damage_groups={fleshy=damage},
 					}, nil)
+					hitparticles(pos)
 					self.object:remove()
 				end
 			end
@@ -52,6 +54,7 @@ MAGICMISSLE_ENTITY.on_step = function(self, dtime)
 	if self.lastpos.x~=nil then
 		if ( minetest.registered_nodes[node.name].walkable == true or minetest.registered_nodes[node.name].walkable == nil ) and ( node.name ~= "air" and node.name ~= "default:water_source" and node.name ~= "default:water_flowing" ) then
 			minetest.sound_play("magic_magicmissle_hit",{object=self.object})
+			hitparticles(pos)
 			self.object:remove()
 		end
 	end
@@ -77,8 +80,28 @@ MAGICMISSLE_ENTITY.on_step = function(self, dtime)
 	
 	if self.timer > 1.5 then
 		minetest.sound_play("magic_magicmissle_hit",{object=self.object})
+		hitparticles(pos)
 		self.object:remove()
 	end
+end
+
+function hitparticles(pos)
+	minetest.add_particlespawner(
+        45, --amount
+        0.75, --time
+        {x=pos.x-0.3, y=pos.y+0.3, z=pos.z-0.3}, --minpos
+        {x=pos.x+0.3, y=pos.y+0.5, z=pos.z+0.3}, --maxpos
+        {x=0, y=-2, z=0}, --minvel
+        {x=2, y=2, z=2}, --maxvel
+        {x=-4,y=-4,z=-4}, --minacc
+        {x=4,y=-4,z=4}, --maxacc
+        0.1, --minexptime
+        1, --maxexptime
+        1, --minsize
+        3, --maxsize
+        false, --collisiondetection
+        "magic_magicmissle_particle1.png" --texture
+    )
 end
 
 minetest.register_entity("magic:magicmissle", MAGICMISSLE_ENTITY)
@@ -93,20 +116,25 @@ local magicmissle_spell = {
 		
 		local sk = skills.get_skill(name,SKILL_MAGIC)
 		local skb = skills.get_def(SKILL_MAGIC)
-		local mana = 10 - ( ( (sk.level - 2) / skb.max_level ) * 10 )
-		if magic.player_magic[name] >= mana then
-			magic.player_magic[name] = magic.player_magic[name] - mana
-			minetest.sound_play("magic_magicmissle_cast",{object=user})
-			local playerpos = user:getpos()
-			local obj = minetest.env:add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, "magic:magicmissle")
-			local dir = user:get_look_dir()
-			obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
-			obj:setacceleration({x=dir.x*-3, y=-1, z=dir.z*-3})
-			obj:setyaw(user:get_look_yaw()+math.pi)
-			obj:get_luaentity().player = user
-			magic.update_magic(user,name)
+		
+		if sk.level >= 4 then		
+			local mana = 10 - ( ( (sk.level - 2) / skb.max_level ) * 10 )
+			if magic.player_magic[name] >= mana then
+				magic.player_magic[name] = magic.player_magic[name] - mana
+				minetest.sound_play("magic_magicmissle_cast",{object=user})
+				local playerpos = user:getpos()
+				local obj = minetest.env:add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, "magic:magicmissle")
+				local dir = user:get_look_dir()
+				obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
+				obj:setacceleration({x=dir.x*-3, y=-1, z=dir.z*-3})
+				obj:setyaw(user:get_look_yaw()+math.pi)
+				obj:get_luaentity().player = user
+				magic.update_magic(user,name)
+			else
+				minetest.chat_send_player(name,"You don't have enough magic")
+			end
 		else
-			minetest.chat_send_player(name,"You don't have enough magic")
+			minetest.chat_send_player(name,"You are not high enough level to use Magic Missle")
 		end
 	end,
 	max_mana = 10,
