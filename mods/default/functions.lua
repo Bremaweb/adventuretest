@@ -129,10 +129,11 @@ function on_dignode(pos, node, digger)
 	end
 	
 	-- EXPERIENCE
-	if minetest.registered_nodes[node.name]["skill"] ~= nil then
-		 default.drop_item(pos,"experience:1_exp")
+	if minetest.registered_nodes[node.name] ~= nil then
+		if minetest.registered_nodes[node.name]["skill"] ~= nil then
+			 default.drop_item(pos,"experience:1_exp")
+		end
 	end
-	
 	-- STAMINA
 	if digger ~= nil and digger ~= "" then
 		local name= digger:get_player_name()
