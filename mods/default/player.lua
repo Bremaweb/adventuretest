@@ -197,6 +197,10 @@ minetest.register_globalstep(function(dtime)
 			elseif controls.LMB then
 				if player_anim[name] == "lay" or player_anim[name] == "sit" then
 					player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
+					if player_sleephuds[name] ~= nil then
+						player:hud_remove(player_sleephuds[name])
+						player_sleephuds[name] = nil
+					end
 				end
 				player_set_animation(player, "mine")
 			else
@@ -227,7 +231,14 @@ if minetest.register_on_punchplayer ~= nil then
 				object = hitter,
 			})
 		end	
-		blood_particles(player:getpos(),0.25,27,"mobs_blood.png")
+		blood_particles(player:getpos(),0.5,27,"mobs_blood.png")
+		if player_anim[name] == "lay" or player_anim[name] == "sit" then
+			player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
+			if player_sleephuds[name] ~= nil then
+				player:hud_remove(player_sleephuds[name])
+				player_sleephuds[name] = nil
+			end
+		end
 	end)
 end
 
