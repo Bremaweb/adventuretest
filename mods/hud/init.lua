@@ -316,7 +316,7 @@ minetest.after(2.5, function()
 	 timer2 = timer2 + dtime
 	 stamina_timer = stamina_timer + dtime
 	 magic_timer = magic_timer + dtime
-		if main_timer > HUD_TICK or timer > 4 or timer2 > HUD_HUNGER_TICK then
+		if main_timer > HUD_TICK or timer > 4 or timer2 > HUD_HUNGER_TICK or stamina_timer > HUD_STAMINA_TICK  or magic_timer > HUD_MAGIC_TICK then
 		 if main_timer > HUD_TICK then main_timer = 0 end
 		 for _,player in ipairs(minetest.get_connected_players()) do
 			local name = player:get_player_name()
@@ -324,12 +324,10 @@ minetest.after(2.5, function()
 			-- only proceed if damage is enabled
 			if stamina_timer > HUD_STAMINA_TICK then
 				hud.update_stamina(player,name)
-				stamina_timer = 0
 			end
 
 			if magic_timer > HUD_MAGIC_TICK then
 				magic.update_magic(player,name)
-				magic_timer = 0
 			end
 
 			if minetest.setting_getbool("enable_damage") and immortal == false then
@@ -354,7 +352,7 @@ minetest.after(2.5, function()
 			 end
 			 -- update current armor level
 			 if HUD_SHOW_ARMOR then hud.get_armor(player) end
-
+			 
 			 -- update all hud elements
 			 update_hud(player)
 			end
@@ -363,5 +361,8 @@ minetest.after(2.5, function()
 		end
 		if timer > 4 then timer = 0 end
 		if timer2 > HUD_HUNGER_TICK then timer2 = 0 end
+		if stamina_timer > HUD_STAMINA_TICK then stamina_timer = 0	end
+		if magic_timer > HUD_MAGIC_TICK then magic_timer = 0 end
+		
 	end)
 end)
