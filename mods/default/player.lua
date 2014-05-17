@@ -207,3 +207,27 @@ minetest.register_globalstep(function(dtime)
 		end
 	end
 end)
+
+if minetest.register_on_punchplayer ~= nil then
+	minetest.register_on_punchplayer( function(player, hitter, time_from_last_punch, tool_capabilities, dir)
+		local weapon = hitter:get_wielded_item()
+		if tool_capabilities ~= nil then
+			local wear = ( tool_capabilities.full_punch_interval / 75 ) * 65535
+			weapon:add_wear(wear)
+			hitter:set_wielded_item(weapon)
+		end
+		
+		if weapon:get_definition().sounds ~= nil then
+			local s = math.random(0,#weapon:get_definition().sounds)
+			minetest.sound_play(weapon:get_definition().sounds[s], {
+				object=hitter,
+			})
+		else
+			minetest.sound_play("default_sword_wood", {
+				object = hitter,
+			})
+		end	
+		blood_particles(player:getpos(),0.25,27,"mobs_blood.png")
+	end)
+end
+
