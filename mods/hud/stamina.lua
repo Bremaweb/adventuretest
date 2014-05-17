@@ -7,10 +7,12 @@ player_sleephuds = {}
 function hud.update_stamina(p,name)
 	-- loop through all online players and check their movement and update their stamina
 		local pos = p:getpos()
+		print("Stamina for "..name.." at "..minetest.pos_to_string(pos))
 		if player_lastpos[name] ~= nil then
+			print("laspos not nil")
 			if player_stamina[name] ~= nil then
-				
 				if minetest.check_player_privs(name, {immortal=true}) then
+					print(name.." is immortal")
 					player_stamina[name] = 20
 					return
 				end
@@ -38,8 +40,10 @@ function hud.update_stamina(p,name)
 				local hdiff = math.sqrt(math.pow(pos.x-player_lastpos[name].x, 2) + math.pow(pos.z-player_lastpos[name].z, 2))
 				adj = adj - ( hdiff * 0.03 )
 				
-				player_stamina[name] = player_stamina[name] + adj
+				print("Adj "..tostring(adj))
 				
+				player_stamina[name] = player_stamina[name] + adj
+				print("New Stamina "..tostring(player_stamina[name]))
 				if player_stamina[name] < 0 then
 					player_stamina[name] = 0
 					p:set_hp(p:get_hp()-1)
@@ -62,6 +66,7 @@ function hud.update_stamina(p,name)
 					affects.affectPlayer(name,"tired")
 				end
 			else
+				print("Set default stamina")
 				player_stamina[name] = 20
 			end
 		end

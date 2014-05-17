@@ -322,17 +322,16 @@ minetest.after(2.5, function()
 			local name = player:get_player_name()
 			local immortal = minetest.check_player_privs(name, {immortal=true})
 			-- only proceed if damage is enabled
-			if immortal == false then
-				if stamina_timer > HUD_STAMINA_TICK then
-					hud.update_stamina(player,name)
-					stamina_timer = 0
-				end
-	
-				if magic_timer > HUD_MAGIC_TICK then
-					magic.update_magic(player,name)
-					magic_timer = 0
-				end
+			if stamina_timer > HUD_STAMINA_TICK then
+				hud.update_stamina(player,name)
+				stamina_timer = 0
 			end
+
+			if magic_timer > HUD_MAGIC_TICK then
+				magic.update_magic(player,name)
+				magic_timer = 0
+			end
+
 			if minetest.setting_getbool("enable_damage") and immortal == false then
 			 local h = tonumber(hud.hunger[name])
 			 local hp = player:get_hp()
