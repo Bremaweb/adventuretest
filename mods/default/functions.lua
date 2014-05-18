@@ -423,7 +423,7 @@ function default.dump_inv(pos,listname,inv)
 	end	
 end
 
-function default.drop_item(pos,itemstack)
+function default.drop_item(pos,itemstack,vel,acc)
 --	math.randomseed(os.time() + os.clock())
 	local x = math.random(0, 15)/10 - 0.5
 	local z = math.random(0, 15)/10 - 0.5
@@ -435,5 +435,9 @@ function default.drop_item(pos,itemstack)
 	local obj = minetest.add_item(np, itemstack)
 	if obj then
 		obj:get_luaentity().collect = true
+		if vel ~= nil and acc ~= nil then
+			obj:get_luaentity().object:setvelocity(vel)
+			obj:get_luaentity().object:setacceleration(acc)
+		end
 	end
 end

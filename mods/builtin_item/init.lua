@@ -91,83 +91,14 @@ minetest.register_entity(":__builtin:item", {
 		end
 		
 		local p = self.object:getpos()
-		
+		local vel = self.object:getvelocity()
+		self.object:setacceleration({x=((vel.x)*-1), y=-10, z=((vel.z)*-1)})
 		local name = minetest.env:get_node(p).name
 		if name == "default:lava_flowing" or name == "default:lava_source" then
 			minetest.sound_play("builtin_item_lava", {pos=self.object:getpos()})
 			self.object:remove()
 			return
 		end
---[[		
-		if minetest.registered_nodes[name].liquidtype == "flowing" then
-			get_flowing_dir = function(self)
-				local pos = self.object:getpos()
-				local param2 = minetest.env:get_node(pos).param2
-				for i,d in ipairs({-1, 1, -1, 1}) do
-					if i<3 then
-						pos.x = pos.x+d
-					else
-						pos.z = pos.z+d
-					end
-					
-					local name = minetest.env:get_node(pos).name
-					local par2 = minetest.env:get_node(pos).param2
-					if name == "default:water_flowing" and par2 < param2 then
-						return pos
-					end
-					
-					if i<3 then
-						pos.x = pos.x-d
-					else
-						pos.z = pos.z-d
-					end
-				end
-			end
-			
-			local vec = get_flowing_dir(self)
-			if vec then
-				local v = self.object:getvelocity()
-				if vec and vec.x-p.x > 0 then
-					self.object:setvelocity({x=0.5,y=v.y,z=0})
-				elseif vec and vec.x-p.x < 0 then
-					self.object:setvelocity({x=-0.5,y=v.y,z=0})
-				elseif vec and vec.z-p.z > 0 then
-					self.object:setvelocity({x=0,y=v.y,z=0.5})
-				elseif vec and vec.z-p.z < 0 then
-					self.object:setvelocity({x=0,y=v.y,z=-0.5})
-				end
-				self.object:setacceleration({x=0, y=-10, z=0})
-				self.physical_state = true
-				self.object:set_properties({
-					physical = true
-				})
-				return
-			end
-		end
-		
-		p.y = p.y - 0.3
-		local nn = minetest.env:get_node(p).name
-		-- If node is not registered or node is walkably solid
-		if not minetest.registered_nodes[nn] or minetest.registered_nodes[nn].walkable then
-			if self.physical_state then
-				self.object:setvelocity({x=0,y=0,z=0})
-				self.object:setacceleration({x=0, y=0, z=0})
-				self.physical_state = false
-				self.object:set_properties({
-					physical = false
-				})
-			end
-		else
-			if not self.physical_state then
-				self.object:setvelocity({x=0,y=0,z=0})
-				self.object:setacceleration({x=0, y=-10, z=0})
-				self.physical_state = true
-				self.object:set_properties({
-					physical = true
-				})
-			end
-		end
-]]
 	end,
 
 	on_punch = function(self, hitter)
