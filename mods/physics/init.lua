@@ -6,7 +6,7 @@
 physics = {}
 local physics_file = minetest.get_worldpath() .. "/physics"
 physics.player_physics = default.deserialize_from_file(physics_file)
-
+physics.player_frozen = {}
 function physics.adjust_physics(player,_physics)
 	local name = player:get_player_name()
 	for p,v in pairs(_physics) do
@@ -17,7 +17,21 @@ end
 
 function physics.apply(player)
 	local name = player:get_player_name()
-	player:set_physics_override(physics.player_physics[name])
+	if physics.player_frozen[name] ~= true then
+		player:set_physics_override(physics.player_physics[name])
+	end
+end
+
+function physics.freeze_player(name)
+	local player = minetest.get_player_by_name(name)
+	physics.player_frozen[name] = true
+	player:set_physics_override({speed=0,jump=0})
+end
+
+function physics.unfreeze_player(name)
+	local player = minetest.get_player_by_name(name)
+	physics.player_frozen[name] = false
+	physics.apply(minetest.get_player_by_name(name))
 end
 
 function physics.remove_item_physics(player,item)

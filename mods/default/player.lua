@@ -165,7 +165,7 @@ minetest.register_globalstep(function(dtime)
 			local animation_speed_mod = model.animation_speed or 30
 
 			-- Determine if the player is walking
-			if controls.up or controls.down or controls.left or controls.right then
+			if ( controls.up or controls.down or controls.left or controls.right ) and physics.player_frozen[name] ~= true then
 				walking = true
 			end
 
@@ -195,7 +195,7 @@ minetest.register_globalstep(function(dtime)
 					player_set_animation(player, "walk", animation_speed_mod)
 				end
 			elseif controls.LMB then
-				if player_anim[name] == "lay" or player_anim[name] == "sit" then
+				if player_anim[name] == "lay" or player_anim[name] == "sit" and physics.player_frozen[name] ~= true then
 					player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
 					if player_sleephuds[name] ~= nil then
 						player:hud_remove(player_sleephuds[name])
@@ -214,23 +214,7 @@ end)
 
 if minetest.register_on_punchplayer ~= nil then
 	minetest.register_on_punchplayer( function(player, hitter, time_from_last_punch, tool_capabilities, dir)
-		local weapon = hitter:get_wielded_item()
-		if tool_capabilities ~= nil then
-			local wear = ( tool_capabilities.full_punch_interval / 75 ) * 65535
-			weapon:add_wear(wear)
-			hitter:set_wielded_item(weapon)
-		end
-		
-		if weapon:get_definition().sounds ~= nil then
-			local s = math.random(0,#weapon:get_definition().sounds)
-			minetest.sound_play(weapon:get_definition().sounds[s], {
-				object=hitter,
-			})
-		else
-			minetest.sound_play("default_sword_wood", {
-				object = hitter,
-			})
-		end	
+		process_weapon(player,time_from_last_punch,tool_capabilities)
 		blood_particles(player:getpos(),0.5,27,"mobs_blood.png")
 		if player_anim[name] == "lay" or player_anim[name] == "sit" then
 			player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
@@ -238,6 +222,11 @@ if minetest.register_on_punchplayer ~= nil then
 				player:hud_remove(player_sleephuds[name])
 				player_sleephuds[name] = nil
 			end
+			physics.unfreeze_player(name)
+		end
+		if math.random(0,3) == 3 then
+			local snum = math.random(1,4)
+			minetest.sound_play("default_hurt"..tostring(snum),{object = player})
 		end
 	end)
 end

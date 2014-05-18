@@ -15,7 +15,7 @@ function hud.update_stamina(p,name)
 				end
 				
 				local anim = default.player_get_animation(p)
-				local adj = 0.25
+				local adj = 0.25 + ( 0.2 * ( skills.player_levels[name].level / 5 ) )
 				if anim.animation == "lay" then
 					adj = adj + 0.75
 					if math.random(0,4) == 1 then
@@ -31,11 +31,11 @@ function hud.update_stamina(p,name)
 				-- adjust their stamina
 				local vdiff = pos.y - player_lastpos[name].y
 				if vdiff > 0 then
-					adj = adj - ( vdiff * 0.06 )
+					adj = adj - ( vdiff * 0.05 )
 				end
 				
 				local hdiff = math.sqrt(math.pow(pos.x-player_lastpos[name].x, 2) + math.pow(pos.z-player_lastpos[name].z, 2))
-				adj = adj - ( hdiff * 0.03 )
+				adj = adj - ( hdiff * 0.02 )
 				
 				player_stamina[name] = player_stamina[name] + adj
 				if player_stamina[name] < 0 then
@@ -95,6 +95,7 @@ minetest.register_chatcommand("sit",{
 			player:hud_remove(player_sleephuds[name])
 			player_sleephuds[name] = nil
 		end
+		physics.freeze_player(name)
 	end,
 })
 
@@ -112,6 +113,7 @@ minetest.register_chatcommand("sleep",{
 			alignment = {x=-1,y=-1},
 			offset = {x=0,y=0},
 		})
+		physics.freeze_player(name)
 	end,
 })
 
@@ -124,6 +126,7 @@ minetest.register_chatcommand("stand",{
 			player:hud_remove(player_sleephuds[name])
 			player_sleephuds[name] = nil
 		end
+		physics.unfreeze_player(name)
 	end,
 })
 
