@@ -5,7 +5,7 @@ docfarming?
 diet?
 farming?
 farming_plus?
-hud?
+hud
 intllib?
 jkanimals?
 jkfarming?

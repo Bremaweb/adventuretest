@@ -662,7 +662,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	mg_generate(minp, maxp, emin, emax, vm)
 end)
 
-local function mg_regenerate(pos, name)
+function mg_regenerate(pos, name)
 	local minp = {x = 80*math.floor((pos.x+32)/80)-32,
 			y = 80*math.floor((pos.y+32)/80)-32,
 			z = 80*math.floor((pos.z+32)/80)-32}
@@ -676,8 +676,9 @@ local function mg_regenerate(pos, name)
 	vm:set_data(data)
 	vm:write_to_map()
 	mg_generate(minp, maxp, emin, emax, vm)
-	
-	minetest.chat_send_player(name, "Regenerating done, fixing lighting. This may take a while...")
+	if name ~= nil then
+	  minetest.chat_send_player(name, "Regenerating done, fixing lighting. This may take a while...")
+	end
 	-- Fix lighting
 	local nodes = minetest.find_nodes_in_area(minp, maxp, "air")
 	local nnodes = #nodes
@@ -686,10 +687,14 @@ local function mg_regenerate(pos, name)
         for _, pos in ipairs(nodes) do
                 dig_node(pos)
                 if _%p == 0 then
+		    if name ~= nil then
                 	minetest.chat_send_player(name, math.floor(_/nnodes*100).."%")
+		    end
                 end
         end
-        minetest.chat_send_player(name, "Done")
+	if name ~= nil then
+	  minetest.chat_send_player(name, "Done")
+	end
 end
 
 minetest.register_chatcommand("mg_regenerate", {
