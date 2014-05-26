@@ -3,6 +3,15 @@
 bone_file = minetest.get_worldpath().."/player_bones" 
 player_bones = default.deserialize_from_file(bone_file)
 
+local replaceable_node_types = {
+	"default:lava_source", 
+	"default:lava_flowing", 
+	"default:water_source", 
+	"default:water_flowing", 
+	"air"
+}
+
+
 local function is_owner(pos, name)
 	local owner = minetest.get_meta(pos):get_string("owner")
 	if owner == "" or owner == name then
@@ -15,6 +24,42 @@ local function not_pillaged(pos)
 	local meta = minetest.get_meta(pos)
 	if ( meta:get_string("pillaged") == "" ) then
 		return true
+	end
+	return false
+end
+
+local function settle_bones(pos)
+	local nextpos = pos; 
+	local node
+
+	-- find ground beneath player
+	repeat
+		pos = nextpos
+		nextpos = {x=pos.x, y=pos.y-1, z=pos.z}
+		node = minetest.get_node_or_nil(nextpos)
+	until node == nil or not settle_type(node.name) 
+
+	node = minetest.get_node_or_nil(pos)
+
+	-- if the player is inside rock or something
+	if node == nil or not settle_type(node.name) then
+		-- find nearby empty node
+		pos = minetest.find_node_near(pos, 3, replaceable_node_types)
+	end
+
+	-- if nothing nearby is empty
+	if pos == nil then
+		return nil
+	end
+
+	return pos;--{x=math.floor(pos.x*10)/10, y=math.floor(pos.y*10)/10, z=math.floor(pos.z*10)/10}
+end
+
+function settle_type (nodename) 
+	for i=1,#replaceable_node_types do
+		if nodename == replaceable_node_types[i] then
+			return true
+		end
 	end
 	return false
 end
@@ -160,6 +205,10 @@ minetest.register_on_dieplayer(function(player)
 	local pos = player:getpos()
 	local name = player:get_player_name()
 	
+	pos = settle_bones(pos)
+	if pos == nil then
+		return
+	end
 	player_bones[name] = pos
 	default.serialize_to_file(bone_file,player_bones)
 	
