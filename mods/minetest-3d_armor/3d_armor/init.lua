@@ -35,14 +35,13 @@ minetest.register_tool("3d_armor:helmet_diamond", {
 	skill = SKILL_CRYSTAL,
 })
 
-if use_moreores then
-	minetest.register_tool("3d_armor:helmet_mithril", {
-		description = "Mithril Helmet",
-		inventory_image = "3d_armor_inv_helmet_mithril.png",
-		groups = {armor_head=15, armor_heal=12, armor_use=50},
-		wear = 0,
-	})
-end
+minetest.register_tool("3d_armor:helmet_mithril", {
+	description = "Mithril Helmet",
+	inventory_image = "3d_armor_inv_helmet_mithril.png",
+	groups = {armor_head=15, armor_heal=12, armor_use=50},
+	wear = 0,
+})
+
 
 -- Regisiter Torso Armor
 
@@ -82,14 +81,15 @@ minetest.register_tool("3d_armor:chestplate_diamond", {
 	skill = SKILL_CRYSTAL,
 })
 
-if use_moreores then
-	minetest.register_tool("3d_armor:chestplate_mithril", {
-		description = "Mithril Chestplate",
-		inventory_image = "3d_armor_inv_chestplate_mithril.png",
-		groups = {armor_torso=20, armor_heal=12, armor_use=50},
-		wear = 0,
-	})
-end
+minetest.register_tool("3d_armor:chestplate_mithril", {
+	description = "Mithril Chestplate",
+	inventory_image = "3d_armor_inv_chestplate_mithril.png",
+	groups = {armor_torso=25, armor_heal=12, armor_use=500},
+	wear = 0,
+	physics = { speed = 0.01 },
+})
+
+
 
 -- Regisiter Leg Armor
 
@@ -128,14 +128,15 @@ minetest.register_tool("3d_armor:leggings_diamond", {
 	skill = SKILL_CRYSTAL,
 })
 
-if use_moreores then
-	minetest.register_tool("3d_armor:leggings_mithril", {
-		description = "Mithril Leggings",
-		inventory_image = "3d_armor_inv_leggings_mithril.png",
-		groups = {armor_legs=20, armor_heal=12, armor_use=50},
-		wear = 0,
-	})
-end
+
+minetest.register_tool("3d_armor:leggings_mithril", {
+	description = "Mithril Leggings",
+	inventory_image = "3d_armor_inv_leggings_mithril.png",
+	groups = {armor_legs=25, armor_use=500},
+	wear = 0,
+	physics = { speed = 0.02 }
+})
+
 
 -- Regisiter Boots
 
@@ -175,14 +176,14 @@ minetest.register_tool("3d_armor:boots_diamond", {
 	skill = SKILL_CRYSTAL,
 })
 
-if use_moreores then
-	minetest.register_tool("3d_armor:boots_mithril", {
-		description = "Mithril Boots",
-		inventory_image = "3d_armor_inv_boots_mithril.png",
-		groups = {armor_feet=15, armor_heal=12, armor_use=50},
-		wear = 0,
-	})
-end
+minetest.register_tool("3d_armor:boots_mithril", {
+	description = "Mithril Boots",
+	inventory_image = "3d_armor_inv_boots_mithril.png",
+	groups = {armor_feet=15, armor_use=500},
+	wear = 0,
+	physics = { speed = 0.01 },
+})
+
 
 -- Register Craft Recipies
 
@@ -193,9 +194,10 @@ local craft_ingreds = {
 	diamond = "default:diamond",
 }
 
-if use_moreores then
-	craft_ingreds.mithril = "moreores:mithril_ingot"
-end
+
+-- Mithril armor is not craftable
+-- craft_ingreds.mithril = "moreores:mithril_ingot"
+
 
 for k, v in pairs(craft_ingreds) do
 	minetest.register_craft({
