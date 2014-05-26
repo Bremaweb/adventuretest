@@ -126,8 +126,8 @@ minetest.register_abm({
 minetest.register_abm({
 	nodenames = {"group:igniter"},
 	neighbors = {"air"},
-	interval = 2,
-	chance = 10,
+	interval = 4,
+	chance = 40,
 	action = function(p0, node, _, _)
 		local reg = minetest.registered_nodes[node.name]
 		if not reg or not reg.groups.igniter or reg.groups.igniter < 2 then
