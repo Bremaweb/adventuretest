@@ -441,3 +441,11 @@ function default.drop_item(pos,itemstack,vel,acc)
 		end
 	end
 end
+
+function default.get_distance(pos1,pos2)
+	if ( pos1 ~= nil and pos2 ~= nil ) then
+		return math.abs(math.floor(math.sqrt( (pos1.x - pos2.x)^2 + (pos1.z - pos2.z)^2 )))
+	else
+		return nil
+	end
+end
