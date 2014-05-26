@@ -847,7 +847,7 @@ minetest.register_node("default:chest_locked", {
 	end,
 	can_dig = function(pos,player)
 		local meta = minetest.get_meta(pos);
-		--local inv = meta:get_inventory()
+		local inv = meta:get_inventory()
 		if has_locked_chest_privilege(meta, player) then
 			if inv:is_empty("main") == false then
 				default.dump_inv(pos,"main")
