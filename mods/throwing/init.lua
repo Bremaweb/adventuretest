@@ -101,8 +101,8 @@ minetest.register_craft({
 
 minetest.register_globalstep(function (dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
+		local name = player:get_player_name()
 		if shoot_timer[name] ~= nil then
-			local name = player:get_player_name()
 			shoot_timer[name] = shoot_timer[name] - dtime
 		else
 			shoot_timer[name] = 0
