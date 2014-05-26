@@ -7,7 +7,7 @@ player_sleephuds = {}
 function hud.update_stamina(p,name)
 	-- loop through all online players and check their movement and update their stamina
 		local pos = p:getpos()
-		if player_lastpos[name] ~= nil then
+		if player_lastpos[name] ~= nil and skills.player_levels[name] ~= nil then
 			if player_stamina[name] ~= nil then
 				if minetest.check_player_privs(name, {immortal=true}) then
 					player_stamina[name] = 20
@@ -54,6 +54,7 @@ function hud.update_stamina(p,name)
 							player_sleephuds[name] = nil
 						end
 						minetest.chat_send_player(name,"You feel fully energized!")
+						physics.unfreeze_player(name)
 					end
 				end
 				if player_stamina[name] < 3 then

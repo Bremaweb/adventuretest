@@ -193,7 +193,7 @@ function hud.set_armor()
 end
 
 
-if HUD_ENABLE_HUNGER then dofile(minetest.get_modpath("hud").."/hunger.lua") end
+if HUD_ENABLE_HUNGER then dofile(minetest.get_modpath("hud").."/hunger.lua") else hud.item_eat = function () end end
 if HUD_SHOW_ARMOR then dofile(minetest.get_modpath("hud").."/armor.lua") end
 dofile(minetest.get_modpath("hud").."/stamina.lua")
 
