@@ -107,7 +107,6 @@ quests.treasure.generateQuest = function()
   
   if allair == true then
     quests.treasure.data.do_on_generate = true
-    print("do on generate")
     return
   end
   
@@ -182,10 +181,7 @@ quests.treasure.place_treasure = function (pos,vm,minp,maxp)
       for ty=16,-16,-1 do	
 		if data[area:index(tx, ty, tz)] ~= c_air then
 		    if is_ground_node(data[area:index(tx, ty, tz)]) then
-		      print("is ground node")
 		      if prevnode == c_air or prevnode == c_water then
-				print("good spot")
-				print(tostring(tx)..", "..tostring(ty)..", "..tostring(tz))
 				quests.treasure.data.pos = {x=tx,y=ty-2,z=tz}
 				quests.treasure.data.do_on_generate = false
 				data[area:index(tx, ty+1, tz)] = minetest.get_content_id(quests.treasure.data.marker)
@@ -211,14 +207,12 @@ quests.treasure.set_inventory = function (pos)
 	local distance = default.get_distance({x=0,y=0,z=0},{x=pos.x,y=0,z=pos.z})
 	local treasure_level = math.floor( distance / 5000 )
 	if treasure_level == 0 then treasure_level = 1 end
-	print("Treasure level: "..tostring(treasure_level))
 	local meta = minetest.get_meta(pos)
 	meta:set_string("formspec",default.chest_formspec)
 	meta:set_string("infotext", "Treasure Chest")
 		
 	local treasure_set = treasures[treasure_level]
 	if treasure_set ~= nil then
-		print("good treasure set")
 		local inv = meta:get_inventory()
 		inv:set_size("main", 8*4)
 		for _,item in pairs(treasure_set) do
@@ -248,9 +242,7 @@ end
 
 minetest.register_on_generated(function(minp, maxp, seed)	
   if quests.treasure.data.do_on_generate == true then
-    print("on_generated")
     if quests.treasure.data.pos.x > minp.x and quests.treasure.data.pos.x < maxp.x and quests.treasure.data.pos.z > minp.z and quests.treasure.data.pos.z < maxp.z then
-      print("in area")
       local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
       quests.treasure.place_treasure(quests.treasure.data.pos,vm,emin,emax)
     end
