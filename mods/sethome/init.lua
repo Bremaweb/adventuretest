@@ -124,6 +124,9 @@ minetest.register_chatcommand("sethome", {
 
 minetest.register_on_respawnplayer( function (player)
 	local name = player:get_player_name()
+	if minetest.check_player_privs(name,{immortal = true}) then
+		return true
+	end
 	if homepos[name] ~= nil then
 		player:moveto(homepos[name])
 		return true

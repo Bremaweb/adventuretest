@@ -1,5 +1,5 @@
 mobs:register_mob("mobs:barbarian1", {
-	type = "monster",
+	type = "barbarian",
 	hp_min = 20,
 	hp_max = 65,
 	exp_min = 10,
@@ -9,7 +9,7 @@ mobs:register_mob("mobs:barbarian1", {
 	mesh = "3d_armor_character.x",
 	textures = {"mobs_barbarian1.png",	
 				"3d_armor_trans.png",
-				"3d_armor_trans.png",
+				minetest.registered_items["default:sword_steel"].inventory_image,
 			},
 	visual_size = {x=1, y=1},
 	makes_footstep_sound = true,
@@ -41,7 +41,7 @@ mobs:register_mob("mobs:barbarian1", {
 	sounds = {
 		war_cry = "mobs_barbarian_yell2",
 		death = "mobs_barbarian_death",
-		attack = "default_punch2",
+		attack = "default_sword_steel2",
 	},
 	step=0.5,
 	blood_amount = 35,
@@ -49,7 +49,7 @@ mobs:register_mob("mobs:barbarian1", {
 })
 
 mobs:register_mob("mobs:barbarian2", {
-	type = "monster",
+	type = "barbarian",
 	hp_min = 20,
 	hp_max = 65,
 	exp_min = 10,
@@ -59,7 +59,7 @@ mobs:register_mob("mobs:barbarian2", {
 	mesh = "3d_armor_character.x",
 	textures = {"mobs_barbarian2.png",	
 				"3d_armor_trans.png",
-				"3d_armor_trans.png",
+				minetest.registered_items["default:axe_steel"].inventory_image,
 			},
 	visual_size = {x=1, y=1},
 	makes_footstep_sound = true,
@@ -91,7 +91,7 @@ mobs:register_mob("mobs:barbarian2", {
 	sounds = {
 		war_cry = "mobs_barbarian_yell1",
 		death = "mobs_barbarian_death",
-		attack = "default_punch2",
+		attack = "default_sword_steel",
 	},
 	step=0.5,
 	blood_amount = 35,

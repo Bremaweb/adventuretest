@@ -7,12 +7,18 @@ buildings = {
 	{sizex= 7,	sizez= 7,	yoff= 0,	ysize=11,	scm="fountain", weight=1/4, pervillage=3},
 	{sizex= 5,	sizez= 5,	yoff= 0,	ysize= 6,	scm="small_house", orients={3}},
 	{sizex= 6,	sizez=12,	yoff= 0,	ysize= 7,	scm="house_with_garden", orients={1}},
-	{sizex=16,	sizez=17,	yoff= 0,	ysize=12,	scm="church", orients={3}, pervillage=1},
-	{sizex= 5,	sizez= 5,	yoff= 0,	ysize=16,	scm="tower", orients={0}, weight=1/7},
+	{sizex=16,	sizez=19,	yoff=-1,	ysize=14,	scm="church", orients={3}, pervillage=1},
 	{sizex= 8,	sizez= 9,	yoff= 0,	ysize= 6,	scm="forge", orients={0}, pervillage=2},
-	{sizex=11,	sizez=12,	yoff= 0,	ysize= 6,	scm="library", orients={1}, pervillage=2},
+	{sizex=12,	sizez=13,	yoff= 0,	ysize= 6,	scm="library", orients={1}, pervillage=2},
 	{sizex=15,	sizez= 7,	yoff= 0,	ysize=12,	scm="inn", orients={1}, pervillage=4, weight=1/2},
-	{sizex=22,	sizez=17,	yoff= 0,	ysize= 7,	scm="pub", orients={3}, pervillage=2, weight=1/3},
+	{sizex=22,	sizez=17,	yoff= 0,	ysize= 7,	scm="pub", orients={3}, pervillage=1, weight=1/3},
+	{sizex=11,	sizez=13,	yoff= 1,	ysize=12,	scm="pub2", orients={3}, pervillage=1, weight=1/3},
+	{sizex=12,	sizez=10,	yoff= 1,	ysize= 9,	scm="house1",orients={4}},
+	{sizex=13,	sizez=10,	yoff= 1,	ysize= 9,	scm="house2",orients={4}},
+	{sizex=13,	sizez=11,	yoff= 1,	ysize= 8,	scm="house3",orients={4}},
+	{sizex=14,	sizez=12,	yoff= 1,	ysize= 8,	scm="farmtiny1",orients={4}},
+	{sizex=12,	sizez=26,	yoff= 1,	ysize=19,	scm="largechurch", orients={1},pervillage=1},
+	
 }
 
 local gravel = minetest.get_content_id("default:gravel")

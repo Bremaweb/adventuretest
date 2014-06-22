@@ -1,5 +1,7 @@
 mobs = {}
+mobs.mob_list = { npc={}, barbarian={}, monster={}, animal={}}
 function mobs:register_mob(name, def)
+  table.insert(mobs.mob_list[def.type],name)
 	minetest.register_entity(name, {
 		name = name,
 		hp_min = def.hp_min,
@@ -765,15 +767,6 @@ function mobs:register_spawn(name, nodes, max_light, min_light, chance, active_o
 				return
 			end
 			
-			if minetest.registered_nodes[minetest.get_node(pos).name].walkable == true or minetest.registered_nodes[minetest.get_node(pos).name].walkable == nil then
-				return
-			end
-			
-			pos.y = pos.y+1
-			if minetest.registered_nodes[minetest.get_node(pos).name].walkable == true or minetest.registered_nodes[minetest.get_node(pos).name].walkable == nil then
-				return
-			end
-			
 			if min_dist == nil then
 				min_dist = {x=-1,z=-1}
 			end
@@ -796,18 +789,48 @@ function mobs:register_spawn(name, nodes, max_light, min_light, chance, active_o
 			if minetest.setting_getbool("display_mob_spawn") then
 				minetest.chat_send_all("[mobs] Add "..name.." at "..minetest.pos_to_string(pos))
 			end
-			local mob = minetest.add_entity(pos, name)
-			
-			-- setup the hp, armor, drops, etc... for this specific mob
-			local distance_rating = ( ( get_distance({x=0,y=0,z=0},pos) ) / 15000 )	
-			if mob then
-				mob = mob:get_luaentity()
-				local newHP = mob.hp_min + math.floor( mob.hp_max * distance_rating )
-				mob.object:set_hp( newHP )
-			end
-			
+			mobs:spawn_mob(pos,name)
 		end
 	})
+end
+
+function mobs:spawn_mob(pos,name)  
+	-- make sure the nodes above are walkable
+	if minetest.registered_nodes[minetest.get_node(pos).name] ~= nil then
+		if minetest.registered_nodes[minetest.get_node(pos).name].walkable == true or minetest.registered_nodes[minetest.get_node(pos).name].walkable == nil then
+			return -1
+		end  
+		pos.y = pos.y + 1
+		if minetest.registered_nodes[minetest.get_node(pos).name].walkable == true or minetest.registered_nodes[minetest.get_node(pos).name].walkable == nil then
+			return -1
+		end
+		pos.y = pos.y - 1
+	end
+
+	local mob = minetest.add_entity(pos, name)
+	-- setup the hp, armor, drops, etc... for this specific mob
+	local distance_rating = ( ( get_distance({x=0,y=0,z=0},pos) ) / 15000 )	
+	if mob ~= nil then
+		mob = mob:get_luaentity()
+		if mob ~= nil then
+			local newHP = mob.hp_min + math.floor( mob.hp_max * distance_rating )
+			mob.object:set_hp( newHP )
+			mob.state = "walk"	-- make them walk when they spawn so they walk away from their original spawn position
+			return true
+		end
+	end
+end
+
+function mobs:get_random(type)
+	if mobs.mob_list[type] ~= nil then
+		local seed = os.clock() + os.time()
+		math.randomseed(seed)
+		local idx = math.random(1,#mobs.mob_list[type])
+		if mobs.mob_list[type][idx] ~= nil then
+			return mobs.mob_list[type][idx]
+		end
+		return false
+	end
 end
 
 function mobs:register_arrow(name, def)

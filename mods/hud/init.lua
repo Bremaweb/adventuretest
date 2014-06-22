@@ -54,10 +54,6 @@ else
 	end
 end
 
-local function hide_builtin(player)
-	 player:hud_set_flags({crosshair = true, hotbar = true, healthbar = false, wielditem = true, breathbar = false})
-end
-
 
 local function custom_hud(player)
  local name = player:get_player_name()
@@ -186,6 +182,10 @@ local function custom_hud(player)
  	offset = {x=15, y=-15},
  })
  
+end
+
+local function hide_builtin(player)
+	 player:hud_set_flags({crosshair = true, hotbar = true, healthbar = false, wielditem = true, breathbar = false})
 end
 
 --needs to be defined for older version of 3darmor

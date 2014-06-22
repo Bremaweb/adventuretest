@@ -1520,6 +1520,7 @@ minetest.register_node("default:snow", {
 	leveled = 7,
 	drawtype = "nodebox",
 	freezemelt = "default:water_flowing",
+	walkable=false,
 	node_box = {
 		type = "leveled",
 		fixed = {
@@ -1531,12 +1532,6 @@ minetest.register_node("default:snow", {
 		footstep = {name="default_snow_footstep", gain=0.25},
 		dug = {name="default_snow_footstep", gain=0.75},
 	}),
-	on_construct = function(pos)
-		pos.y = pos.y - 1
-		if minetest.get_node(pos).name == "default:dirt_with_grass" then
-			minetest.set_node(pos, {name="default:dirt_with_snow"})
-		end
-	end,
 })
 minetest.register_alias("snow", "default:snow")
 

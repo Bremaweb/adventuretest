@@ -21,14 +21,16 @@ local food_poisoning = {
 						minetest.log("action",name.." pukes")
 						puke_physics(player)
 						minetest.sound_play("sickness_puke",{object=player})
-						if hud.hunger[name] > 4 then
-							hud.hunger[name] = 4
-							hud.set_hunger(player)
+						if hud.hunger[name] ~= nil then
+						  if hud.hunger[name] > 4 then
+							  hud.hunger[name] = 4
+							  hud.set_hunger(player)
+						  end
+						  if player_stamina[name] > 6 then
+							  player_stamina[name] = 6
+						  end
+						  minetest.after(5,puke_reset,player)
 						end
-						if player_stamina[name] > 6 then
-							player_stamina[name] = 6
-						end
-						minetest.after(5,puke_reset,player)
 					end
 					},
 				},
@@ -39,14 +41,16 @@ local food_poisoning = {
 						minetest.log("action",name.." pukes")
 						puke_physics(player)
 						minetest.sound_play("sickness_puke",{object=player})
-						if hud.hunger[name] > 4 then
-							hud.hunger[name] = 4
-							hud.set_hunger(player)
+						if hud.hunger[name] ~= nil then
+						  if hud.hunger[name] > 4 then
+							  hud.hunger[name] = 4
+							  hud.set_hunger(player)
+						  end
+						  if player_stamina[name] > 10 then
+							  player_stamina[name] = 10
+						  end	
+						  minetest.after(5,puke_reset,player)
 						end
-						if player_stamina[name] > 10 then
-							player_stamina[name] = 10
-						end	
-						minetest.after(5,puke_reset,player)
 					end
 					},
 				},
@@ -57,14 +61,16 @@ local food_poisoning = {
 						minetest.log("action",name.." pukes")
 						puke_physics(player)
 						minetest.sound_play("sickness_puke",{object=player})
-						if hud.hunger[name] > 4 then
-							hud.hunger[name] = 4
-							hud.set_hunger(player)
+						if hud.hunger[name] ~= nil then
+						  if hud.hunger[name] > 4 then
+							  hud.hunger[name] = 4
+							  hud.set_hunger(player)
+						  end
+						  if player_stamina[name] > 16 then
+							  player_stamina[name] = 16
+						  end	
+						  minetest.after(5,puke_reset,player)
 						end
-						if player_stamina[name] > 16 then
-							player_stamina[name] = 16
-						end	
-						minetest.after(5,puke_reset,player)
 					end
 					},
 				}

@@ -198,7 +198,8 @@ function dump_bones(pos)
 end
 
 minetest.register_on_dieplayer(function(player)
-	if minetest.setting_getbool("creative_mode") then
+	if minetest.setting_getbool("creative_mode") or minetest.check_player_privs(player:get_player_name(),{immortal=true}) then
+		player:set_hp(20)
 		return
 	end
 	

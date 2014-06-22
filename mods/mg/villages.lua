@@ -395,32 +395,40 @@ local function generate_building(pos, minp, maxp, data, a, pr, extranodes, barba
 	for z = 0, pos.bsizez-1 do
 		ax, ay, az = pos.x+x, pos.y+y+binfo.yoff, pos.z+z
 		if (ax >= minp.x and ax <= maxp.x) and (ay >= minp.y and ay <= maxp.y) and (az >= minp.z and az <= maxp.z) then
-			t = scm[y+1][x+1][z+1]
-			if type(t) == "table" then
-				table.insert(extranodes, {node=t.node, meta=t.meta, pos={x=ax, y=ay, z=az},})
-				newBuilding = true
-			elseif t ~= c_ignore then
-				data[a:index(ax, ay, az)] = t
+			if scm[y+1] ~= nil then
+				if scm[y+1][x+1] ~= nil then
+					if scm[y+1][x+1][z+1] ~= nil then
+						t = scm[y+1][x+1][z+1]
+						if type(t) == "table" then
+							table.insert(extranodes, {node=t.node, meta=t.meta, pos={x=ax, y=ay, z=az},})
+							newBuilding = true
+						elseif t ~= c_ignore and t ~= c_air then
+							data[a:index(ax, ay, az)] = t
+						end
+					end
+				end
 			end
-			
 		end
 	end
 	end
 	end
-	if newBuilding == true then
-			
+	
+	if newBuilding == true then			
 		--print("New building around "..minetest.pos_to_string(pos))
 		local numNPCs = math.random(0,1)
 		--print("Spawning "..tostring(numNPCs).." NPCs")
 		if numNPCs > 0 then
 			for i=0,numNPCs,1 do
-				npos = pos
+				local npos = pos
 				npos.x = npos.x + math.random(-8,8)
 				npos.y = npos.y + 2
 				npos.z = npos.z + math.random(-8,8)
+				
+				local spawnerpos = {x=npos.x, y=npos.y, z=npos.z}
+				spawnerpos.y = spawnerpos.y - 5
+				
 				if barbarian_village == true then
-					local bidx = math.random(0,#mobs.barbarians)
-					local barbarian = mobs.barbarians[bidx]
+					local barbarian = mobs:get_random('barbarian')
 					minetest.log("action","Spawning "..barbarian.." at "..minetest.pos_to_string(npos))
 					local mob = minetest.add_entity(pos, barbarian)
 					if mob then
@@ -428,16 +436,20 @@ local function generate_building(pos, minp, maxp, data, a, pr, extranodes, barba
 						mob = mob:get_luaentity()
 						local newHP = mob.hp_min + math.floor( mob.hp_max * distance_rating )
 						mob.object:set_hp( newHP )
+						local metatable = {  fields = { entity = barbarian, active_objects = 6 } }
+						table.insert(extranodes, {node={name="mobs:spawner",param1=0, param2=0}, pos=spawnerpos,mob="barbarian"})
 					end
 				else
-					local npcidx = math.random(0,#mobs.npcs)
-					local npc = mobs.npcs[npcidx]
+					
+					local npc = mobs:get_random('npc')
 					minetest.log("action","Spawning "..npc.." at "..minetest.pos_to_string(npos))
 					local mob = minetest.add_entity(pos, npc)
 					if mob then
 						mob = mob:get_luaentity()
 						local p = mob.object:getpos()
 						math.randomseed( ( p.x * p.y * p.z ) )
+						local metatable = {  fields = { entity = npc, active_objects = 6 } }
+						table.insert(extranodes, {node={name="mobs:spawner",param1=0, param2=0}, pos=spawnerpos, mob="npc"})
 					end
 				end
 			end

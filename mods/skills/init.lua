@@ -167,4 +167,12 @@ minetest.register_chatcommand("skills", {
 	end,
 })
 
+minetest.register_on_dieplayer(function(player)
+    local name = player:get_player_name()
+    local level  = skills.get_player_level(name)
+    local decrease = level.exp * -0.1
+    print(tostring(decrease))
+    skills.add_exp(name,decrease)
+end)
+
 minetest.after(1, skills.initialize)
