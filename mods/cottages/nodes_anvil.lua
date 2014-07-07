@@ -29,7 +29,8 @@ minetest.register_tool("cottages:hammer", {
                         cracky={times={[2]=2.00, [3]=1.20}, uses=30, maxlevel=1},
                 },
                 damage_groups = {fleshy=6},
-        }
+        },
+	skill = SKILL_METAL,
 })
 
 
