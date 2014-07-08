@@ -24,7 +24,7 @@ mobs:register_mob("mobs:male1_npc",{
 	lava_damage = 5,
 	light_damage = 0,
 	on_rightclick = nil,
-	walk_chance = 1,
+	activity_level = 10,
 	attack_type = "dogfight",
 	animation = {
 		speed_normal = 30,
@@ -38,7 +38,7 @@ mobs:register_mob("mobs:male1_npc",{
 		punch_start = 200,
 		punch_end = 219,
 	},
-	jump = false,
+	jump = true,
 	sounds = {
 		war_cry = "mobs_die_yell",
 		death = "default_death",
@@ -83,7 +83,7 @@ mobs:register_mob("mobs:male2_npc",{
 	lava_damage = 5,
 	light_damage = 0,
 	on_rightclick = nil,
-	walk_chance = 1,
+	activity_level=10,
 	attack_type = "dogfight",
 	animation = {
 		speed_normal = 30,
@@ -97,7 +97,7 @@ mobs:register_mob("mobs:male2_npc",{
 		punch_start = 200,
 		punch_end = 219,
 	},
-	jump = false,
+	jump = true,
 	sounds = {
 		war_cry = "mobs_die_yell",
 		death = "default_death",
@@ -142,7 +142,7 @@ mobs:register_mob("mobs:male3_npc",{
 	lava_damage = 5,
 	light_damage = 0,
 	on_rightclick = nil,
-	walk_chance = 1,
+	activity_level = 10,
 	attack_type = "dogfight",
 	animation = {
 		speed_normal = 30,
@@ -156,7 +156,7 @@ mobs:register_mob("mobs:male3_npc",{
 		punch_start = 200,
 		punch_end = 219,
 	},
-	jump = false,
+	jump = true,
 	sounds = {
 		war_cry = "mobs_die_yell",
 		death = "default_death",

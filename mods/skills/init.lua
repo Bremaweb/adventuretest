@@ -69,7 +69,7 @@ end
 
 function skills.get_probability(name, skill1, skill2)
 	--print("get_probablilty("..name..","..tostring(skill1)..","..tostring(skill2)..")")
-	if ( name == nil ) then
+	if ( name == nil or name == "" ) then
 		return 99
 	end
 	local s1 = skills.get_skill(name, skill1)

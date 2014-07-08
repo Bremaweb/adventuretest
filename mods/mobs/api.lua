@@ -18,7 +18,7 @@ function mobs:register_mob(name, def)
 		run_velocity = def.run_velocity,
 		damage = def.damage,
 		light_damage = def.light_damage,
-		water_damage = def.water_damage,
+		water_damage = def.water_damage or 1,
 		lava_damage = def.lava_damage,
 		disable_fall_damage = def.disable_fall_damage,
 		drops = def.drops,
@@ -28,11 +28,12 @@ function mobs:register_mob(name, def)
 		type = def.type,
 		attack_type = def.attack_type,
 		arrow = def.arrow,
+		arrow_offset = def.arrow_offset or 1,
 		shoot_interval = def.shoot_interval,
 		sounds = def.sounds,
 		animation = def.animation,
 		follow = def.follow,
-		jump = def.jump or true,
+		jump = def.jump,
 		exp_min = def.exp_min or 0,
 		exp_max = def.exp_max or 0,
 		walk_chance = def.walk_chance or 50,
@@ -47,6 +48,8 @@ function mobs:register_mob(name, def)
 		blood_amount = def.blood_amount or 15,
 		blood_texture = def.blood_texture or "mobs_blood.png",
 		rewards = def.rewards or nil,
+		stationary = def.stationary or false,
+		activity_level = def.activity_level or 10,
 		
 		stimer = 0,
 		timer = 0,
@@ -59,6 +62,60 @@ function mobs:register_mob(name, def)
 		tamed = false,
 		last_state = nil,
 		pause_timer = 0,
+		path = nil,
+		path_pos = nil,
+		last_dist = nil,
+		leg_timer = nil,
+		path_callback = nil,
+		
+		start_path = function(self,callback)
+			-- start on the defined path
+			self.physical = false	-- allow the mob to walk through other entities
+			self.path_pos = 1
+			self.state = "path"
+			self.set_animation(self,"walk")
+			mobs:face_pos(self,self.path[1])
+			self.set_velocity(self,self.walk_velocity/2)
+			self.last_dist = get_distance(self.object:getpos(),self.path[1])
+			self.leg_timer = 0
+			self.path_callback = callback
+		end,
+		
+		check_path = function(self)
+			local p = self.object:getpos()
+			local pa = self.path[self.path_pos]
+			local this_dist = get_distance(p,pa)
+			if this_dist > self.last_dist or self.leg_timer > 1 then
+				-- overshot the point so redirect the mob
+				mobs:face_pos(self,self.path[self.path_pos])
+				self.leg_timer = 0
+			end
+			self.last_dist = this_dist
+			if math.abs(p.x - pa.x) < 1 and math.abs(p.z - pa.z) < 1 or ( self.path_pos == #self.path and this_dist < 1 ) then
+				-- goto next position
+				self.path_pos = self.path_pos + 1
+				if self.path_pos <= #self.path then
+					-- continue to next point
+					mobs:face_pos(self,self.path[self.path_pos])
+					self.set_velocity(self,self.walk_velocity)
+					self.set_animation(self,"walk")
+					self.leg_timer = 0
+				else
+					if self.path_callback ~= nil then
+						-- do the arrival callback
+						self.path_callback(self)
+					end
+					-- stop following path
+					self.set_velocity(self,0)
+					self.state = "stand"
+					self.set_animation(self,"stand")
+					self.path = nil
+					self.path_pos = nil
+					self.physical = true
+					self.leg_timer = nil
+				end
+			end
+		end,
 		
 		do_attack = function(self, player, dist)
 			if self.state ~= "attack" then
@@ -376,7 +433,7 @@ function mobs:register_mob(name, def)
 								self.v_start = true
 								self.set_velocity(self, self.walk_velocity)
 							else
-								if self.jump and self.get_velocity(self) <= 1.5 and self.object:getvelocity().y == 0 then
+								if self.jump == true and self.get_velocity(self) <= 1.5 and self.object:getvelocity().y == 0 then
 									local v = self.object:getvelocity()
 									v.y = 6
 									self.object:setvelocity(v)
@@ -396,7 +453,7 @@ function mobs:register_mob(name, def)
 			
 			if self.state == "stand" then
 				-- randomly turn
-				if math.random(1, 4) == 1 then
+				if math.random(1, 100) < self.activity_level then
 					-- if there is a player nearby look at them
 					local lp = nil
 					local s = self.object:getpos()
@@ -412,41 +469,39 @@ function mobs:register_mob(name, def)
 						end
 					end
 					if lp ~= nil then
-						local vec = {x=lp.x-s.x, y=lp.y-s.y, z=lp.z-s.z}
-						yaw = math.atan(vec.z/vec.x)+math.pi/2
-						if self.drawtype == "side" then
-							yaw = yaw+(math.pi/2)
-						end
-						if lp.x > s.x then
-							yaw = yaw+math.pi
-						end
+						mobs:face_pos(self,lp)
 					else 
-						yaw = self.object:getyaw()+((math.random(0,360)-180)/180*math.pi)
+						yaw = self.object:getyaw()+((math.random(0,360)-270)/180*math.pi)
+						self.object:setyaw(yaw)
 					end
-					self.object:setyaw(yaw)
+					
 				end
 				self.set_velocity(self, 0)
 				self.set_animation(self, "stand")
-				if math.random(1, 100) <= self.walk_chance then
+				if math.random(1, 100) <= self.activity_level and self.stationary == false then
 					self.set_velocity(self, self.walk_velocity)
 					self.state = "walk"
 					self.set_animation(self, "walk")
 				end
-			elseif self.state == "walk" then
-				if math.random(1, 100) <= 30 then
-					self.object:setyaw(self.object:getyaw()+((math.random(0,360)-180)/180*math.pi))
+			elseif self.state == "walk" or self.state == "path" then
+				if ( math.random(1, 100) <= 30 or ( self.get_velocity(self) < self.walk_velocity ) ) and self.state ~= "path" then
+					self.object:setyaw(self.object:getyaw()+((math.random(0,360)-270)/180*math.pi))
 				end
-				if self.jump and self.get_velocity(self) <= 0.5 and self.object:getvelocity().y == 0 then
+				if self.jump == true and self.get_velocity(self) <= 0.5 and self.object:getvelocity().y == 0 then
 					local v = self.object:getvelocity()
 					v.y = 5
 					self.object:setvelocity(v)
 				end
 				self:set_animation("walk")
 				self.set_velocity(self, self.walk_velocity)
-				if math.random(1, 100) <= 30 then
+				if math.random(1, 100) <= 30 and self.state ~= "path" then
 					self.set_velocity(self, 0)
 					self.state = "stand"
 					self:set_animation("stand")
+				end
+				if self.state == "path" then
+					self.leg_timer = self.leg_timer + dtime
+					self.check_path(self)
 				end
 			elseif self.state == "attack" and self.attack_type == "dogfight" then
 				if not self.attack.player or not self.attack.player:getpos() then
@@ -483,7 +538,7 @@ function mobs:register_mob(name, def)
 						self.v_start = true
 						self.set_velocity(self, self.run_velocity)
 					else
-						if self.jump and self.get_velocity(self) <= 0.5 and self.object:getvelocity().y == 0 then
+						if self.jump == true and self.get_velocity(self) <= 0.5 and self.object:getvelocity().y == 0 then
 							local v = self.object:getvelocity()
 							v.y = 5
 							self.object:setvelocity(v)
@@ -561,15 +616,18 @@ function mobs:register_mob(name, def)
 					end
 					
 					local p = self.object:getpos()
-					p.y = p.y + (self.collisionbox[2]+self.collisionbox[5])/2
+					p.y = p.y + self.arrow_offset
 					local obj = minetest.add_entity(p, self.arrow)
 					local amount = (vec.x^2+vec.y^2+vec.z^2)^0.5
 					local v = obj:get_luaentity().velocity
-					vec.y = vec.y+1
+					vec.y = vec.y
 					vec.x = vec.x*v/amount
 					vec.y = vec.y*v/amount
 					vec.z = vec.z*v/amount
 					obj:setvelocity(vec)
+					if obj:get_luaentity().drop_rate ~= nil then
+						obj:setacceleration({x=vec.x, y=obj:get_luaentity().drop_rate, z=vec.z})
+					end
 				end
 			end
 		end,
@@ -656,18 +714,10 @@ function mobs:register_mob(name, def)
 							local obj = oir:get_luaentity()
 							if obj then	
 								if obj.type == "npc" and obj.rewards ~= nil then
-									local yaw = nil
 									local lp = hitter:getpos()
 									local s = obj.object:getpos()
+									local yaw = mobs:face_pos(self,lp)
 									local vec = {x=lp.x-s.x, y=1, z=lp.z-s.z}
-									yaw = math.atan(vec.z/vec.x)+math.pi/2
-									if self.drawtype == "side" then
-										yaw = yaw+(math.pi/2)
-									end
-									if lp.x > s.x then
-										yaw = yaw+math.pi
-									end
-									obj.object:setyaw(yaw)
 									local x = math.sin(yaw) * -2
 									local z = math.cos(yaw) * 2
 									acc = {x=x, y=-5, z=z}
@@ -842,23 +892,52 @@ function mobs:register_arrow(name, def)
 		velocity = def.velocity,
 		hit_player = def.hit_player,
 		hit_node = def.hit_node,
+		timer = 0,
 		
 		on_step = function(self, dtime)
-			local pos = self.object:getpos()
-			if minetest.get_node(self.object:getpos()).name ~= "air" then
-				self.hit_node(self, pos, node)
-				self.object:remove()
-				return
-			end
-			pos.y = pos.y-1
-			for _,player in pairs(minetest.get_objects_inside_radius(pos, 1)) do
-				self.hit_player(self, player)
-				self.object:remove()
-				return
+			self.timer=self.timer+dtime
+			if self.timer > 0.2 then
+				local pos = self.object:getpos()
+				if minetest.get_node(self.object:getpos()).name ~= "air" and minetest.get_node(self.object:getpos()).name ~= "fire:basic_flame"then
+					self.hit_node(self, pos, node)
+					self.object:remove()
+					return
+				end
+				--pos.y = pos.y-1
+				local objs = minetest.get_objects_inside_radius(pos, 2)
+				for _,player in pairs(objs) do
+					if player:get_luaentity() ~= nil then
+						local luae = player:get_luaentity()
+						if luae.name ~= self.object:get_luaentity().name and luae.name ~= "__builtin:item" then
+							self.hit_player(self, player)
+							self.object:remove()
+							return
+						end
+					else
+						self.hit_player(self, player)
+						self.object:remove()
+						return
+					end
+				end
 			end
 		end
 	})
 end
+
+function mobs:face_pos(self,pos)
+	local s = self.object:getpos()
+	local vec = {x=pos.x-s.x, y=pos.y-s.y, z=pos.z-s.z}
+	local yaw = math.atan(vec.z/vec.x)+math.pi/2
+	if self.drawtype == "side" then
+		yaw = yaw+(math.pi/2)
+	end
+	if pos.x > s.x then
+		yaw = yaw+math.pi
+	end
+	self.object:setyaw(yaw)
+	return yaw
+end
+
 
 function get_distance(pos1,pos2)
 	if ( pos1 ~= nil and pos2 ~= nil ) then

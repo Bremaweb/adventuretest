@@ -3,6 +3,7 @@ dofile(minetest.get_modpath("mobs").."/spawner.lua")
 dofile(minetest.get_modpath("mobs").."/npcs/explorer.lua")
 dofile(minetest.get_modpath("mobs").."/npcs/men.lua")
 dofile(minetest.get_modpath("mobs").."/npcs/women.lua")
+dofile(minetest.get_modpath("mobs").."/npcs/blacksmith.lua")
 
 dofile(minetest.get_modpath("mobs").."/monsters/barbarians.lua")
 dofile(minetest.get_modpath("mobs").."/monsters/dirtmonster.lua")

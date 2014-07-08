@@ -24,6 +24,7 @@ mobs:register_mob("mobs:explorer",{
 	lava_damage = 5,
 	light_damage = 0,
 	on_rightclick = function (self, clicker)
+		mobs:face_pos(self,clicker:getpos())
 		quests.treasure.tell_story(self.object:getpos())
 	end,
 	walk_chance = 1,

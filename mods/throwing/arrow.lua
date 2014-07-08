@@ -39,6 +39,8 @@ local THROWING_ARROW_ENTITY={
 	collisionbox = {0,0,0,0,0,0},
 	player = nil,
 	max_damage=25,
+	velocity = 12,		--for mobs using this arrow
+	drop_rate = -2,		--for mobs using this arrow - for players this is defined in the bow
 }
 
 THROWING_ARROW_ENTITY.on_step = function(self, dtime)
