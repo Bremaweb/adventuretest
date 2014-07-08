@@ -1137,7 +1137,7 @@ minetest.register_abm({
 				-- check their skills
 				local probability = 100
 				local skilled_item = false
-				if cooked.item:get_definition().groups["skill"] ~= nil then
+				if cooked.item:get_definition().groups["skill"] ~= nil and owner ~= "" then
 					probability = skills.get_probability(owner,SKILL_SMELTING,cooked.item:get_definition().groups["skill"])
 					skilled_item = true
 				end

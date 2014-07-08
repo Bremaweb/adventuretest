@@ -449,3 +449,18 @@ function default.get_distance(pos1,pos2)
 		return nil
 	end
 end
+
+function default.get_file_contents(filename)
+	local f = io.open(filename, "r")
+		if f==nil then 
+			minetest.log("error","File "..filename.." not found, returning empty table")
+			return ""
+		end
+			local t = f:read("*all")
+			f:close()
+		if t=="" or t==nil then 
+			minetest.log("error","File "..filename.." is blank, returning empty table")
+			return ""
+		end
+		return t
+end
