@@ -263,27 +263,71 @@ mg.register_ore({
 	radius = 3
 })
 
--- smaller offshoot tunnels
 mg.register_ore({
 	name = "air",
-	wherein = "default:stone",
+	wherein = "default:dirt",
 	seeddiff = 1236,
-	maxhdistance = 10,
-	maxvdistance = 10,
-	maxheight = 5,
+	maxhdistance = 40,
+	maxvdistance = 40,
+	maxheight = -3,
 	seglenghtn = 15,
 	seglenghtdev = 6,
-	segincln = 0.1,
-	segincldev = 0.2,
-	turnangle = 37,
-	forkturnangle = 22,
+	segincln = 0.2,
+	segincldev = 0.9,
+	turnangle = 66,
+	forkturnangle = 71,
 	numperblock = 5,
-	numbranchesn = 3,
-	numbranchesdev = 1,
+	numbranchesn = 2,
+	numbranchesdev = 0,
 	mothersizen = -1,
 	mothersizedev = 0,
-	sizen = 80,
-	sizedev = 28,
-	radius = 2
+	sizen = 100,
+	sizedev = 20,
+	radius = 3
 })
 
+mg.register_ore({
+	name = "air",
+	wherein = "default:sand",
+	seeddiff = 1236,
+	maxhdistance = 40,
+	maxvdistance = 40,
+	maxheight = -3,
+	seglenghtn = 15,
+	seglenghtdev = 6,
+	segincln = 0.2,
+	segincldev = 0.9,
+	turnangle = 66,
+	forkturnangle = 71,
+	numperblock = 5,
+	numbranchesn = 2,
+	numbranchesdev = 0,
+	mothersizen = -1,
+	mothersizedev = 0,
+	sizen = 100,
+	sizedev = 20,
+	radius = 3
+})
+
+mg.register_ore({
+	name = "air",
+	wherein = "default:sandstone",
+	seeddiff = 1236,
+	maxhdistance = 40,
+	maxvdistance = 40,
+	maxheight = -3,
+	seglenghtn = 15,
+	seglenghtdev = 6,
+	segincln = 0.2,
+	segincldev = 0.9,
+	turnangle = 66,
+	forkturnangle = 71,
+	numperblock = 5,
+	numbranchesn = 2,
+	numbranchesdev = 0,
+	mothersizen = -1,
+	mothersizedev = 0,
+	sizen = 100,
+	sizedev = 20,
+	radius = 3
+})
