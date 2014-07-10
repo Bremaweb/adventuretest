@@ -1,26 +1,4 @@
 mg.register_ore({
-	name = "air",
-	seeddiff = 1236,
-	maxhdistance = 40,
-	maxvdistance = 40,
-	maxheight = -3,
-	seglenghtn = 15,
-	seglenghtdev = 6,
-	segincln = 0.2,
-	segincldev = 0.6,
-	turnangle = 66,
-	forkturnangle = 71,
-	numperblock = 5,
-	numbranchesn = 2,
-	numbranchesdev = 0,
-	mothersizen = -1,
-	mothersizedev = 0,
-	sizen = 100,
-	sizedev = 20,
-	radius = 3
-})
-
-mg.register_ore({
 	name = "default:stone_with_iron",
 	wherein = "default:stone",
 	seeddiff = 2,
@@ -64,7 +42,7 @@ mg.register_ore({
 mg.register_ore({
 	name = "glowcrystals:glowcrystal_ore",
 	wherein = "default:stone",
-	seeddiff = 2,
+	seeddiff = 9,
 	maxvdistance = 10.5,
 	maxheight = -25,
 	seglenghtn = 15,
@@ -159,20 +137,46 @@ mg.register_ore({
 	wherein = "default:stone",
 	seeddiff = 5,
 	maxvdistance = 50,
-	sizen = 20,
-	sizedev = 5,
-	maxheight = -256,
-	seglenghtn = 4,
-	seglenghtdev = 2,
-	segincln = 0.3,
-	segincldev = 0.1,
+	sizen = 7,
+	sizedev = 3,
+	maxheight = -1024,
+	seglenghtn = 2,
+	seglenghtdev = 1,
+	segincln = 4,
+	segincldev = 1,
 	turnangle = 57,
 	forkturnangle = 57,
+	numperblock = 1.8,
 	numbranchesn = 2,
 	numbranchesdev = 1,
 	fork_chance = 0.1,
-	radius = 1
+	mothersizen = 0,
+	mothersizedev = 0
 })
+
+
+mg.register_ore({
+	name = "default:stone_with_diamond",
+	wherein = "default:stone",
+	seeddiff = 5,
+	maxvdistance = 50,
+	sizen = 7,
+	sizedev = 3,
+	maxheight = -256,
+	seglenghtn = 2,
+	seglenghtdev = 1,
+	segincln = 4,
+	segincldev = 1,
+	turnangle = 57,
+	forkturnangle = 57,
+	numperblock = 0.8,
+	numbranchesn = 2,
+	numbranchesdev = 1,
+	fork_chance = 0.1,
+	mothersizen = 0,
+	mothersizedev = 0
+})
+
 
 mg.register_ore({
 	name = "default:stone_with_gold",
@@ -236,4 +240,50 @@ mg.register_ore({
 	radius = 2.3
 })
 
+mg.register_ore({
+	name = "air",
+	wherein = "default:stone",
+	seeddiff = 1236,
+	maxhdistance = 40,
+	maxvdistance = 40,
+	maxheight = -3,
+	seglenghtn = 15,
+	seglenghtdev = 6,
+	segincln = 0.2,
+	segincldev = 0.9,
+	turnangle = 66,
+	forkturnangle = 71,
+	numperblock = 5,
+	numbranchesn = 2,
+	numbranchesdev = 0,
+	mothersizen = -1,
+	mothersizedev = 0,
+	sizen = 100,
+	sizedev = 20,
+	radius = 3
+})
+
+-- smaller offshoot tunnels
+mg.register_ore({
+	name = "air",
+	wherein = "default:stone",
+	seeddiff = 1236,
+	maxhdistance = 10,
+	maxvdistance = 10,
+	maxheight = 5,
+	seglenghtn = 15,
+	seglenghtdev = 6,
+	segincln = 0.1,
+	segincldev = 0.2,
+	turnangle = 37,
+	forkturnangle = 22,
+	numperblock = 5,
+	numbranchesn = 3,
+	numbranchesdev = 1,
+	mothersizen = -1,
+	mothersizedev = 0,
+	sizen = 80,
+	sizedev = 28,
+	radius = 2
+})
 

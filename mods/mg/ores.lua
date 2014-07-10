@@ -10,7 +10,11 @@ function draw_sphere(name, wherein, center, radius, data, a, insideva)
 	local rad2=radius*radius
 	local pr_rv = PseudoRandom(center.x+center.y+center.z)
 	local variant = pr_rv:next(-4,2)
-	radius = math.ceil(radius)+variant
+	
+	if math.ceil(radius)+variant > 0 then
+		radius = math.ceil(radius)+variant
+	end
+	
 	pos0={}
 	
 	for x=-radius, radius do
