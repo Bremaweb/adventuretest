@@ -8,6 +8,8 @@ WATER_VISC = 1
 LAVA_VISC = 7
 LIGHT_MAX = 14
 
+intllib=minetest.get_modpath("intllib")
+
 -- Definitions made by this mod that other mods can use too
 default = {}
 
