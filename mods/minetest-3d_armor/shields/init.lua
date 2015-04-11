@@ -46,6 +46,7 @@ local craft_ingreds = {
 	diamond = "default:diamond",
 }	
 
+-- if minetest.global_exists(has_moreores) and has_moreores then
 if has_moreores then
 	craft_ingreds.mithril = "moreores:mithril_ingot"
 end
