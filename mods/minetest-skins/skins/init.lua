@@ -27,7 +27,7 @@ dofile(skins.modpath.."/meta.lua")
 dofile(skins.modpath.."/players.lua")
 
 skins.update_player_skin = function(player)
-	name = player:get_player_name()
+	local name = player:get_player_name()
 	if skins.get_type(skins.skins[name]) == skins.type.SPRITE then
 		player:set_properties({
 			visual = "upright_sprite",

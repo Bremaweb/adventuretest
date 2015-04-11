@@ -6,7 +6,7 @@ skins.load = function()
 		data = input:read('*all')
 	end
 	if data and data ~= "" then
-		lines = string.split(data,"\n")
+		local lines = string.split(data,"\n")
 		for _, line in ipairs(lines) do
 			data = string.split(line, ' ', 2)
 			skins.skins[data[1]] = data[2]
