@@ -244,7 +244,9 @@ local function update_hud(player)
 	player:hud_change(stamina_hud[name],"number",s)
 --magic
 	local m = tonumber(magic.player_magic[name])
-	player:hud_change(magic_hud[name],"number",m)
+	if m~=nil then
+		player:hud_change(magic_hud[name],"number",m)
+	end
 end
 
 hud.get_hunger = function(player)
