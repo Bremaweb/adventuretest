@@ -30,25 +30,29 @@ minetest.register_craftitem("default:iron_lump", {
 minetest.register_craftitem("default:copper_lump", {
 	description = "Copper Lump",
 	inventory_image = "default_copper_lump.png",
-	groups = {skill=SKILL_COPPER},
+	-- groups = {skill=SKILL_COPPER},
+	groups = {skill=SKILL_METAL},
 })
 
 minetest.register_craftitem("default:mese_crystal", {
 	description = "Mese Crystal",
 	inventory_image = "default_mese_crystal.png",
-	groups = {skill=SKILL_MESE},
+	-- groups = {skill=SKILL_MESE},
+	groups = {skill=SKILL_CRYSTAL},
 })
 
 minetest.register_craftitem("default:gold_lump", {
 	description = "Gold Lump",
 	inventory_image = "default_gold_lump.png",
-	groups = {skill=SKILL_GOLD},
+	-- groups = {skill=SKILL_GOLD},
+	groups = {skill=SKILL_METAL},
 })
 
 minetest.register_craftitem("default:diamond", {
 	description = "Diamond",
 	inventory_image = "default_diamond.png",
-	groups = {skill=SKILL_DIAMOND},
+	-- groups = {skill=SKILL_DIAMOND},
+	groups = {skill=SKILL_CRYSTAL},
 })
 
 minetest.register_craftitem("default:clay_lump", {

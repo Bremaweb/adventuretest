@@ -36,7 +36,7 @@ money.get = function(name)
 	if not input then 
 		return nil
 	end
-	credit = input:read("*n")
+	local credit = input:read("*n")
 	io.close(input)
 	return credit
 end
@@ -111,7 +111,7 @@ money.transfer = function(from, to, amount)
 end
 
 minetest.register_on_joinplayer(function(player)
-	name = player:get_player_name()
+	local name = player:get_player_name()
 	if not money.get(name) then
 		money.set(name, tostring(money.initial_amount))
 	end

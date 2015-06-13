@@ -44,7 +44,7 @@ function food.support(group,mod,item)
 
 	-- Need to copy this table, not modify it in place, otherwise it can change
 	-- the groups for ALL craftitems that use the default groups.
-	g = {}
+	local g = {}
 	if data.groups then
 	for k, v in pairs(data.groups) do
 		g[k] = v

@@ -86,7 +86,8 @@ minetest.register_tool("throwing:bow_steel", {
 	sounds = {[0]="throwing_arrow_hit1",[1]="throwing_arrow_hit2"},
 	reload_time = 2,
 	damage_modifier = 5,
-	skill = SKILL_STEEL,
+	-- skill = SKILL_STEEL,
+	skill = SKILL_METAL,
 	drop_rate = -4,
 })
 
