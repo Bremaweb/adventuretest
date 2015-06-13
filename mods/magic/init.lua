@@ -4,6 +4,20 @@ local magic_file = minetest.get_worldpath().."/magic"
 local magicpath = minetest.get_modpath("magic")
 magic.player_magic = default.deserialize_from_file(magic_file)
 
+hud.register("magic", {
+	hud_elem_type = "statbar",
+	position = {x = 0.5, y = 1},
+	offset = {x=-262,y=-113},
+	size = HUD_SB_SIZE,
+	text = "hud_magic_fg.png",
+	number = 20,
+	alignment = {x=-1,y=-1},
+	background = "hud_magic_bg.png",
+	--autohide_bg = true,
+	max = 20,
+    })
+
+
 dofile(magicpath.."/api.lua")
 
 function magic.update_magic(player,name)

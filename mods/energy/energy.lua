@@ -1,16 +1,16 @@
-local stamina_file = minetest.get_worldpath().."/stamina"
+local energy_file = minetest.get_worldpath().."/energy"
 
-player_stamina = default.deserialize_from_file(stamina_file)
+player_energy = default.deserialize_from_file(energy_file)
 player_lastpos = {}
 player_sleephuds = {}
 
-function hud.update_stamina(p,name)
-	-- loop through all online players and check their movement and update their stamina
+function energy.update_energy(p,name)
+	-- loop through all online players and check their movement and update their energy
 		local pos = p:getpos()
 		if player_lastpos[name] ~= nil and skills.player_levels[name] ~= nil then
-			if player_stamina[name] ~= nil then
+			if player_energy[name] ~= nil then
 				if minetest.check_player_privs(name, {immortal=true}) then
-					player_stamina[name] = 20
+					player_energy[name] = 20
 					return
 				end
 				
@@ -28,7 +28,7 @@ function hud.update_stamina(p,name)
 					p:set_hp(p:get_hp()+1)
 				end
 				
-				-- adjust their stamina
+				-- adjust their energy
 				local vdiff = pos.y - player_lastpos[name].y
 				if vdiff > 0 then
 					adj = adj - ( vdiff * 0.05 )
@@ -37,14 +37,14 @@ function hud.update_stamina(p,name)
 				local hdiff = math.sqrt(math.pow(pos.x-player_lastpos[name].x, 2) + math.pow(pos.z-player_lastpos[name].z, 2))
 				adj = adj - ( hdiff * 0.02 )
 				
-				player_stamina[name] = player_stamina[name] + adj
-				if player_stamina[name] < 0 then
-					player_stamina[name] = 0
+				player_energy[name] = player_energy[name] + adj
+				if player_energy[name] < 0 then
+					player_energy[name] = 0
 					p:set_hp(p:get_hp()-1)
 				end
 				
-				if player_stamina[name] >= 20 then
-					player_stamina[name] = 20
+				if player_energy[name] >= 20 then
+					player_energy[name] = 20
 					if anim.animation == "lay" then
 						-- wake them up
 						default.player_set_animation(p, "stand")
@@ -57,14 +57,16 @@ function hud.update_stamina(p,name)
 						physics.unfreeze_player(name)
 					end
 				end
-				if player_stamina[name] < 3 then
+				if player_energy[name] < 3 then
 					affects.affectPlayer(name,"tired")
 				end
 			else
-				player_stamina[name] = 20
+				player_energy[name] = 20
 			end
 		end
-		player_lastpos[name] = pos 
+		player_lastpos[name] = pos
+		print("Update Energy for "..name.." "..tostring(player_energy[name]))
+		hud.change_item(p,"energy",{number = player_energy[name]})
 end
 
 local affect_tired = {
@@ -107,7 +109,7 @@ minetest.register_chatcommand("sleep",{
 		player:set_eye_offset({x=0,y=-10,z=0},{x=0,y=0,z=0})
 		player_sleephuds[name] = player:hud_add({
 			hud_elem_type = "image",
-			text = "hud_blackout.png",
+			text = "energy_blackout.png",
 			position = {x=1,y=1},		
 			name="sleep",
 			scale = {x=-100, y=-100},
@@ -133,18 +135,30 @@ minetest.register_chatcommand("stand",{
 
 minetest.register_on_respawnplayer(function (player)
 	local name = player:get_player_name()
-	player_stamina[name] = 20
+	player_energy[name] = 20
 	player_lastpos[name] = player:getpos()
 end)
 
 minetest.register_on_joinplayer(function (player)
 	local name = player:get_player_name()
-	if player_stamina[name] == nil then
-		player_stamina[name] = 20
+	if player_energy[name] == nil then
+		player_energy[name] = 20
 		player_lastpos[name] = player:getpos()
 	end
 end)
 
 minetest.register_on_shutdown(function()
-	default.serialize_to_file(stamina_file,player_stamina)
+	default.serialize_to_file(energy_file,player_energy)
+end)
+
+local energy_timer = 0
+local energy_tick = 5
+minetest.register_globalstep(function (dtime)
+	energy_timer = energy_timer + dtime
+	if energy_timer >= energy_tick then
+		for _,player in ipairs(minetest.get_connected_players()) do
+			energy.update_energy(player,player:get_player_name())
+		end
+		energy_timer = 0
+	end
 end)

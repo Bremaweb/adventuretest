@@ -160,7 +160,7 @@ function mobs:register_mob(name, def)
 			
 			local an = ( d.x * p.x ) + ( d.z * p.z )
 			
-			a = math.deg( math.acos( an ) )
+			local a = math.deg( math.acos( an ) )
 			
 			if a > ( self.fov / 2 ) then
 				return false
@@ -471,7 +471,7 @@ function mobs:register_mob(name, def)
 					if lp ~= nil then
 						mobs:face_pos(self,lp)
 					else 
-						yaw = self.object:getyaw()+((math.random(0,360)-270)/180*math.pi)
+						local yaw = self.object:getyaw()+((math.random(0,360)-270)/180*math.pi)
 						self.object:setyaw(yaw)
 					end
 					

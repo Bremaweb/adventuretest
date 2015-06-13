@@ -622,7 +622,6 @@ local function mg_generate(minp, maxp, emin, emax, vm)
 
 	local meta
 	for _, n in pairs(to_add) do
-		--print(tostring(n.node.name))
 		if n.node.name ~= "air" then
 		  	minetest.set_node(n.pos, n.node)
 			if n.meta ~= nil then
@@ -660,7 +659,7 @@ local function mg_generate(minp, maxp, emin, emax, vm)
 				meta = minetest.get_meta(n.pos)
 				meta:set_string("entity",n.mob)
 				meta:set_int("active_objects",2)
-				meta:set_int("active_objects_wider",12)  
+				meta:set_int("active_objects_wider",7)  
 				meta:set_string("infotext",n.mob)
 			end
 		end

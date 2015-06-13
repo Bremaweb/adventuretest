@@ -26,8 +26,8 @@ local food_poisoning = {
 							  hud.hunger[name] = 4
 							  hud.set_hunger(player)
 						  end
-						  if player_stamina[name] > 6 then
-							  player_stamina[name] = 6
+						  if player_energy[name] > 6 then
+							  player_energy[name] = 6
 						  end
 						  minetest.after(5,puke_reset,player)
 						end
@@ -46,8 +46,8 @@ local food_poisoning = {
 							  hud.hunger[name] = 4
 							  hud.set_hunger(player)
 						  end
-						  if player_stamina[name] > 10 then
-							  player_stamina[name] = 10
+						  if player_energy[name] > 10 then
+							  player_energy[name] = 10
 						  end	
 						  minetest.after(5,puke_reset,player)
 						end
@@ -66,8 +66,8 @@ local food_poisoning = {
 							  hud.hunger[name] = 4
 							  hud.set_hunger(player)
 						  end
-						  if player_stamina[name] > 16 then
-							  player_stamina[name] = 16
+						  if player_energy[name] > 16 then
+							  player_energy[name] = 16
 						  end	
 						  minetest.after(5,puke_reset,player)
 						end

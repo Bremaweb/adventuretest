@@ -138,7 +138,7 @@ mg.register_tree({
 	max_height = 40,
 	grows_on = c_grass,
 	chance = 60,
-	can_be_in_village = true,
+	can_be_in_village = false,
 	grow = function(data, a, x, y, z, minp, maxp, pr)
 		-- Grass 1-4
 		if minp.y <= y and y <= maxp.y then
@@ -166,7 +166,7 @@ mg.register_tree({
 	max_height = 40,
 	grows_on = c_grass,
 	chance = 3,
-	can_be_in_village = true,
+	can_be_in_village = false,
 	grow = function(data, a, x, y, z, minp, maxp, pr)
 		-- Grass 3-5
 		if minp.y <= y and y <= maxp.y then

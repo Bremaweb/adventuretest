@@ -131,6 +131,13 @@ local function generate_road(vx, vz, vs, vh, l, pr, roadsize, rx, rz, rdx, rdz, 
 	local mx, m2x, mz, m2z, mmx, mmz
 	mx, m2x, mz, m2z = rx, rx, rz, rz
 	local orient1, orient2
+	
+	local bsizex = 0
+	local bsizez = 0
+	local tries = 0
+	local btype
+	local rotation = 0
+	
 	if rdx == 0 then
 		orient1 = 0
 		orient2 = 2
@@ -157,7 +164,7 @@ local function generate_road(vx, vz, vs, vh, l, pr, roadsize, rx, rz, rdx, rdz, 
 			local exitloop = false
 			local bx
 			local bz
-			local tries = 0
+			
 			while true do
 				if not inside_village(rx, rz, vx, vz, vs, vnoise) or road_in_building(rx, rz, rdx, rdz, roadsize, l) then
 					exitloop = true
@@ -235,6 +242,10 @@ local function generate_road(vx, vz, vs, vh, l, pr, roadsize, rx, rz, rdx, rdz, 
 		mmx = rx - 2*rdx
 		mmz = rz - 2*rdz
 	end
+	local rxmin = nil
+	local rxmax = nil
+	local rzmin = nil
+	local rzmax = nil
 	mx = mmx or rdx*math.max(rdx*mx, rdx*m2x)
 	mz = mmz or rdz*math.max(rdz*mz, rdz*m2z)
 	if rdx == 0 then
@@ -328,7 +339,7 @@ local function generate_bpos(vx, vz, vs, vh, pr, vnoise)
 	rx = rx + 5
 	calls = {index = 1}
 	generate_road(vx, vz, vs, vh, l, pr, FIRST_ROADSIZE, rx, rz, 1, 0, vnoise)
-	i = 1
+	local i = 1
 	while i < calls.index do
 		generate_road(unpack(calls[i]))
 		i = i+1
@@ -393,7 +404,7 @@ local function generate_building(pos, minp, maxp, data, a, pr, extranodes, barba
 	for x = 0, pos.bsizex-1 do
 	for y = 0, binfo.ysize-1 do
 	for z = 0, pos.bsizez-1 do
-		ax, ay, az = pos.x+x, pos.y+y+binfo.yoff, pos.z+z
+		local ax, ay, az = pos.x+x, pos.y+y+binfo.yoff, pos.z+z
 		if (ax >= minp.x and ax <= maxp.x) and (ay >= minp.y and ay <= maxp.y) and (az >= minp.z and az <= maxp.z) then
 			if scm[y+1] ~= nil then
 				if scm[y+1][x+1] ~= nil then
@@ -486,6 +497,7 @@ function generate_village(vx, vz, vs, vh, minp, maxp, data, a, vnoise, to_grow)
 	local bpos = generate_bpos(vx, vz, vs, vh, pr_village, vnoise)
 	local hasWalls = false
 	local rptype = pr_vtype:next(1,10)
+	local barbarian_village = nil
 	if  rptype <= 3 then
 		barbarian_village = true
 	else
