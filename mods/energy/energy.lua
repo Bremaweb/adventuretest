@@ -153,7 +153,8 @@ end)
 
 local energy_timer = 0
 local energy_tick = 5
-minetest.register_globalstep(function (dtime)
+
+function energy_globalstep(dtime)
 	energy_timer = energy_timer + dtime
 	if energy_timer >= energy_tick then
 		for _,player in ipairs(minetest.get_connected_players()) do
@@ -161,4 +162,4 @@ minetest.register_globalstep(function (dtime)
 		end
 		energy_timer = 0
 	end
-end)
+end

@@ -106,17 +106,6 @@ end
 -- Global callbacks
 --
 
--- Global environment step function
-function on_step(dtime)
-	-- print("on_step")
-end
-minetest.register_globalstep(on_step)
-
-function on_placenode(p, node)
-	--print("on_placenode")
-end
-minetest.register_on_placenode(on_placenode)
-
 function on_dignode(pos, node, digger)
 	--print("on_dignode")
 	-- going to try to consolidate all on_dignode calls here so there is only one function call
@@ -144,11 +133,6 @@ function on_dignode(pos, node, digger)
 	
 end
 minetest.register_on_dignode(on_dignode)
-
-function on_punchnode(p, node)
-end
-minetest.register_on_punchnode(on_punchnode)
-
 
 --
 -- Grow trees
@@ -309,11 +293,11 @@ default.leafdecay_enable_cache = true
 -- Spread the load of finding trunks
 default.leafdecay_trunk_find_allow_accumulator = 0
 
-minetest.register_globalstep(function(dtime)
+function default.leaf_globalstep(dtime)
 	local finds_per_second = 5000
 	default.leafdecay_trunk_find_allow_accumulator =
 			math.floor(dtime * finds_per_second)
-end)
+end
 
 minetest.register_abm({
 	nodenames = {"group:leafdecay"},

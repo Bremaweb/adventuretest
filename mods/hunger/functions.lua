@@ -101,7 +101,7 @@ if minetest.setting_getbool("enable_damage") then
     local hunger_timer = 0
     local health_timer = 0
     local action_timer = 0
-    minetest.register_globalstep(function(dtime)
+ function hunger.global_step(dtime)
 	hunger_timer = hunger_timer + dtime
 	health_timer = health_timer + dtime
 	action_timer = action_timer + dtime
@@ -155,7 +155,7 @@ if minetest.setting_getbool("enable_damage") then
 
 		health_timer = 0
 	end
-    end)
+ end
 end
 
 

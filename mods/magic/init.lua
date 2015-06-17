@@ -13,16 +13,18 @@ hud.register("magic", {
 	number = 20,
 	alignment = {x=-1,y=-1},
 	background = "hud_magic_bg.png",
-	--autohide_bg = true,
+	autohide_bg = true,
 	max = 20,
     })
 
 
 dofile(magicpath.."/api.lua")
+dofile(magicpath.."/loop.lua")
 
 function magic.update_magic(player,name)
 	if minetest.check_player_privs(name, {immortal=true}) then
 		magic.player_magic[name] = 20
+		hud.change_item(player,"magic", {number = magic.player_magic[name]})
 		return
 	end
 	local s = skills.get_skill(name,SKILL_MAGIC)
@@ -49,6 +51,7 @@ function magic.update_magic(player,name)
 	else
 		magic.player_magic[name] = 20
 	end
+	hud.change_item(player,"magic", {number = magic.player_magic[name]})
 end
 
 minetest.register_on_shutdown(function()

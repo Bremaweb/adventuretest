@@ -154,7 +154,7 @@ end)
 local player_set_animation = default.player_set_animation
 
 -- Check each player and apply animations
-minetest.register_globalstep(function(dtime)
+function default.player_globalstep(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 		local model_name = player_model[name]
@@ -210,7 +210,7 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 	end
-end)
+end
 
 if minetest.register_on_punchplayer ~= nil then
 	minetest.register_on_punchplayer( function(player, hitter, time_from_last_punch, tool_capabilities, dir)

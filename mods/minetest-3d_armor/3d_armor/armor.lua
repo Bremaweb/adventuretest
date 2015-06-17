@@ -256,7 +256,7 @@ minetest.register_on_joinplayer(function(player)
 	end, player)
 end)
 
-minetest.register_globalstep(function(dtime)
+function armor_globalstep (dtime)
 	time = time + dtime
 	if time > update_time then
 		for _,player in ipairs(minetest.get_connected_players()) do
@@ -264,5 +264,5 @@ minetest.register_globalstep(function(dtime)
 		end
 		time = 0
 	end
-end)
+end
 

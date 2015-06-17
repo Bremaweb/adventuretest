@@ -674,7 +674,7 @@ local stop_sound = function(still_playing, player)
 end
 
 local timer = 0
-minetest.register_globalstep(function(dtime)
+function ambience_globalstep (dtime)
 	timer = timer+dtime
 	if timer < 1 then
 		return
@@ -708,7 +708,7 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 	end
-end)
+end
 
 minetest.register_chatcommand("svol", {
 	params = "<svol>",

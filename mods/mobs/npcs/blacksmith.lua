@@ -159,7 +159,7 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 local bs_timer = 5
-minetest.register_globalstep(function(dtime)
+function blacksmith_globalstep(dtime)
 	bs_timer = bs_timer - dtime
 	if bs_timer <= 0 then
 		bs_timer = 3
@@ -195,5 +195,5 @@ minetest.register_globalstep(function(dtime)
 		-- when there are more blacksmiths active slow down this loop
 		bs_timer = bs_timer + addtl
 	end
-end)
+end
 
