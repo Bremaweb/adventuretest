@@ -1125,7 +1125,9 @@ minetest.register_node("default:furnace_active", {
 	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
 		if not default.furnace_available(pos) then
 			return 0
-		end
+		else
+		  return stack:get_count()
+		end		
 	end
 })
 
