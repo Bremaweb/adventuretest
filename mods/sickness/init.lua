@@ -21,10 +21,9 @@ local food_poisoning = {
 						minetest.log("action",name.." pukes")
 						puke_physics(player)
 						minetest.sound_play("sickness_puke",{object=player})
-						if hud.hunger[name] ~= nil then
-						  if hud.hunger[name] > 4 then
-							  hud.hunger[name] = 4
-							  hud.set_hunger(player)
+						if hunger[name] ~= nil then
+						  if hunger[name].lvl > 4 then
+							  hunger.update_hunger(player,4)							  
 						  end
 						  if player_energy[name] > 6 then
 							  player_energy[name] = 6
@@ -41,10 +40,9 @@ local food_poisoning = {
 						minetest.log("action",name.." pukes")
 						puke_physics(player)
 						minetest.sound_play("sickness_puke",{object=player})
-						if hud.hunger[name] ~= nil then
-						  if hud.hunger[name] > 4 then
-							  hud.hunger[name] = 4
-							  hud.set_hunger(player)
+						if hunger[name] ~= nil then
+						  if hunger[name].lvl > 4 then
+							  hunger.update_hunger(player,4)
 						  end
 						  if player_energy[name] > 10 then
 							  player_energy[name] = 10
@@ -61,10 +59,9 @@ local food_poisoning = {
 						minetest.log("action",name.." pukes")
 						puke_physics(player)
 						minetest.sound_play("sickness_puke",{object=player})
-						if hud.hunger[name] ~= nil then
-						  if hud.hunger[name] > 4 then
-							  hud.hunger[name] = 4
-							  hud.set_hunger(player)
+						if hunger[name] ~= nil then
+						  if hunger[name].lvl > 4 then
+							  hunger.update_hunger(player,4)
 						  end
 						  if player_energy[name] > 16 then
 							  player_energy[name] = 16
