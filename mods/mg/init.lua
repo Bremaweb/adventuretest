@@ -457,9 +457,9 @@ local function mg_generate(minp, maxp, emin, emax, vm)
 		local y=math.floor(smooth_surface(x, z, village_noise, vx, vz, vs, vh, ni, noise1, noise2, noise3, noise4))
 		humidity = noise_humidity[ni]
 		temperature = noise_temperature[ni] - math.max(y, 0)/50
-		biome = get_nearest_biome(biome_table, x, z)
-		biome_humidity = biome.h
-		biome_temperature = biome.t
+		local biome = get_nearest_biome(biome_table, x, z)
+		local biome_humidity = biome.h
+		local biome_temperature = biome.t
 		if biome_temperature<-0.4 then
 			liquid_top = c_ice
 		else

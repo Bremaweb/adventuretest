@@ -15,7 +15,7 @@ function draw_sphere(name, wherein, center, radius, data, a, insideva)
 		radius = math.ceil(radius)+variant
 	end
 	
-	pos0={}
+	local pos0={}
 	
 	for x=-radius, radius do
 		pos0.x=center.x+x
@@ -41,7 +41,7 @@ function place_segment(name, wherein, pos1, pos2, minp, maxp, radius, data, a, i
 	draw_sphere(name,wherein,pos1,radius, data, a, insideva)
 	for i=1,N do
 		p={x=p.x+s.x,y=p.y+s.y,z=p.z+s.z}
-		p0=round_pos(p)
+		local p0=round_pos(p)
 		if not in_cuboid(p0, minp, maxp) then return end
 		draw_sphere(name,wherein,p0,radius, data, a, insideva)
 	end
@@ -100,8 +100,8 @@ function generate_vein(name, wherein, minp, maxp, seeddiff, options, data, a, in
 		for yblocksdiff=-vblocks,vblocks do
 		for zblocksdiff=-hblocks,hblocks do
 			if xblocksdiff~=0 or yblocksdiff~=0 or zblocksdiff~=0 then
-				new_minp={x=minp.x+xblocksdiff*80,y=minp.y+yblocksdiff*80,z=minp.z+zblocksdiff*80}
-				new_maxp={x=maxp.x+xblocksdiff*80,y=maxp.y+yblocksdiff*80,z=maxp.z+zblocksdiff*80}
+				local new_minp={x=minp.x+xblocksdiff*80,y=minp.y+yblocksdiff*80,z=minp.z+zblocksdiff*80}
+				local new_maxp={x=maxp.x+xblocksdiff*80,y=maxp.y+yblocksdiff*80,z=maxp.z+zblocksdiff*80}
 				generate_vein(name, wherein, new_minp, new_maxp, seeddiff, options, data, a, insideva, true)
 			end
 		end

@@ -31,11 +31,11 @@ function energy.update_energy(p,name)
 				-- adjust their energy
 				local vdiff = pos.y - player_lastpos[name].y
 				if vdiff > 0 then
-					adj = adj - ( vdiff * 0.05 )
+					adj = adj - ( vdiff * 0.15 )
 				end
 				
 				local hdiff = math.sqrt(math.pow(pos.x-player_lastpos[name].x, 2) + math.pow(pos.z-player_lastpos[name].z, 2))
-				adj = adj - ( hdiff * 0.02 )
+				adj = adj - ( hdiff * 0.05 )
 				
 				player_energy[name] = player_energy[name] + adj
 				if player_energy[name] < 0 then
@@ -65,7 +65,6 @@ function energy.update_energy(p,name)
 			end
 		end
 		player_lastpos[name] = pos
-		print("Update Energy for "..name.." "..tostring(player_energy[name]))
 		hud.change_item(p,"energy",{number = player_energy[name]})
 end
 
@@ -133,11 +132,12 @@ minetest.register_chatcommand("stand",{
 	end,
 })
 
-minetest.register_on_respawnplayer(function (player)
+function energy.respawnplayer(player)
 	local name = player:get_player_name()
 	player_energy[name] = 20
 	player_lastpos[name] = player:getpos()
-end)
+	affects.removeAffect(name,"tired")
+end
 
 minetest.register_on_joinplayer(function (player)
 	local name = player:get_player_name()

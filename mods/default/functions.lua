@@ -102,42 +102,6 @@ function default.register_falling_node(nodename, texture)
 	end
 end
 
---
--- Global callbacks
---
-
-function on_dignode(pos, node, digger)
-	--print("on_dignode")
-	-- going to try to consolidate all on_dignode calls here so there is only one function call
-	
-	-- ON DIG NODE FOR MONEY MOD
-	for k,v in pairs(money.convert_items) do
-		if ( node.name == money.convert_items[k].dig_block ) then			
-			money.stats[k].running_dug = money.stats[k].running_dug + 1 
-		end
-	end
-	
-	-- EXPERIENCE
-	if minetest.registered_nodes[node.name] ~= nil then
-		if minetest.registered_nodes[node.name]["skill"] ~= nil then
-			 default.drop_item(pos,"experience:1_exp")
-		end
-	end
-	-- STAMINA
-	if digger ~= nil and digger ~= "" then
-		local name= digger:get_player_name()
-		if player_energy[name] ~= nil then
-			player_energy[name] = player_energy[name] - 0.1
-		end
-	end
-	
-end
-minetest.register_on_dignode(on_dignode)
-
---
--- Grow trees
---
-
 minetest.register_abm({
 	nodenames = {"default:sapling"},
 	interval = 10,

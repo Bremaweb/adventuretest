@@ -122,7 +122,7 @@ minetest.register_chatcommand("sethome", {
     end,
 })
 
-minetest.register_on_respawnplayer( function (player)
+function sethome_respawnplayer (player)
 	local name = player:get_player_name()
 	if minetest.check_player_privs(name,{immortal = true}) then
 		return true
@@ -133,6 +133,6 @@ minetest.register_on_respawnplayer( function (player)
 	else
 		return false
 	end
-end)
+end
 
 
