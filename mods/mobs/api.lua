@@ -677,7 +677,9 @@ function mobs:register_mob(name, def)
 		end,
 		
 		on_punch = function(self, hitter, tflp, tool_capabilities, dir)
-
+      if tflp == nil then
+        tflp = 1
+      end
 			process_weapon(hitter,tflp,tool_capabilities)
 			
 			local pos = self.object:getpos()
@@ -742,9 +744,14 @@ function mobs:register_mob(name, def)
 			local kb = self.knock_back
 			local r = self.recovery_time
 			
-			if tflp < tool_capabilities.full_punch_interval then
-				kb = kb * ( tflp / tool_capabilities.full_punch_interval )
-				r = r * ( tflp / tool_capabilities.full_punch_interval )
+			if  tool_capabilities ~= nil then
+			 if tflp < tool_capabilities.full_punch_interval then
+				  kb = kb * ( tflp / tool_capabilities.full_punch_interval )
+				  r = r * ( tflp / tool_capabilities.full_punch_interval )
+			 end
+			else
+		    kb = kb * ( tflp / 1 )
+        r = r * ( tflp / 1 )
 			end
 			
 			local ykb=2
