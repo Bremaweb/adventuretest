@@ -1,8 +1,12 @@
 local energy_file = minetest.get_worldpath().."/energy"
+local stamina_file = minetest.get_worldpath().."/stamina"
 
 player_energy = default.deserialize_from_file(energy_file)
+player_stamina = default.deserialize_from_file(stamina_file)
 player_lastpos = {}
 player_sleephuds = {}
+
+player_can_boost_stamina = {}
 
 function energy.update_energy(p,name)
 	-- loop through all online players and check their movement and update their energy
@@ -35,7 +39,13 @@ function energy.update_energy(p,name)
 				end
 				
 				local hdiff = math.sqrt(math.pow(pos.x-player_lastpos[name].x, 2) + math.pow(pos.z-player_lastpos[name].z, 2))
+				
 				adj = adj - ( hdiff * 0.05 )
+				--print("Energy Adjustments")
+				--print(tostring(adj))
+				--print("After stamina adjustment")
+				adj = adj + player_stamina[name]
+				--print(tostring(adj))
 				
 				player_energy[name] = player_energy[name] + adj
 				if player_energy[name] < 0 then
@@ -57,8 +67,18 @@ function energy.update_energy(p,name)
 						physics.unfreeze_player(name)
 					end
 				end
-				if player_energy[name] < 3 then
+				if player_energy[name] < 8 and player_can_boost_stamina[name] == true then
+				  player_can_boost_stamina[name] = false
+				  if player_stamina[name] < 0.65 then
+				    player_stamina[name] = player_stamina[name] + 0.001
+				    --print("Boosted player stamina "..tostring(player_stamina[name]))
+				  end
+				end
+				if player_energy[name] < 2 then
 					affects.affectPlayer(name,"tired")
+				end
+				if player_energy[name] > 8 then
+				  player_can_boost_stamina[name] = true
 				end
 			else
 				player_energy[name] = 20
@@ -73,7 +93,7 @@ local affect_tired = {
 	name = "Exhaustion",
 	stages = {
 				{ 
-					time = 360,
+					time = 120,
 					physics = { speed = -0.6 },
 					custom = { chance=100, func = function(name, player, affectid)
 						minetest.chat_send_player(name,"You are exhuasted")
@@ -145,10 +165,19 @@ minetest.register_on_joinplayer(function (player)
 		player_energy[name] = 20
 		player_lastpos[name] = player:getpos()
 	end
+	if player_stamina[name] == nil then
+	 player_stamina[name] = 0
+	end
+	if player_energy[name] > 8 then
+	 player_can_boost_stamina[name] = true
+	else
+	 player_can_boost_stamina[name] = false
+	end
 end)
 
 minetest.register_on_shutdown(function()
 	default.serialize_to_file(energy_file,player_energy)
+	default.serialize_to_file(stamina_file,player_stamina)
 end)
 
 local energy_timer = 0
