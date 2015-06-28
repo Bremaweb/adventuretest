@@ -21,11 +21,13 @@ function affects.removeAffect(name, affectid)
 		if ( affectid == nil ) then
 			return false
 		else
-			affects._affectedPlayers[name][affectid] = nil;
-			if ( affects._affects[affectid].onremove ~= nil ) then
-				local player = minetest.get_player_by_name(name)
-				--player:set_physics_override({ speed=1, jump=1,gravity=1,sneak=true })	-- reset their physics
-				affects._affects[affectid].onremove(name,player,affectid)
+		  if affects._affectedPlayers[name][affectid] ~= nil then
+			   affects._affectedPlayers[name][affectid] = nil;
+			   if ( affects._affects[affectid].onremove ~= nil ) then
+				  local player = minetest.get_player_by_name(name)
+				  --player:set_physics_override({ speed=1, jump=1,gravity=1,sneak=true })	-- reset their physics
+				  affects._affects[affectid].onremove(name,player,affectid)
+			   end
 			end
 			return true
 		end
