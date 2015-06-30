@@ -13,9 +13,20 @@ intllib=minetest.get_modpath("intllib")
 -- Definitions made by this mod that other mods can use too
 default = {}
 
+-- HAVE TO PUT SKILL IDS HERE BECAUSE THEY ARE USED IN nodes.lua and others
+-- CONSTANT IDs
+SKILL_WOOD    = 1
+SKILL_STONE   = 2
+SKILL_METAL   = 4
+SKILL_CRYSTAL = 8
+
+SKILL_SMELTING= 16
+SKILL_CRAFTING= 32
+SKILL_ARROW   = 64
+SKILL_MAGIC   = 128
+
 -- Load files
 dofile(minetest.get_modpath("default").."/functions.lua")
-dofile(minetest.get_modpath("default").."/register_skills.lua")
 dofile(minetest.get_modpath("default").."/nodes.lua")
 dofile(minetest.get_modpath("default").."/tools.lua")
 dofile(minetest.get_modpath("default").."/craftitems.lua")

@@ -19,7 +19,7 @@ function energy.update_energy(p,name)
 				end
 				
 				local anim = default.player_get_animation(p)
-				local adj = 0.2 + ( 0.2 * ( skills.player_levels[name].level / 5 ) )
+				local adj = 0.2
 				if anim.animation == "lay" then
 					adj = adj + 0.75
 					if math.random(0,4) == 1 then

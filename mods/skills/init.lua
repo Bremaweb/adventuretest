@@ -14,6 +14,7 @@ function skills.initialize()
 	minetest.log("action","Loading player skills and levels")
 	skills.player_skills = default.deserialize_from_file(skill_file)
 	skills.player_levels = default.deserialize_from_file(level_file)
+	dofile(minetest.get_modpath("skills").."/register_skills.lua")
 end
 
 function skills.get_def(skill_id)
@@ -138,6 +139,9 @@ minetest.register_on_joinplayer(function (player)
 		skill_inv:set_size(list, 1)
 		skill_inv:set_stack(list, 1, player_inv:get_stack(list, 1))
 	end
+	if skills.player_levels[name] == nil then
+	 skills.player_levels[name] = {level=1,exp=1}
+	end
 end)
 
 minetest.register_on_shutdown(function()
@@ -147,7 +151,7 @@ end)
 
 minetest.register_on_newplayer(function(player)
 	skills.set_default_skills(player:get_player_name())
-	skills.player_levels[player:get_player_name()] = {level=1, exp=0}
+	skills.player_levels[player:get_player_name()] = {level=1,exp=1}
 end)
 
 minetest.register_on_leaveplayer(function(player)
@@ -175,4 +179,4 @@ minetest.register_on_dieplayer(function(player)
     skills.add_exp(name,decrease)
 end)
 
-minetest.after(1, skills.initialize)
+skills.initialize()

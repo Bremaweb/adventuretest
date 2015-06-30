@@ -1,17 +1,3 @@
--- REGISTER SKILLS
-
-
--- CONSTANT IDs
-SKILL_WOOD    = 1
-SKILL_STONE   = 2
-SKILL_METAL   = 4
-SKILL_CRYSTAL = 8
-
-SKILL_SMELTING= 16
-SKILL_CRAFTING= 32
-SKILL_ARROW	  = 64
-SKILL_MAGIC   = 128
-
 -- REGISTER THE SKILLS
 skills.register_skill(SKILL_WOOD, { desc = 'Wood', max_level = 10, level_exp = 15 })
 skills.register_skill(SKILL_STONE, { desc = 'Stone', max_level = 10, level_exp = 15 })

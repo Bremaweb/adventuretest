@@ -1,7 +1,7 @@
 minetest.register_node("mg:savannatree", {
 	description = "Savannawood Tree",
 	tiles = {"mg_dry_tree_top.png", "mg_dry_tree_top.png", "mg_dry_tree.png"},
-	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2},
+	groups = {tree=1,choppy=2,flammable=2},
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -31,7 +31,7 @@ minetest.register_node("mg:savannaleaves", {
 minetest.register_node("mg:savannawood", {
 	description = "Savannawood Planks",
 	tiles = {"mg_dry_wood.png"},
-	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	groups = {choppy=2,flammable=3,wood=1},
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -127,7 +127,7 @@ minetest.register_abm({
 minetest.register_node("mg:pinetree", {
 	description = "Pine Tree",
 	tiles = {"mg_pine_tree_top.png", "mg_pine_tree_top.png", "mg_pine_tree.png"},
-	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2},
+	groups = {tree=1,choppy=2,flammable=2},
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -157,7 +157,7 @@ minetest.register_node("mg:pineleaves", {
 minetest.register_node("mg:pinewood", {
 	description = "Pine Planks",
 	tiles = {"mg_pine_wood.png"},
-	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	groups = {choppy=2,flammable=3,wood=1},
 	sounds = default.node_sound_wood_defaults(),
 })
 
