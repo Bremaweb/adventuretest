@@ -111,7 +111,7 @@ minetest.register_on_joinplayer(function (player)
 				
 				local sk = skills.get_skill(name,skill_id)
 				local skill = skills.available_skills[skill_id]
-				local next_level = ((sk.level^1.75) * skill.level_exp)
+				local next_level = math.floor(((sk.level^1.75) * skill.level_exp))
 				
 				skills.player_skills[name][skill_id].exp = skills.player_skills[name][skill_id].exp + exp_dropped
 				
