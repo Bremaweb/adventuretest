@@ -69,7 +69,7 @@ minetest.register_node("workbench:3x3", {
 				crafted, left_over = minetest.get_craft_result({method = "normal", width = 3, items = tablelist})
 			end
 
-			if crafted then
+			if not crafted.item:is_empty() then
 				if crafted.item:get_definition().skill ~= nil then
 					
 					-- adjust the quality of the craft item
@@ -82,7 +82,7 @@ minetest.register_node("workbench:3x3", {
 						crafted.item:add_wear(wear)
 					--end
 				end
-				if inv:room_for_item("dst", crafted) then
+				if inv:room_for_item("dst", crafted.item) then
 					-- clear the crafting table first
 					if left_over then
 						inv:set_list("table", left_over.items)
