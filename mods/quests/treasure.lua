@@ -74,7 +74,6 @@ local treasures = {
 local max_exp = 1000
 
 quests.treasure.generateQuest = function()
-minetest.log("action","Generate quest!")
   quests.treasure.data.quest_start = os.time()
   quests.treasure.data.quest_end = nil
   quests.treasure.data.completed = false
@@ -108,11 +107,9 @@ minetest.log("action","Generate quest!")
   default.serialize_to_file(quest_file,quests.treasure.data)
   
   if allair == true then
-    minetest.log("action","Place treasure on mapgen")
     quests.treasure.data.do_on_generate = true
     return
   end
-  minetest.log("action","Place treasure now!")
   quests.treasure.place_treasure({x=tx,y=0,z=tz},vm,e1,e2)  
 end
 
@@ -170,7 +167,6 @@ function is_ground_node(nodeid)
 end
 
 quests.treasure.place_treasure = function (pos,vm,minp,maxp)
-  minetest.log("action","Placing treasure")
   local c_air = minetest.get_content_id("air")
   local c_water = minetest.get_content_id("default:water_source")
   local prevnode = nil  
@@ -196,7 +192,6 @@ quests.treasure.place_treasure = function (pos,vm,minp,maxp)
 				vm:update_map()
 				quests.treasure.set_inventory({x=tx,y=ty-depth,z=tz})
 				default.serialize_to_file(quest_file,quests.treasure.data)
-				minetest.log("action","Treasure placed successfully!")
 				return
 		      end
 		    end
@@ -206,7 +201,6 @@ quests.treasure.place_treasure = function (pos,vm,minp,maxp)
       prevnode = nil
     end
   end
-  minetest.log("error","Unable to place treasure")
   quests.treasure.data.do_on_generate = true
 end
 

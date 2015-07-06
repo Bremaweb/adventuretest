@@ -620,7 +620,6 @@ local function mg_generate(minp, maxp, emin, emax, vm)
 	--vm:update_liquids()
 	vm:write_to_map(data)
 
-  minetest.log("action","Map generated successfully, seeing if treasure needs to be placed")
   quests.treasure.on_generated(minp,maxp,emin,emax,vm)
 
 	local meta

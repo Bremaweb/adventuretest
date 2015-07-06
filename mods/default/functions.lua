@@ -345,13 +345,13 @@ end
 function default.deserialize_from_file(filename)
 	local f = io.open(filename, "r")
 		if f==nil then 
-			minetest.log("error","File "..filename.." not found, returning empty table")
+			--minetest.log("error","File "..filename.." not found, returning empty table")
 			return {}
 		end
 			local t = f:read("*all")
 			f:close()
 		if t=="" or t==nil then 
-			minetest.log("error","File "..filename.." is blank, returning empty table")
+			--minetest.log("error","File "..filename.." is blank, returning empty table")
 			return {}
 		end
 		return minetest.deserialize(t)
