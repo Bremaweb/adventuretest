@@ -108,6 +108,7 @@ type = "npc",
 		{chance=40, item="experience:6_exp"},
 		{chance=60, item="potions:magic_replenish1"},
 	},
+	walk_chance = 10,
 })
 
 mobs:register_mob("mobs:female3_npc", {
@@ -164,4 +165,5 @@ type = "npc",
 		{chance=40, item="experience:6_exp"},
 		{chance=60, item="potions:magic_replenish1"},
 	},
+	walk_chance = 10,
 })

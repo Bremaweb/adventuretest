@@ -70,7 +70,7 @@ function energy.update_energy(p,name)
 				if player_energy[name] < 8 and player_can_boost_stamina[name] == true then
 				  player_can_boost_stamina[name] = false
 				  if player_stamina[name] < 0.65 then
-				    player_stamina[name] = player_stamina[name] + 0.001
+				    player_stamina[name] = player_stamina[name] + 0.003
 				    --print("Boosted player stamina "..tostring(player_stamina[name]))
 				  end
 				end

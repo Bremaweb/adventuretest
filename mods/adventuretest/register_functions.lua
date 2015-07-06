@@ -15,7 +15,7 @@ local function adventuretest_globalstep(dtime)
   blacksmith_globalstep(dtime)
   throwing_globalstep(dtime)
   magic_globalstep(dtime)
-  ambience_globalstep(dtime)
+  --ambience_globalstep(dtime)
 end
 minetest.register_globalstep(adventuretest_globalstep)
 

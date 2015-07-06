@@ -2,7 +2,9 @@ doors = {}
 
 -- Registers a door
 function doors.register_door(name, def)
-  def.groups.not_in_creative_inventory = 1
+  if def.groups ~= nil then
+    def.groups.not_in_creative_inventory = 1
+  end
 
   local box = {{-0.5, -0.5, -0.5, 0.5, 0.5, -0.5+1.5/16}}
 
