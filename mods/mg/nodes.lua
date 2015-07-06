@@ -11,6 +11,8 @@ minetest.register_node("mg:savannaleaves", {
 	visual_scale = 1.3,
 	tiles = {"mg_dry_leaves.png"},
 	paramtype = "light",
+	walkable=false,
+	climbable=true,
 	groups = {snappy=3, leafdecay=3, flammable=2, leaves=1},
 	waving = 1,
 	drop = {
@@ -136,6 +138,8 @@ minetest.register_node("mg:pineleaves", {
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
 	tiles = {"mg_pine_leaves.png"},
+	walkable=false,
+	climbable=true,
 	paramtype = "light",
 	groups = {snappy=3, leafdecay=3, flammable=2, leaves=1},
 	waving = 1,
