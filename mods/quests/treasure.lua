@@ -74,6 +74,7 @@ local treasures = {
 local max_exp = 1000
 
 quests.treasure.generateQuest = function()
+minetest.log("action","Generate quest!")
   quests.treasure.data.quest_start = os.time()
   quests.treasure.data.quest_end = nil
   quests.treasure.data.completed = false
@@ -90,6 +91,7 @@ quests.treasure.generateQuest = function()
   local maxp = {x= tx+32, y=32, z=tz+32}
      
   local c_air = minetest.get_content_id("air")
+  local c_ignore = minetest.get_content_id("ignore")
   local vm = VoxelManip()
   local e1, e2 = vm:read_from_map(minp, maxp)
   local area = VoxelArea:new({MinEdge=e1, MaxEdge=e2})
@@ -97,7 +99,7 @@ quests.treasure.generateQuest = function()
   
   local allair = true
   for _,d in ipairs(data) do
-    if d ~= c_air then
+    if d ~= c_air and d ~= c_ignore then
       allair = false
     end
   end
@@ -106,10 +108,11 @@ quests.treasure.generateQuest = function()
   default.serialize_to_file(quest_file,quests.treasure.data)
   
   if allair == true then
+    minetest.log("action","Place treasure on mapgen")
     quests.treasure.data.do_on_generate = true
     return
   end
-  
+  minetest.log("action","Place treasure now!")
   quests.treasure.place_treasure({x=tx,y=0,z=tz},vm,e1,e2)  
 end
 
@@ -167,6 +170,7 @@ function is_ground_node(nodeid)
 end
 
 quests.treasure.place_treasure = function (pos,vm,minp,maxp)
+  minetest.log("action","Placing treasure")
   local c_air = minetest.get_content_id("air")
   local c_water = minetest.get_content_id("default:water_source")
   local prevnode = nil  
@@ -192,6 +196,7 @@ quests.treasure.place_treasure = function (pos,vm,minp,maxp)
 				vm:update_map()
 				quests.treasure.set_inventory({x=tx,y=ty-depth,z=tz})
 				default.serialize_to_file(quest_file,quests.treasure.data)
+				minetest.log("action","Treasure placed successfully!")
 				return
 		      end
 		    end
@@ -201,6 +206,8 @@ quests.treasure.place_treasure = function (pos,vm,minp,maxp)
       prevnode = nil
     end
   end
+  minetest.log("error","Unable to place treasure")
+  quests.treasure.data.do_on_generate = true
 end
 
 quests.treasure.set_inventory = function (pos)
@@ -240,14 +247,19 @@ quests.treasure.end_quest = function (player)
 	default.serialize_to_file(quest_file,quests.treasure.data)
 end
 
-minetest.register_on_generated(function(minp, maxp, seed)	
+--[[minetest.register_on_generated(function(minp, maxp, seed)	
+  
+end)]]
+
+-- called from mg mod
+quests.treasure.on_generated = function (minp,maxp,emin,emax,vm)
   if quests.treasure.data.do_on_generate == true then
     if quests.treasure.data.pos.x > minp.x and quests.treasure.data.pos.x < maxp.x and quests.treasure.data.pos.z > minp.z and quests.treasure.data.pos.z < maxp.z then
-      local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+      --local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
       quests.treasure.place_treasure(quests.treasure.data.pos,vm,emin,emax)
     end
   end
-end)
+end
 
 minetest.register_node("quests:treasure_chest", {
 	description = "Treasure Chest",
