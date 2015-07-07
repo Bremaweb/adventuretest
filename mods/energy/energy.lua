@@ -96,7 +96,7 @@ local affect_tired = {
 					time = 120,
 					physics = { speed = -0.6 },
 					custom = { chance=100, func = function(name, player, affectid)
-						minetest.chat_send_player(name,"You are exhuasted")
+						minetest.chat_send_player(name,"You are exhausted")
 					end,runonce=true},
 				},
 			},
