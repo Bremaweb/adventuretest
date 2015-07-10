@@ -86,6 +86,7 @@ minetest.register_chatcommand("home", {
                 return true
             end
             last_moved[name] = time
+            player_lastpos[pname] = homepos[pname]
             player:setpos(homepos[pname])
             minetest.chat_send_player(name, "Teleported to home!")
         else
