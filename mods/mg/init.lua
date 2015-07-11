@@ -384,6 +384,8 @@ local function copytable(t)
 end
 
 local function mg_generate(minp, maxp, emin, emax, vm)
+	local b_start = os.clock()
+	minetest.log("verbose","mg_generate")
 	local a = VoxelArea:new{
 		MinEdge={x=emin.x, y=emin.y, z=emin.z},
 		MaxEdge={x=emax.x, y=emax.y, z=emax.z},
@@ -409,6 +411,7 @@ local function mg_generate(minp, maxp, emin, emax, vm)
 	local exitloop = false
 	for xi = -vcr, vcr do
 	for zi = -vcr, vcr do
+		--print(tostring(xi)..","..tostring(zi))
 		vx,vz,vs,vh = village_at_point({x=minp.x+xi*80,z=minp.z+zi*80}, noise1raw)
 		if vs ~= 0 then
 			--goto out
@@ -573,7 +576,8 @@ local function mg_generate(minp, maxp, emin, emax, vm)
 	end
 	
 	local va = VoxelArea:new{MinEdge=minp, MaxEdge=maxp}
-	
+	--[[
+	local og_start = os.clock()
 	for _, ore_sheet in ipairs(mg.registered_ore_sheets) do
 		local sidelen = maxp.x - minp.x + 1
 		local np = copytable(ore_sheet.noise_params)
@@ -604,9 +608,15 @@ local function mg_generate(minp, maxp, emin, emax, vm)
 			end
 		end
 		end
-	end
+	end	
+	local og_end = os.clock()
+	--print("Ore gen: " .. tostring(og_end - og_start))
+	]]	
 	for _, ore in ipairs(mg.registered_ores) do
+		local o_start = os.clock()
 		generate_vein(minetest.get_content_id(ore.name), minetest.get_content_id(ore.wherein), minp, maxp, ore.seeddiff, ore, data, a, va)
+		local o_end = os.clock()
+		--print("Ore "..ore.name.. " gen: "..tostring(o_end-o_start))
 	end
 	
 	local to_add = generate_village(vx, vz, vs, vh, minp, maxp, data, a, village_noise, villages_to_grow)
@@ -617,7 +627,10 @@ local function mg_generate(minp, maxp, emin, emax, vm)
 		{x=minp.x-16, y=minp.y, z=minp.z-16},
 		{x=maxp.x+16, y=maxp.y, z=maxp.z+16}
 	)
-	--vm:update_liquids()
+	local ul = os.clock()
+	vm:update_liquids()
+	local eul = os.clock()
+	--print("Update liquids: "..tostring(eul-ul))
 	vm:write_to_map(data)
 
   quests.treasure.on_generated(minp,maxp,emin,emax,vm)
@@ -666,6 +679,8 @@ local function mg_generate(minp, maxp, emin, emax, vm)
 			end
 		end
 	end
+	local b_end = os.clock()
+	--print((tostring(b_end - b_start)))
 end
 
 minetest.register_on_generated(function(minp, maxp, seed)
