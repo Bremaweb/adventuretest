@@ -710,7 +710,7 @@ function mobs:register_mob(name, def)
 					end
 					
 					-- see if there are any NPCs to shower you with rewards
-					if self.type ~= "npc" then
+					if self.type ~= "npc" and self.type ~= "animal" then
 						local inradius = minetest.get_objects_inside_radius(hitter:getpos(),10)
 						for _, oir in pairs(inradius) do
 							local obj = oir:get_luaentity()
