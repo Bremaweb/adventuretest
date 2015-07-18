@@ -12,7 +12,7 @@ local fly_potion1 = {
 								local pPrivs = minetest.get_player_privs(name)									
 								pPrivs["fly"] = true
 								minetest.set_player_privs(name,pPrivs)
-								minetest.chat_send_player(name,"You feel lite as the clouds, you can fly!",false)
+								minetest.chat_send_player(name,"You feel as lite as the clouds, you can fly!",false)
 							end, runonce=true }
 					}
 		},

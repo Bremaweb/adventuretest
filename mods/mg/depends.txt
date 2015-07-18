@@ -1,5 +1,1 @@
 default
-farming
-wool
-stairs
-moretrees?

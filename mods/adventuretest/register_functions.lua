@@ -60,3 +60,10 @@ local function adventuretest_placenode(pos, node, placer)
   hunger.handle_node_actions(pos,node,placer)
 end
 minetest.register_on_placenode(adventuretest_placenode)
+
+
+local function on_generated(minp,maxp,seed)
+	quests.treasure.on_generated(minp,maxp)
+end
+minetest.register_on_generated(on_generated)
+

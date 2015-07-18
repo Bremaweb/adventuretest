@@ -118,7 +118,7 @@ quests.treasure.tell_story = function(pos)
 	if quests.treasure.data.completed == false and quests.treasure.data.pos ~= nil then
 	  local directions = "The old explorer says, 'If you search about "
 	  local diff = math.floor(pos.x - quests.treasure.data.pos.x)
-	  diff = diff - ( diff % 50 ) 
+	  diff = diff - ( diff % 5 ) 
 	  directions = directions .. tostring(math.abs(diff)) .. " meters "
 	  if pos.x < quests.treasure.data.pos.x then
 	    directions = directions .. "east"
@@ -127,7 +127,7 @@ quests.treasure.tell_story = function(pos)
 	  end
 	  
 	  diff = math.floor(pos.z - quests.treasure.data.pos.z)
-	  diff = diff - ( diff % 50 )
+	  diff = diff - ( diff % 5 )
 	  directions = directions .. " and about " .. tostring(math.abs(diff)) .. " meters "
 	  if pos.z > quests.treasure.data.pos.z then
 	     directions = directions .. "south"
@@ -141,7 +141,7 @@ quests.treasure.tell_story = function(pos)
 	  minetest.after(8,chat.local_chat,pos,"The old explorer says, 'You should find the treasure buried under a "..minetest.registered_nodes[quests.treasure.data.marker].description.."'",12)
 	else
 		chat.local_chat(pos,"The old explorer says, 'I hear "..tostring(quests.treasure.data.completed_by).." recently found some treasure'")
-		minetest.after(4,chat.local_chat,pos,"The old explorer says, 'Come talk to me again and I may be able to help you find some treasure'")
+		minetest.after(4,chat.local_chat,pos,"The old explorer says, 'Come talk to me later and I will let you know if I hear of any more treasure'")
 	end
 end
 
@@ -166,11 +166,13 @@ function is_ground_node(nodeid)
     return false
 end
 
-quests.treasure.place_treasure = function (pos,vm,minp,maxp)
+quests.treasure.place_treasure = function (pos,minp,maxp)
   local c_air = minetest.get_content_id("air")
   local c_water = minetest.get_content_id("default:water_source")
   local prevnode = nil  
   
+  local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+    
   local e1, e2 = vm:read_from_map(minp, maxp)
   local area = VoxelArea:new({MinEdge=e1, MaxEdge=e2})
   local data = vm:get_data()
@@ -246,11 +248,11 @@ end
 end)]]
 
 -- called from mg mod
-quests.treasure.on_generated = function (minp,maxp,emin,emax,vm)
+quests.treasure.on_generated = function (minp,maxp)
   if quests.treasure.data.do_on_generate == true then
     if quests.treasure.data.pos.x > minp.x and quests.treasure.data.pos.x < maxp.x and quests.treasure.data.pos.z > minp.z and quests.treasure.data.pos.z < maxp.z then
       --local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-      quests.treasure.place_treasure(quests.treasure.data.pos,vm,emin,emax)
+      quests.treasure.place_treasure(quests.treasure.data.pos,minp,maxp)
     end
   end
 end

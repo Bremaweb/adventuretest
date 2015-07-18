@@ -15,6 +15,14 @@ function skills.initialize()
 	skills.player_skills = default.deserialize_from_file(skill_file)
 	skills.player_levels = default.deserialize_from_file(level_file)
 	dofile(minetest.get_modpath("skills").."/register_skills.lua")
+	minetest.after(120,skills.save)
+end
+
+function skills.save()
+	minetest.log("action","Saving levels and skills")
+	default.serialize_to_file(skill_file,skills.player_skills)
+	default.serialize_to_file(level_file,skills.player_levels)
+	minetest.after(120,skills.save)
 end
 
 function skills.get_def(skill_id)
