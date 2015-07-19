@@ -70,4 +70,4 @@ dofile(mg_villages.modpath.."/terrain_blend.lua")
 -- also takes care of spawning the player
 dofile(mg_villages.modpath.."/mapgen.lua")
 
---dofile(mg_villages.modpath.."/spawn_player.lua")
+dofile(mg_villages.modpath.."/spawn_player.lua")

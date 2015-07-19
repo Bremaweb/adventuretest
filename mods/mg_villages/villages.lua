@@ -629,15 +629,19 @@ mg_villages.generate_village = function(village, vnoise)
 		return;
 	end
 
-	local pr_vtype = PseudoRandom(seed)
-	local rptype = pr_vtype:next(1,10)
-	
-	if  rptype <= 3 then
-		village.barbarians = true	
-	else
+	if (not( mg_villages.all_villages ) or mg_villages.anz_villages < 1) then
 		village.barbarians = false
+	else
+		local pr_vtype = PseudoRandom(seed)
+		local rptype = pr_vtype:next(1,10)
+		
+		if  rptype <= 3 then
+			village.barbarians = true	
+		else
+			village.barbarians = false
+		end
 	end
-
+	
 	-- in the case of medieval villages, we later on want to add wheat fields with dirt roads; 1 wide dirt roads look odd
 	local space_between_buildings = 1;
 	if( mg_villages.village_type_data[ village_type ] and mg_villages.village_type_data[ village_type ].space_between_buildings) then
