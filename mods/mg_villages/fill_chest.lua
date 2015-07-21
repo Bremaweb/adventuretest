@@ -5,14 +5,14 @@ mg_villages.random_chest_content = {};
 
 -- add random chest content
 local ADD_RCC = function( data )
-	if( data and #data>3 and minetest.registered_nodes[ data[1] ] ) then
+	if( data and #data>3 and ( minetest.registered_nodes[ data[1] ] or minetest.registered_items[ data[1] ]) ) then
 		table.insert( mg_villages.random_chest_content, data );
 	end
 end
 
 -- things that can be found in private, not locked chests belonging to npc
 -- contains tables of the following structure: { node_name, probability (in percent, 100=always, 0=never), max_amount, repeat (for more than one stack) }
-mg_villages.random_chest_content = {};
+--mg_villages.random_chest_content = {};
 
 ADD_RCC({"default:pick_stone",             10,  1, 3, farm_tiny=1, farm_full=1, shed=1, lumberjack=1, hut=1, chest_work=1, lumberjack=1 }); 
 ADD_RCC({"default:pick_steel",              5,  1, 2, forge=1 }); 
@@ -158,7 +158,7 @@ mg_villages.fill_chest_random = function( pos, pr, building_nr, building_typ )
 	if( pos.typ_name ) then
 		typ = pos.typ_name;
 	end
-	if( not( typ ) or (typ ~= 'cottages:shelf' and typ ~= 'cottages:chest_work' and typ ~= 'cottages:chest_storage' and typ ~= 'cottages:chest_private' )) then
+	if( not( typ ) or (typ ~= "default:chest" and typ ~= 'cottages:shelf' and typ ~= 'cottages:chest_work' and typ ~= 'cottages:chest_storage' and typ ~= 'cottages:chest_private' )) then
 		typ = building_data.typ;
 	else
 		typ = string.sub( typ, 10 );
@@ -167,13 +167,13 @@ mg_villages.fill_chest_random = function( pos, pr, building_nr, building_typ )
 	if( typ == 'cottages:chest_work' and building_data.typ ) then
 		typ2 = building_data.typ;
 	end
---print('FILLING chest of type '..tostring( typ )..' and '..tostring( typ2));
+	--print('FILLING chest of type '..tostring( typ )..' and '..tostring( typ2));
 	if( not( typ ) or typ=='' ) then
 		return;
 	end
 	local inv_size = inv:get_size('main');
 	for i,v in ipairs( mg_villages.random_chest_content ) do
-
+		--print(v[1])
 		-- repeat this many times
 		for count=1, v[ 4 ] do
 

@@ -1,2 +1,6 @@
 default
+hangle_schematics?
 mg_villages?
+experience?
+farming?
+bushes?
