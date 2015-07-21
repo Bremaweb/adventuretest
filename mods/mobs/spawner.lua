@@ -119,10 +119,10 @@ local numNPCs = math.random(0,1)
 		--print("Spawning "..tostring(numNPCs).." NPCs")
 		if numNPCs > 0 then
 			for i=0,numNPCs,1 do
-				local npos = pos
-				npos.x = npos.x + math.random(-8,8)
-				npos.y = npos.y + 2
-				npos.z = npos.z + math.random(-8,8)
+				local npos = {}				
+				npos.x = pos.x + math.random(-8,8)
+				npos.y = pos.y + 2
+				npos.z = pos.z + math.random(-8,8)
 				
 				local spawnerpos = {x=npos.x, y=npos.y, z=npos.z}
 				spawnerpos.y = spawnerpos.y - 5
@@ -130,7 +130,7 @@ local numNPCs = math.random(0,1)
 				if barbarian_village == true then
 					local barbarian = mobs:get_random('barbarian')
 					minetest.log("action","Spawning "..barbarian.." at "..minetest.pos_to_string(npos))
-					local mob = minetest.add_entity(pos, barbarian)
+					local mob = minetest.add_entity(npos, barbarian)
 					if mob then
 						local distance_rating = ( ( get_distance({x=0,y=0,z=0},npos) ) / 15000 )
 						mob = mob:get_luaentity()
@@ -143,11 +143,11 @@ local numNPCs = math.random(0,1)
 					
 					local npc = mobs:get_random('npc')
 					minetest.log("action","Spawning "..npc.." at "..minetest.pos_to_string(npos))
-					local mob = minetest.add_entity(pos, npc)
+					local mob = minetest.add_entity(npos, npc)
 					if mob then
 						mob = mob:get_luaentity()
 						local p = mob.object:getpos()
-						math.randomseed( ( p.x * p.y * p.z ) )
+						--math.randomseed( ( p.x * p.y * p.z ) )
 						local metatable = {  fields = { entity = npc, active_objects = 6 } }
 						--table.insert(extranodes, {node={name="mobs:spawner",param1=0, param2=0}, pos=spawnerpos, mob="npc"})
 					end

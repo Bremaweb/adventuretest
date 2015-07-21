@@ -13,11 +13,7 @@ end
 -- things that can be found in private, not locked chests belonging to npc
 -- contains tables of the following structure: { node_name, probability (in percent, 100=always, 0=never), max_amount, repeat (for more than one stack) }
 mg_villages.random_chest_content = {};
-ADD_RCC({"farming:bread",					60, 5, 2})
-ADD_RCC({"mobs:meat",						50, 3, 2})
-ADD_RCC({"bushes:strawberry",				30, 2, 1})
-ADD_RCC({"bushes:berry_pie_cooked",			35, 2, 1})
-ADD_RCC({"throwing:arrow",					20, 1, 4})
+
 ADD_RCC({"default:pick_stone",             10,  1, 3, farm_tiny=1, farm_full=1, shed=1, lumberjack=1, hut=1, chest_work=1, lumberjack=1 }); 
 ADD_RCC({"default:pick_steel",              5,  1, 2, forge=1 }); 
 ADD_RCC({"default:pick_mese",               2,  1, 2, forge=1, lumberjack=1 }); 
@@ -34,7 +30,7 @@ ADD_RCC({"default:torch",                  50, 10, 4, church=1, library=1, chest
 
 ADD_RCC({"default:book",                   60,  1, 2, church=1, library=1 });
 ADD_RCC({"default:paper",                  60,  6, 4, church=1, library=1 });
-ADD_RCC({"default:apple",                  70, 10, 2, all=1});
+ADD_RCC({"default:apple",                  50, 10, 2, chest_storage=4, chest_private=1, shelf=5});
 ADD_RCC({"default:ladder",                 20,  1, 2, church=1, library=1, shed=1, lumberjack=1, hut=1 });
         
 ADD_RCC({"default:coal_lump",              80, 30, 1, forge=1, shed=1, lumberjack=1, hut=1});
@@ -43,6 +39,7 @@ ADD_RCC({"default:mese_crystal_fragment",  10,  3, 1, forge=1, chest_storage=1 }
 
 ADD_RCC({"bucket:bucket_empty",            10,  3, 2, chest_work=1, forge=1, shed=1, hut=1 });
 ADD_RCC({"bucket:bucket_water",             5,  3, 2, chest_work=1, forge=1 });
+ADD_RCC({"bucket:bucket_lava",              3,  3, 2, forge=1 });
 
 ADD_RCC({"vessels:glass_bottle",           10, 10, 2, church=1, library=1, shelf=1 });
 ADD_RCC({"vessels:drinking_glass",         20,  2, 1, church=1, library=1, shelf=1 });
@@ -155,12 +152,6 @@ mg_villages.fill_chest_random = function( pos, pr, building_nr, building_typ )
 	local meta = minetest.env:get_meta( pos );
 	local inv  = meta:get_inventory();
 
-	local cexp = math.random(0,25)
-	local expitem = experience.exp_to_items(cexp)
-	for _,e in pairs(expitem) do
-		inv:add_item("main",e)
-	end
-
 	local count = 0;
 
 	local typ = minetest.get_name_from_content_id( pos.typ );
@@ -176,7 +167,7 @@ mg_villages.fill_chest_random = function( pos, pr, building_nr, building_typ )
 	if( typ == 'cottages:chest_work' and building_data.typ ) then
 		typ2 = building_data.typ;
 	end
-	
+--print('FILLING chest of type '..tostring( typ )..' and '..tostring( typ2));
 	if( not( typ ) or typ=='' ) then
 		return;
 	end
@@ -188,7 +179,7 @@ mg_villages.fill_chest_random = function( pos, pr, building_nr, building_typ )
 
 			-- to avoid too many things inside a chest, lower probability
 			if(     count<30 -- make sure it does not get too much and there is still room for a new stack
-			 and (v[ typ ] or (typ2 and v[ typ2 ]) or v.all )
+			 and (v[ typ ] or (typ2 and v[ typ2 ]))
 			 and inv_size and inv_size > 0 and v[ 2 ] > pr:next( 1, 200 )) then
 	
 				--inv:add_item('main', v[ 1 ].." "..tostring( math.random( 1, tonumber(v[ 3 ]) )));

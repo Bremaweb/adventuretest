@@ -165,6 +165,11 @@ print('FILE SIZE: '..tostring( string.len( data_string ))); -- TODO
 		return nil;
 	end
 
+	local translation_function = handle_schematics.findMC2MTConversion;
+	if( minetest.get_modpath('mccompat')) then
+		translation_function = mccompat.findMC2MTConversion;
+	end
+
 	local max_msg = 40; -- just for error handling
 	local size = {x=mc_schematic_data.Width,  y=mc_schematic_data.Height, z=mc_schematic_data.Length};
 	local scm = {};
@@ -175,10 +180,19 @@ print('FILE SIZE: '..tostring( string.len( data_string ))); -- TODO
 		for x=1,size.x do
 			scm[y][x] = {};
 			for z =1,size.z do
-				local new_node = handle_schematics.findMC2MTConversion(
+				local new_node = translation_function(
 						-- (Y×length + Z)×width + X.
 						mc_schematic_data.Blocks[ ((y-1)*size.z + (z-1) )*size.x + (size.x-x) +1],
 						mc_schematic_data.Data[   ((y-1)*size.z + (z-1) )*size.x + (size.x-x) +1] );
+				-- some MC nodes store the information about a node in TWO block and data fields (doors, large flowers, ...)
+				if( new_node[3] and new_node[3]~=0 ) then
+					new_node = translation_function( 
+						-- (Y×length + Z)×width + X.
+						mc_schematic_data.Blocks[ ((y-1)*size.z + (z-1) )*size.x + (size.x-x) +1],
+						mc_schematic_data.Data[   ((y-1)*size.z + (z-1) )*size.x + (size.x-x) +1],
+						mc_schematic_data.Blocks[ ((y-1+new_node[3])*size.z + (z-1) )*size.x + (size.x-x) +1],
+						mc_schematic_data.Data[   ((y-1+new_node[3])*size.z + (z-1) )*size.x + (size.x-x) +1] );
+				end
 				if( not( nodenames_id[ new_node[1]] )) then
 					nodenames_id[ new_node[1] ] = #nodenames + 1;
 					nodenames[ nodenames_id[ new_node[1] ]] = new_node[1];

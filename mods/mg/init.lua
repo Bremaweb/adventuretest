@@ -43,6 +43,7 @@ c_papyrus  = minetest.get_content_id("default:papyrus")
 dofile(mgpath.."/trees.lua")
 dofile(mgpath.."/biomes.lua")
 dofile(mgpath.."/decorations.lua")
+dofile(mgpath.."/villages.lua")
 
 minetest.register_on_mapgen_init(function(params)
 	minetest.set_mapgen_params({

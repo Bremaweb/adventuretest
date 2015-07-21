@@ -51,9 +51,6 @@ dofile(handle_schematics.modpath.."/build_chest_add_schems_from_file.lua");
 -- locate schematics through directories
 dofile(handle_schematics.modpath.."/build_chest_add_schems_by_directory.lua");
 
--- chooses traders and spawn positions for buildings
-dofile(handle_schematics.modpath.."/village_traders.lua")
-
 -- the main functionality of the mod;
 -- provides the function handle_schematics.place_building_from_file
 -- (and also place_buildings for mg_villages)

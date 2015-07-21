@@ -164,7 +164,7 @@ local function generate_building_translate_nodenames( nodenames, replacements, c
 			-- place a normal chest here
 			new_nodes[ i ].new_content   = cid.c_chest;
 			new_nodes[ i ].special_chest = node_name;
-			new_node_name = 'default:npc_chest';
+			new_node_name = 'default:chest';
 
 		elseif(new_node_name == 'cottages:chest_private'
 		   or  new_node_name == 'cottages:chest_work'
@@ -258,7 +258,7 @@ local function generate_building_translate_nodenames( nodenames, replacements, c
 end
 
 
-local function generate_building(pos, minp, maxp, data, param2_data, a, extranodes, replacements, cid, extra_calls, building_nr_in_bpos, village_id, binfo_extra, road_node, keep_ground, barbarians)
+local function generate_building(pos, minp, maxp, data, param2_data, a, extranodes, replacements, cid, extra_calls, building_nr_in_bpos, village_id, binfo_extra, road_node, keep_ground)
 
 	local binfo = binfo_extra;
 	if( not( binfo ) and mg_villages) then
@@ -317,21 +317,6 @@ local function generate_building(pos, minp, maxp, data, param2_data, a, extranod
 	-- the fruit is set per building, not per village as the other replacements
 	if( binfo.farming_plus and binfo.farming_plus == 1 and pos.fruit and mg_villages) then
 		mg_villages.get_fruit_replacements( replacements, pos.fruit);
-	end
-
-	local traders = {};
-	if( handle_schematics.choose_traders ) then
-		local village_type  = "";
-		if( village_id and mg_villages and mg_villages.all_villages and mg_villages.all_villages[ village_id ] ) then
-			village_type = mg_villages.all_villages[ village_id ].village_type;
-		end
-		local building_type = "";
-		if( binfo.typ ) then
-			building_type = binfo.typ;
-		end
-		if( not( pos.traders )) then
-			traders = handle_schematics.choose_traders( village_type, building_type, replacements )
-		end
 	end
 
 	local c_ignore = minetest.get_content_id("ignore")
@@ -553,16 +538,6 @@ local function generate_building(pos, minp, maxp, data, param2_data, a, extranod
 		end
 	end
 	end
-
-	-- spawn our NPCs
-	mobs.spawn_npc_and_spawner(pos,barbarians)
-	
-	-- determine suitable positions for the traders
-	if( handle_schematics.choose_trader_pos and #traders>0) then
-		extra_calls.traders = handle_schematics.choose_trader_pos(pos, minp, maxp, data, param2_data, a, extranodes, replacements, cid, extra_calls, building_nr_in_bpos, village_id, binfo_extra, road_node, traders);
-		print('TRADERS CHOOSEN FOR '..tostring( binfo.scm )..': '..minetest.serialize( extra_calls.traders ));
-	end
-
 end
 
 
@@ -607,11 +582,10 @@ handle_schematics.place_buildings = function(village, minp, maxp, data, param2_d
 			if( pos.road_material ) then
 				road_material = pos.road_material;
 			end
-			generate_building(pos, minp, maxp, data, param2_data, a, extranodes, replacements, cid, extra_calls, i, village_id, nil, road_material, true, village.barbarians )
-			
+			generate_building(pos, minp, maxp, data, param2_data, a, extranodes, replacements, cid, extra_calls, i, village_id, nil, road_material, true )
 		end
 	end
-	
+
 	-- replacements are in list format for minetest.place_schematic(..) type spawning
 	return { extranodes = extranodes, bpos = bpos, replacements = replacements.list, dirt_roads = village.to_add_data.dirt_roads,
 			plantlist = village.to_add_data.plantlist, extra_calls = extra_calls };

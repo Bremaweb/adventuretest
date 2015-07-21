@@ -6,10 +6,10 @@ mg_villages.ENABLE_VILLAGES = true;
 
 -- generate one random building for each mg_villages.INVERSE_HOUSE_DENSITY th mapchunk;
 -- set to 0 in order to disable spawning of these lone buildings outside villages
-mg_villages.INVERSE_HOUSE_DENSITY = 0;
+mg_villages.INVERSE_HOUSE_DENSITY = 4;
 
 -- cover some villages with artificial snow; probability: 1/mg_villages.artificial_snow_probability
-mg_villages.artificial_snow_probability = 0;
+mg_villages.artificial_snow_probability = 10;
 
 -- if set to true, soil around villaes will get special soil-snow instead of plant + snow cover
 mg_villages.use_soil_snow = false;
@@ -24,16 +24,16 @@ mg_villages.VILLAGE_DETECT_RANGE = 400;
 
 -- if set to true, only players which have the mg_villages priv can use the "/visit <village nr>"
 -- command which allows teleporting to the village with the given number
-mg_villages.REQUIRE_PRIV_FOR_TELEPORT = true;
+mg_villages.REQUIRE_PRIV_FOR_TELEPORT = false;
 
 -- if set to true, players cannot modify spawned villages without buying the house from the village first
 mg_villages.ENABLE_PROTECTION = true;
 
 -- the first village - the one the player spawns in - will be of this type
-mg_villages.FIRST_VILLAGE_TYPE = 'taoki';
+mg_villages.FIRST_VILLAGE_TYPE = 'medieval';
 
 -- choose the debug level you want
-mg_villages.DEBUG_LEVEL = mg_villages.DEBUG_LEVEL_NONE
+mg_villages.DEBUG_LEVEL = mg_villages.DEBUG_LEVEL_NORMAL
 
 -- background image for the /vmap command
 -- RealTest comes with a diffrent texture
