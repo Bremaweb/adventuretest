@@ -67,7 +67,7 @@ local spider_poison = {
 				},
 				{
 					time = 120,
-					physics = { speed = -0.25 },
+					--physics = { speed = -0.25 },
 					custom = { chance=40, func = function(name, player, affectid)
 						local y = player:get_look_yaw()
 						local ny = y;
@@ -122,7 +122,7 @@ local spider_poison = {
 				},
 			},
 	onremove = function(name, player, affectid)
-		physics.adjust_physics(player,{speed=0.25})
+		--physics.adjust_physics(player,{speed=0.25})
 		minetest.chat_send_player(name,"You are feeling much better",false)
 	end,
 	removeOnDeath = true,
