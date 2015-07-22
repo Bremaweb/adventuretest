@@ -34,6 +34,10 @@ local function spawnplayer(player)
 	end
 	end
 	player:setpos(min_pos)
+	local name = player:get_player_name()
+	if homepos[name] == nil then
+		homepos[name]=min_pos
+	end
 end
 
 minetest.register_on_newplayer(function(player)

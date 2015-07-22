@@ -10,7 +10,7 @@ local max_distance = 5000
 
 local homes_file = minetest.get_worldpath()..'/homes'
 --local homes_file = minetest.get_worldpath() .. "/homes"
-local homepos = {}
+homepos = {}
 local last_moved = {}
 
 local function loadhomes()
@@ -132,6 +132,7 @@ function sethome_respawnplayer (player)
 		player:moveto(homepos[name])
 		return true
 	else
+	
 		return false
 	end
 end
