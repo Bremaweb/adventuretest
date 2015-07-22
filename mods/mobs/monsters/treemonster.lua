@@ -56,4 +56,4 @@ mobs:register_mob("mobs:tree_monster", {
 	},
 	step = 0.5,
 })
-mobs:register_spawn("mobs:tree_monster", {"default:leaves", "default:jungleleaves"}, 3, -1, 7000, 3, 31000)
+mobs:register_spawn("mobs:tree_monster", {"default:leaves", "default:jungleleaves"}, 5, -1, 5000, 3, 31000)

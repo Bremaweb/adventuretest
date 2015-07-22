@@ -27,6 +27,8 @@ function mobs:register_mob(name, def)
 		on_rightclick = def.on_rightclick,
 		type = def.type,
 		attack_type = def.attack_type,
+		attack_range = def.attack_range or 2,
+		attack_function = def.attack_function or nil,
 		arrow = def.arrow,
 		arrow_offset = def.arrow_offset or 1,
 		shoot_interval = def.shoot_interval,
@@ -40,7 +42,7 @@ function mobs:register_mob(name, def)
 		attacks_monsters = def.attacks_monsters or false,
 		group_attack = def.group_attack or false,
 		step = def.step or 0,
-		fov = def.fov or 120,
+		fov = def.fov or 165,
 		passive = def.passive or false,
 		recovery_time = def.recovery_time or 0.5,
 		knock_back = def.knock_back or 3,
@@ -147,10 +149,12 @@ function mobs:register_mob(name, def)
 		
 		in_fov = function(self,pos)
 			-- checks if POS is in self's FOV
+			
 			local yaw = self.object:getyaw()
 			if self.drawtype == "side" then
 				yaw = yaw+(math.pi/2)
 			end
+			
 			local vx = math.sin(yaw)
 			local vz = math.cos(yaw)
 			local ds = math.sqrt(vx^2 + vz^2)
@@ -161,12 +165,15 @@ function mobs:register_mob(name, def)
 			local an = ( d.x * p.x ) + ( d.z * p.z )
 			
 			local a = math.deg( math.acos( an ) )
-			
+
+			return true
+			--[[
 			if a > ( self.fov / 2 ) then
 				return false
 			else
 				return true
 			end
+			]]
 		end,
 		
 		set_animation = function(self, type)
@@ -367,11 +374,15 @@ function mobs:register_mob(name, def)
 						p.y = p.y + 1
 						sp.y = sp.y + 1		-- aim higher to make looking up hills more realistic
 						local dist = ((p.x-s.x)^2 + (p.y-s.y)^2 + (p.z-s.z)^2)^0.5
+						--print("Dist "..tostring(dist) .. " < " .. tostring(self.view_range) .. " in_fov " .. tostring(self.in_fov(self,p)))
 						if dist < self.view_range and self.in_fov(self,p) then
 							if minetest.line_of_sight(sp,p,2) == true then
 								self.do_attack(self,player,dist)
 								break
+							else
+								--print("no line of site")
 							end
+							
 						end
 					end
 				end
@@ -505,7 +516,6 @@ function mobs:register_mob(name, def)
 				end
 			elseif self.state == "attack" and self.attack_type == "dogfight" then
 				if not self.attack.player or not self.attack.player:getpos() then
-					print("stop attacking")
 					self.state = "stand"
 					self:set_animation("stand")
 					return
@@ -533,7 +543,7 @@ function mobs:register_mob(name, def)
 					yaw = yaw+math.pi
 				end
 				self.object:setyaw(yaw)
-				if self.attack.dist > 2 then
+				if self.attack.dist > self.attack_range then
 					if not self.v_start then
 						self.v_start = true
 						self.set_velocity(self, self.run_velocity)
@@ -560,10 +570,14 @@ function mobs:register_mob(name, def)
 							if self.sounds and self.sounds.attack then
 								minetest.sound_play(self.sounds.attack, {object = self.object})
 							end
-							self.attack.player:punch(self.object, 1.0,  {
-								full_punch_interval=1.0,
-								damage_groups = {fleshy=self.damage}
-							}, vec)
+							if self.attack_function ~= nil then
+								self.attack_function(self,self.attack.player)
+							else 
+								self.attack.player:punch(self.object, 1.0,  {
+									full_punch_interval=1.0,
+									damage_groups = {fleshy=self.damage}
+								}, vec)
+							end
 							if self.attack.player:get_hp() <= 0 then
 								self.state = "stand"
 								self:set_animation("stand")
@@ -643,7 +657,7 @@ function mobs:register_mob(name, def)
 			self.object:setacceleration({x=0, y=-10, z=0})
 			self.state = "stand"
 			self.object:setvelocity({x=0, y=self.object:getvelocity().y, z=0})
-			self.object:setyaw(math.random(1, 360)/180*math.pi)
+			self.object:setyaw(((math.random(0,360)-270)/180*math.pi))
 			if self.type == "monster" and minetest.setting_getbool("only_peaceful_mobs") then
 				self.object:remove()
 			end
@@ -677,9 +691,9 @@ function mobs:register_mob(name, def)
 		end,
 		
 		on_punch = function(self, hitter, tflp, tool_capabilities, dir)
-      if tflp == nil then
-        tflp = 1
-      end
+			if tflp == nil then
+				tflp = 1
+			end
 			process_weapon(hitter,tflp,tool_capabilities)
 			
 			local pos = self.object:getpos()
@@ -769,7 +783,7 @@ function mobs:register_mob(name, def)
 					self.do_attack(self,hitter,1)
 				end
 				-- alert other NPCs to the attack
-				local inradius = minetest.get_objects_inside_radius(hitter:getpos(),5)
+				local inradius = minetest.get_objects_inside_radius(hitter:getpos(),10)
 				for _, oir in pairs(inradius) do
 					local obj = oir:get_luaentity()
 					if obj then
@@ -942,6 +956,7 @@ function mobs:face_pos(self,pos)
 		yaw = yaw+math.pi
 	end
 	self.object:setyaw(yaw)
+	--print("Yaw "..tostring(yaw))
 	return yaw
 end
 

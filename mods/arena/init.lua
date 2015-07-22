@@ -146,6 +146,7 @@ minetest.register_on_dieplayer(function (player)
 	if ( #events > 0 ) then
 		arena.die(player)
 	end	
+	return true
 end)
 
 function string:split(sep)

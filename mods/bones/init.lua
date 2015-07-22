@@ -197,7 +197,7 @@ function dump_bones(pos)
 	default.dump_inv(pos,"main")
 end
 
-minetest.register_on_dieplayer(function(player)
+function bones_on_dieplayer (player)
 	if minetest.setting_getbool("creative_mode") or minetest.check_player_privs(player:get_player_name(),{immortal=true}) then
 		player:set_hp(20)
 		return
@@ -264,4 +264,4 @@ minetest.register_on_dieplayer(function(player)
 	
 	local timer  = minetest.get_node_timer(pos)
 	timer:start(10)
-end)
+end

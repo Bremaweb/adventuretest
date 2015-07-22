@@ -104,6 +104,7 @@ local affect_tired = {
 		physics.adjust_physics(player,{speed=0.6})
 		minetest.chat_send_player(name,"You don't feel as tired anymore",false)
 	end,
+	removeOnDeath = true,
 }
 
 affects.registerAffect(affect_tired)
@@ -147,6 +148,7 @@ minetest.register_chatcommand("stand",{
 		if player_sleephuds[name] ~= nil then
 			player:hud_remove(player_sleephuds[name])
 			player_sleephuds[name] = nil
+			
 		end
 		physics.unfreeze_player(name)
 	end,
@@ -156,7 +158,7 @@ function energy.respawnplayer(player)
 	local name = player:get_player_name()
 	player_energy[name] = 20
 	player_lastpos[name] = player:getpos()
-	affects.removeAffect(name,"tired")
+	--affects.removeAffect(name,"tired")
 end
 
 minetest.register_on_joinplayer(function (player)

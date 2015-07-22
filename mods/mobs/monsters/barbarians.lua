@@ -127,6 +127,7 @@ mobs:register_mob("mobs:barbarian_archer", {
 	light_damage = 0,
 	on_rightclick = nil,
 	attack_type = "shoot",
+	attack_range = 15,
 	arrow_offset = 1.2,
 	arrow = "throwing:arrow_entity",
 	shoot_interval = 2.2,

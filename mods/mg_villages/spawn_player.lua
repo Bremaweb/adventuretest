@@ -40,8 +40,8 @@ minetest.register_on_newplayer(function(player)
 	spawnplayer(player)
 end)
 
-minetest.register_on_respawnplayer(function(player)
-	spawnplayer(player)
-	return true
-end)
+--minetest.register_on_respawnplayer(function(player)
+	--spawnplayer(player)
+	--return true
+--end)
 

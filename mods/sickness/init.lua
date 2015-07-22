@@ -1,4 +1,3 @@
-local prev_physics = {}
 local food_poisoning = {
 	affectid = "food_poisoning",
 	name = "Food Poisoning",
@@ -75,22 +74,18 @@ local food_poisoning = {
 	onremove = function(name, player, affectid)
 		physics.adjust_physics(player,{speed=0.2})
 		minetest.chat_send_player(name,"You are feeling much better",false)
-	end
-
+	end,
+	removeOnDeath = true,
 }
 
 function puke_physics(player)
 	local name = player:get_player_name()
-	prev_physics[name] = physics.get_player_physics(name)
-	player:set_physics_override({speed=0.01, jump=0})
+	physics.freeze_player(name)
 end
 
 function puke_reset(player)
 	local name = player:get_player_name()
-	if prev_physics[name] ~= nil then
-		player:set_physics_override(prev_physics[name])
-		prev_physics[name] = nil
-	end
+	physics.unfreeze_player(name)
 end
 
 affects.registerAffect(food_poisoning)

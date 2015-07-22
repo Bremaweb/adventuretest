@@ -23,8 +23,18 @@ local function adventuretest_respawnplayer(player)
   energy.respawnplayer(player)
   hunger.update_hunger(player, 20)
   sethome_respawnplayer(player)
+  affects.player_died(player)
+  return true
 end
 minetest.register_on_respawnplayer(adventuretest_respawnplayer)
+
+local function adventuretest_die_player(player)
+	bones_on_dieplayer(player)
+	skills_on_dieplayer(player)
+	return true
+end
+
+minetest.register_on_dieplayer(adventuretest_die_player)
 
 local function adventuretest_dignode(pos, node, digger)
   --print("on_dignode")

@@ -9,7 +9,11 @@ function affects.registerAffect( aDef )
 	if ( #aDef.stages < 1 ) then
 		return false
 	end
-		
+	
+	if aDef.removeOnDeath ~= nil then
+		table.insert(affects._removeOnDieAffects,aDef.affectid)
+	end
+	
 	-- TODO add more checks here to ensure the affect definition won't crash the server	
 	
 	affects._affects[aDef.affectid] = aDef
@@ -67,5 +71,12 @@ function affects.default_on_use(itemstack,player,pointed_thing)
 		itemstack:take_item()
 	end
 	return itemstack
+end
+
+function affects.player_died(player)
+	local name = player:get_player_name()
+	for _,a in ipairs(affects._removeOnDieAffects) do
+		affects.removeAffect(name,a)
+	end
 end
  

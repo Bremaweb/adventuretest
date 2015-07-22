@@ -1,9 +1,9 @@
 function applyAffect(name,affectid)
-	minetest.log("action","Applying affect "..affectid.." on "..name)
 	whoison.updateStats(name)
 	local player = minetest.get_player_by_name(name)
 	local oStage = affects._affectedPlayers[name][affectid].stage
 	local stageChange = false
+	minetest.log("action","Applying affect "..affectid.." stage " .. tostring(oStage) .. " on "..name)
 	-- see if they need advanced into the next stage	
 	if ( affects._affectedPlayers[name][affectid].nextStage < whoison.getTimeOnline(name) ) then
 		local nextStageNum = affects._affectedPlayers[name][affectid].stage + 1
@@ -57,9 +57,4 @@ function applyAffect(name,affectid)
 			stage.custom.func(name,player,affectid)
 		end
 	end	
-end
-
-function randomChance (percent) 
-	math.randomseed( os.time() )
-	return percent >= math.random(1, 100)                                          
 end
