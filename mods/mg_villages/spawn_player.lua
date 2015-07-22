@@ -1,6 +1,6 @@
 
 
-local function spawnplayer(player)
+function mg_villages.spawnplayer(player)
 	if( minetest.setting_get("static_spawnpoint")) then
 		return;
 	end

@@ -22,8 +22,12 @@ minetest.register_globalstep(adventuretest_globalstep)
 local function adventuretest_respawnplayer(player)
   energy.respawnplayer(player)
   hunger.update_hunger(player, 20)
-  sethome_respawnplayer(player)
   affects.player_died(player)
+  
+  if sethome_respawnplayer(player) == false then
+  	mg_villages.spawnplayer(player)
+  end
+  
   return true
 end
 minetest.register_on_respawnplayer(adventuretest_respawnplayer)
