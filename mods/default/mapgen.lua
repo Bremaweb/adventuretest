@@ -26,6 +26,7 @@ minetest.register_alias("mapgen_mese", "default:mese")
 minetest.register_alias("mapgen_desert_sand", "default:desert_sand")
 minetest.register_alias("mapgen_desert_stone", "default:desert_stone")
 minetest.register_alias("mapgen_stair_cobble", "stairs:stair_cobble")
+minetest.register_alias("mapgen_river_water_source","default:water_source")
 
 --
 -- Ore generation

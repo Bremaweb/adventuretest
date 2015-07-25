@@ -787,7 +787,7 @@ function mobs:register_mob(name, def)
 				for _, oir in pairs(inradius) do
 					local obj = oir:get_luaentity()
 					if obj then
-						if obj.group_attack == true and obj.state ~= "attack" then
+						if obj.group_attack == true and obj.state ~= "attack" and self.type == obj.type then
 							obj.do_attack(obj,hitter,1)
 						end
 					end

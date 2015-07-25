@@ -833,6 +833,8 @@ mg_villages.place_villages_via_voxelmanip = function( villages, minp, maxp, vm, 
 
 		if( not( village.is_single_house )) then
 			-- only add artificial snow if the village has at least a size of 15 (else it might look too artificial)
+			village.artificial_snow=0
+			--[[			
 			if( not( village.artificial_snow ) and village.vs > 15) then
 				if( mg_villages.artificial_snow_probability and math.random( 1, mg_villages.artificial_snow_probability )==1
 				    and minetest.registered_nodes['default:snow']) then
@@ -841,7 +843,7 @@ mg_villages.place_villages_via_voxelmanip = function( villages, minp, maxp, vm, 
 					village.artificial_snow = 0;
 				end
 			end
-	
+			]]
 			-- will set village_area to N where .. is:
 			--  2: a building
 			--  3: border around a building

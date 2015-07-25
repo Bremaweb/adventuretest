@@ -158,6 +158,7 @@ function energy.respawnplayer(player)
 	local name = player:get_player_name()
 	player_energy[name] = 20
 	player_lastpos[name] = player:getpos()
+	energy.update_energy(player,name)
 	--affects.removeAffect(name,"tired")
 end
 

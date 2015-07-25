@@ -49,7 +49,7 @@ mobs:register_mob("mobs:jungle_spider",{
 		self.attack.player:punch(self.object, 1.0,  {
 			full_punch_interval=1.0,
 			damage_groups = {fleshy=self.damage}
-		}, vec)
+		})
 		if randomChance(40) then
 			-- poison the player
 			affects.affectPlayer(target:get_player_name(),"spider_poison")

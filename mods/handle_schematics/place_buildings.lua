@@ -1,12 +1,16 @@
 -- TODO: this function also occours in replacements.lua
 handle_schematics.get_content_id_replaced = function( node_name, replacements )
-	if( not( node_name ) or not( replacements ) or not(replacements.table )) then
-		return minetest.get_content_id( 'ignore' );
+	if( not( replacements ) or not(replacements.table )) then
+		if not( node_name ) then
+			return minetest.get_content_id( 'ignore' );
+		else
+			return minetest.get_content_id( node_name );
+		end
 	end
 	if( replacements.table[ node_name ]) then
 		return minetest.get_content_id( replacements.table[ node_name ] );
 	else
-		return minetest.get_content_id( node_name );
+		return minetest.get_content_id( node_name )
 	end
 end
 
@@ -164,7 +168,7 @@ local function generate_building_translate_nodenames( nodenames, replacements, c
 			-- place a normal chest here
 			new_nodes[ i ].new_content   = cid.c_chest;
 			new_nodes[ i ].special_chest = node_name;
-			new_node_name = 'default:chest';
+			new_node_name = 'default:chest';			
 
 		elseif(new_node_name == 'cottages:chest_private'
 		   or  new_node_name == 'cottages:chest_work'
@@ -570,7 +574,7 @@ handle_schematics.place_buildings = function(village, minp, maxp, data, param2_d
 	cid.c_chest_spruce     = handle_schematics.get_content_id_replaced( 'trees:chest_spruce',     replacements );
 	cid.c_sign             = handle_schematics.get_content_id_replaced( 'default:sign_wall',      replacements );
 --print('REPLACEMENTS: '..minetest.serialize( replacements.table )..' CHEST: '..tostring( minetest.get_name_from_content_id( cid.c_chest ))); -- TODO
-
+	--print("Chest CID" ..tostring(cid.c_chest))
 	local extranodes = {}
 	local extra_calls = { on_constr = {}, trees = {}, chests = {}, signs = {}, traders = {} };
 

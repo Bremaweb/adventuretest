@@ -19,23 +19,18 @@ local function adventuretest_globalstep(dtime)
 end
 minetest.register_globalstep(adventuretest_globalstep)
 
-local function adventuretest_respawnplayer(player)
-  energy.respawnplayer(player)
-  hunger.update_hunger(player, 20)
-  affects.player_died(player)
-  
-  if sethome_respawnplayer(player) == false then
-  	mg_villages.spawnplayer(player)
-  end
-  
-  return true
-end
-minetest.register_on_respawnplayer(adventuretest_respawnplayer)
-
 local function adventuretest_die_player(player)
 	bones_on_dieplayer(player)
 	skills_on_dieplayer(player)
-	return true
+	energy.respawnplayer(player)
+  	hunger.update_hunger(player, 20)
+  	affects.player_died(player)
+  	player:set_hp(20)
+  	if sethome_respawnplayer(player) == false then  		
+  		mg_villages.spawnplayer(player)
+  	end
+  	print("on respawn")
+  	return true
 end
 
 minetest.register_on_dieplayer(adventuretest_die_player)

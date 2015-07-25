@@ -35,7 +35,7 @@ ADD_RCC({"default:ladder",                 20,  1, 2, church=1, library=1, shed=
         
 ADD_RCC({"default:coal_lump",              80, 30, 1, forge=1, shed=1, lumberjack=1, hut=1});
 ADD_RCC({"default:steel_ingot",            30,  4, 2, forge=1 });
-ADD_RCC({"default:mese_crystal_fragment",  10,  3, 1, forge=1, chest_storage=1 });
+--ADD_RCC({"default:mese_crystal_fragment",  10,  3, 1, forge=1, chest_storage=1 });
 
 ADD_RCC({"bucket:bucket_empty",            10,  3, 2, chest_work=1, forge=1, shed=1, hut=1 });
 ADD_RCC({"bucket:bucket_water",             5,  3, 2, chest_work=1, forge=1 });
@@ -158,30 +158,32 @@ mg_villages.fill_chest_random = function( pos, pr, building_nr, building_typ )
 	if( pos.typ_name ) then
 		typ = pos.typ_name;
 	end
-	if( not( typ ) or (typ ~= "default:chest" and typ ~= 'cottages:shelf' and typ ~= 'cottages:chest_work' and typ ~= 'cottages:chest_storage' and typ ~= 'cottages:chest_private' )) then
-		typ = building_data.typ;
-	else
-		typ = string.sub( typ, 10 );
+	if ( typ == "default:chest" ) then
+		typ = "chest_storage"
+	else 
+		if( not( typ ) or ( typ ~= 'cottages:shelf' and typ ~= 'cottages:chest_work' and typ ~= 'cottages:chest_storage' and typ ~= 'cottages:chest_private' )) then
+			typ = building_data.typ;
+		else
+			typ = string.sub( typ, 10 );
+		end
 	end
 	local typ2 = nil;
 	if( typ == 'cottages:chest_work' and building_data.typ ) then
 		typ2 = building_data.typ;
 	end
-	--print('FILLING chest of type '..tostring( typ )..' and '..tostring( typ2));
+	
 	if( not( typ ) or typ=='' ) then
+		--print('FILLING chest of type '..tostring( typ )..' and '..tostring( typ2).." at "..minetest.pos_to_string(pos));
 		return;
 	end
 	local inv_size = inv:get_size('main');
-	for i,v in ipairs( mg_villages.random_chest_content ) do
-		--print(v[1])
+	for i,v in ipairs( mg_villages.random_chest_content ) do		
 		-- repeat this many times
 		for count=1, v[ 4 ] do
-
 			-- to avoid too many things inside a chest, lower probability
 			if(     count<30 -- make sure it does not get too much and there is still room for a new stack
 			 and (v[ typ ] or (typ2 and v[ typ2 ]))
 			 and inv_size and inv_size > 0 and v[ 2 ] > pr:next( 1, 200 )) then
-	
 				--inv:add_item('main', v[ 1 ].." "..tostring( math.random( 1, tonumber(v[ 3 ]) )));
 				-- add itemstack at a random position in the chests inventory 
 				inv:set_stack( 'main', pr:next( 1, inv:get_size( 'main' )), v[ 1 ].." "..tostring( pr:next( 1, tonumber(v[ 3 ]) )) );

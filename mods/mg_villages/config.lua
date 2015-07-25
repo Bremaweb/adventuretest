@@ -148,7 +148,7 @@ mg_villages.prices = {
 -- know exactly what you are doing.
 -----------------------------------------------------------------------------
 -- if set to false, villages will not be integrated into the terrain - which looks very bad
-mg_villages.ENABLE_TERRAIN_BLEND = false;
+mg_villages.ENABLE_TERRAIN_BLEND = true;
 -- if set to false, holes digged by cavegen and mudflow inside the village will not be repaired; houses will be destroyed
 mg_villages.UNDO_CAVEGEN_AND_MUDFLOW = true;
 
@@ -161,8 +161,8 @@ mg_villages.VILLAGE_CHECK_COUNT = 1
 --mg_villages.VILLAGE_MAX_SIZE = 40
 mg_villages.VILLAGE_CHANCE = 28
 -- min and max size are only used in case of them beeing not provided by the village type (see buildings.lua)
-mg_villages.VILLAGE_MIN_SIZE = 25
-mg_villages.VILLAGE_MAX_SIZE = 90 --55
+mg_villages.VILLAGE_MIN_SIZE = 10
+mg_villages.VILLAGE_MAX_SIZE = 30 --55
 mg_villages.FIRST_ROADSIZE = 3
 mg_villages.BIG_ROAD_CHANCE = 0
 

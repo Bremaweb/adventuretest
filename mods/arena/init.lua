@@ -142,12 +142,12 @@ minetest.register_chatcommand("arena",{
 	
 })
 
-minetest.register_on_dieplayer(function (player)
-	if ( #events > 0 ) then
-		arena.die(player)
-	end	
-	return true
-end)
+--minetest.register_on_dieplayer(function (player)
+	--if ( #events > 0 ) then
+--		arena.die(player)
+	--end	
+	--return true
+--end)
 
 function string:split(sep)
         local sep, fields = sep or ":", {}
