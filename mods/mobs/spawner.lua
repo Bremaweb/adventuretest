@@ -136,8 +136,14 @@ local numNPCs = math.random(0,1)
 						mob = mob:get_luaentity()
 						local newHP = mob.hp_min + math.floor( mob.hp_max * distance_rating )
 						mob.object:set_hp( newHP )
-						local metatable = {  fields = { entity = barbarian, active_objects = 6 } }
+						--local metatable = {  fields = { entity = barbarian, active_objects = 6 } }
 						--table.insert(extranodes, {node={name="mobs:spawner",param1=0, param2=0}, pos=spawnerpos,mob="barbarian"})
+						minetest.set_node(spawnerpos,{name="mobs:spawner"})
+						local meta = minetest.get_meta(spawnerpos)
+						meta:set_string("entity","barbarian")
+						meta:set_string("infotext","barbarian")
+						meta:set_int("active_objects",6)
+						meta:set_int("active_objects_wider",8)
 					end
 				else
 					
@@ -147,8 +153,14 @@ local numNPCs = math.random(0,1)
 					if mob then
 						mob = mob:get_luaentity()
 						local p = mob.object:getpos()
-						--math.randomseed( ( p.x * p.y * p.z ) )
-						local metatable = {  fields = { entity = npc, active_objects = 6 } }
+						math.randomseed( ( p.x * p.y * p.z ) )
+						
+						minetest.set_node(spawnerpos,{name="mobs:spawner"})
+						local meta = minetest.get_meta(spawnerpos)
+						meta:set_string("entity","npc")
+						meta:set_string("infotext","npc")
+						meta:set_int("active_objects",6)
+						meta:set_int("active_objects_wider",8)
 						--table.insert(extranodes, {node={name="mobs:spawner",param1=0, param2=0}, pos=spawnerpos, mob="npc"})
 					end
 				end

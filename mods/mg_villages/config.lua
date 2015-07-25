@@ -9,7 +9,7 @@ mg_villages.ENABLE_VILLAGES = true;
 mg_villages.INVERSE_HOUSE_DENSITY = 0;
 
 -- cover some villages with artificial snow; probability: 1/mg_villages.artificial_snow_probability
-mg_villages.artificial_snow_probability = 10;
+mg_villages.artificial_snow_probability = 0;
 
 -- if set to true, soil around villaes will get special soil-snow instead of plant + snow cover
 mg_villages.use_soil_snow = false;
@@ -27,10 +27,10 @@ mg_villages.VILLAGE_DETECT_RANGE = 400;
 mg_villages.REQUIRE_PRIV_FOR_TELEPORT = true;
 
 -- if set to true, players cannot modify spawned villages without buying the house from the village first
-mg_villages.ENABLE_PROTECTION = true;
+mg_villages.ENABLE_PROTECTION = false;
 
 -- the first village - the one the player spawns in - will be of this type
-mg_villages.FIRST_VILLAGE_TYPE = 'medieval';
+mg_villages.FIRST_VILLAGE_TYPE = 'nore';
 
 -- choose the debug level you want
 mg_villages.DEBUG_LEVEL = mg_villages.DEBUG_LEVEL_NONE
@@ -148,7 +148,7 @@ mg_villages.prices = {
 -- know exactly what you are doing.
 -----------------------------------------------------------------------------
 -- if set to false, villages will not be integrated into the terrain - which looks very bad
-mg_villages.ENABLE_TERRAIN_BLEND = true;
+mg_villages.ENABLE_TERRAIN_BLEND = false;
 -- if set to false, holes digged by cavegen and mudflow inside the village will not be repaired; houses will be destroyed
 mg_villages.UNDO_CAVEGEN_AND_MUDFLOW = true;
 

@@ -285,7 +285,7 @@ local function generate_building(pos, minp, maxp, data, param2_data, a, extranod
 
 
 	if( not( pos.no_plotmarker )) then
-		generate_building_plotmarker( pos, minp, maxp, data, param2_data, a, cid, building_nr_in_bpos, village_id, binfo.scm );
+		--generate_building_plotmarker( pos, minp, maxp, data, param2_data, a, cid, building_nr_in_bpos, village_id, binfo.scm );
 	end
 
 	-- skip building if it is not located at least partly in the area that is currently beeing generated
