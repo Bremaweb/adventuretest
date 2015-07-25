@@ -324,6 +324,7 @@ minetest.register_craftitem("farming:seed_wheat", {
 	on_place = function(itemstack, placer, pointed_thing)
 		return place_seed(itemstack, placer, pointed_thing, "farming:wheat_1")
 	end,
+	ground = "farming:flour",
 })
 
 minetest.register_craftitem("farming:wheat", {

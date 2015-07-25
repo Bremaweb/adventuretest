@@ -245,7 +245,7 @@ minetest.register_node("cottages:threshing_floor", {
 
 minetest.register_node("cottages:handmill", {
 	drawtype = "nodebox",
-	description = S("mill, powered by punching"),
+	description = S("Mill, powered by punching"),
 	tiles = {"default_stone.png"},
 	paramtype  = "light",
         paramtype2 = "facedir",
@@ -297,15 +297,14 @@ minetest.register_node("cottages:handmill", {
 		meta:set_string("infotext", S("Mill, powered by punching (owned by %s)"):format(meta:get_string("owner") or ""));
                 meta:set_string("formspec",
                                "size[8,8]"..
-				"image[0,1;1,1;farming_wheat_seed.png]"..
                                 "list[current_name;seeds;1,1;1,1;]"..
                                 "list[current_name;flour;5,1;2,2;]"..
-					"label[0,0.5;"..S("Wheat seeds:").."]"..
-					"label[4,0.5;"..S("Flour:").."]"..
-					"label[0,-0.5;"..S("Mill").."]"..
-					"label[2.5,-0.5;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]"..
+					"label[0,0.5;"..S("Grind This:").."]"..
+					"label[4,0.5;"..S("Ground Object:").."]"..
+					"label[0,0.15;"..S("Mill").."]"..
+					"label[2.5,0.15;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]"..
 					"label[0,2.5;"..S("Punch this hand-driven mill").."]"..
-					"label[0,3.0;"..S("to convert wheat seeds into flour.").."]"..
+					"label[0,3.0;"..S("to grind various items.").."]"..
                                 "list[current_player;main;0,4;8,4;]");
         end,
 
@@ -335,14 +334,8 @@ minetest.register_node("cottages:handmill", {
 
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
-		-- only accept input the threshing floor can use/process
-		if(    listname=='flour'
-		    or (listname=='seeds' and stack and stack:get_name() ~= 'farming:seed_wheat' )) then
-			return 0;
-		end
-
-                if( player and player:get_player_name() ~= meta:get_string('owner' )) then
-                        return 0
+			if( player and player:get_player_name() ~= meta:get_string('owner' )) then
+        	return 0
 		end
 		return stack:get_count()
 	end,
@@ -369,33 +362,26 @@ minetest.register_node("cottages:handmill", {
 		local input = inv:get_list('seeds');
 		local stack1 = inv:get_stack( 'seeds', 1);
 
-		if(       (      stack1:is_empty())
-			or( not( stack1:is_empty()) and stack1:get_name() ~= 'farming:seed_wheat')) then
-
+		if( ( stack1:is_empty()) or( not( stack1:is_empty()) and stack1:get_definition().ground == nil )) then
+			if not( stack1:is_empty() ) then
+				minetest.chat_send_player(name,"Nothing happens...")
+			end
 			return;
 		end
 
-		-- turning the mill is a slow process; 1-21 flour are generated per turn
-		local anz = 1 + math.random( 0, 20 );
-		-- we already made sure there is only wheat inside
+		local anz = 1 + math.random( 0, 3 );
 		local found = stack1:get_count();
 		
-		-- do not process more wheat than present in the input slots
-		if( found < anz ) then
-			anz = found;
-		end
+		if( inv:room_for_item('flour',stack1:get_definition().ground.." "..tostring(anz))) then
 
+			inv:add_item("flour", stack1:get_definition().ground.." "..tostring(anz) );
+			inv:remove_item("seeds", stack1:get_name());
 
-		if(    inv:room_for_item('flour','farming:flour '..tostring( anz ))) then
-
-			inv:add_item("flour",'farming:flour '..tostring( anz ));
-			inv:remove_item("seeds", 'farming:seed_wheat '..tostring( anz ));
-
-			local anz_left = found - anz;
+			local anz_left = found - 1;
 			if( anz_left > 0 ) then
-				minetest.chat_send_player( name, S('You have grinded %s wheat seeds (%s are left).'):format(anz,anz_left));
+				minetest.chat_send_player( name, S('You have ground a %s (%s are left).'):format(stack1:get_definition().description,(anz_left)));
 			else
-				minetest.chat_send_player( name, S('You have grinded the last %s wheat seeds.'):format(anz));
+				minetest.chat_send_player( name, S('You have ground the last %s.'):format(stack1:get_definition().description));
 			end
 
 			-- if the version of MT is recent enough, rotate the mill a bit

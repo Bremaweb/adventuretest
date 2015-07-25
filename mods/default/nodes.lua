@@ -448,6 +448,7 @@ minetest.register_node("default:glass", {
 	is_ground_content = false,
 	groups = {cracky=3,oddly_breakable_by_hand=3},
 	sounds = default.node_sound_glass_defaults(),
+	ground = "vessels:glass_fragments",
 })
 
 minetest.register_node("default:fence_wood", {

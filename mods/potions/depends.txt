@@ -1,4 +1,6 @@
 affects
 bushes?
+flowers?
+bones?
 
 

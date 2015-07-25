@@ -129,8 +129,6 @@ local ground_items = {
 	{ "flowers:geranium", "ground_geranium", "Ground Geranium" },
 	{ "flowers:tulip", "ground_tulip", "Ground Tulip" },
 	{ "flowers:viola", "ground_viola", "Ground Viola" },
-	{ "flowers:seaweed", "ground_seaweed", "Ground Seaweed" },
-	{ "flowers:waterlily", "ground_waterlily", "Ground Waterlily" },
 	{ "bones:bones","ground_bones","Ground Bones" },
 	{ "flowers:magic", "ground_magic","Ground Magic Flower"}
 }
@@ -142,10 +140,14 @@ for _, data in pairs(ground_items) do
 		liquids_pointable = false,
 		inventory_image = "potions_"..data[2]..".png"
 	})
+	local gitem = "potions:"..data[2]
 	minetest.register_craft({
 		type="shapeless",
-		output="potions:"..data[2].." 2",
+		output=gitem,
 		recipe = {data[1]}
+	})
+	minetest.override_item(data[1], {
+		ground = gitem 
 	})
 end
 

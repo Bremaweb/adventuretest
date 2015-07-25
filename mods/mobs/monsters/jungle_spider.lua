@@ -140,4 +140,4 @@ function come_to(name)
 end
 
 mobs:register_spawn("mobs:jungle_spider", {"default:jungleleaves", "default:junglegrass"}, 22, -1, 5000, 4, 31000)
-mobs:register_spawn("mobs:jungle_spider", {"default:jungleleaves", "default:junglegrass"}, 7, -1, 2000, 6, 31000)
+mobs:register_spawn("mobs:jungle_spider", {"default:jungleleaves", "default:junglegrass"}, 10, -1, 2000, 6, 31000)
