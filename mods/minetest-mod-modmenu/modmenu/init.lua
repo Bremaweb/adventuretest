@@ -41,7 +41,9 @@ end
 --Parameters:
 --	name: name of player who will be shown the menu
 modmenu.show_menu = function(name)
-	minetest.show_formspec(name, "modmenu", modmenu.get_formspec(name))
+	local player = minetest.get_player_by_name(name)
+	minetest.show_formspec(name, "modmenu", player:get_inventory_formspec(name))
+	--minetest.show_formspec(name, "modmenu", modmenu.get_formspec(name))
 end
 
 --Register the /m command to show the menu

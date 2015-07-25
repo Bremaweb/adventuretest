@@ -49,6 +49,12 @@ local function inventory_set_formspec(player, size)
 	for i = 0, msize_x - 1, 1 do
 		formspec = formspec.."image["..(fsize_x-msize_x + i)..","..(fsize_y-msize_y)..";1,1;gui_hb_bg.png]"
 	end
+	
+	-- add the shortcut buttons
+	formspec = formspec .. "image_button[0.25,0.25;1,1;inventory_plus_zcg.png;zcg;]"
+	formspec = formspec .. "image_button[1.25,0.25;1,1;inventory_plus_skins.png;skins;]"
+	formspec = formspec .. "image_button[2.25,0.25;1,1;inventory_plus_armor.png;armor;]"
+	
 	player:set_inventory_formspec(formspec)
 end
 
