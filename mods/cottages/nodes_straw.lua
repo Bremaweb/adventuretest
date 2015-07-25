@@ -301,8 +301,8 @@ minetest.register_node("cottages:handmill", {
                                 "list[current_name;flour;5,1;2,2;]"..
 					"label[0,0.5;"..S("Grind This:").."]"..
 					"label[4,0.5;"..S("Ground Object:").."]"..
-					"label[0,0.15;"..S("Mill").."]"..
-					"label[2.5,0.15;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]"..
+					"label[0,0.1;"..S("Mill").."]"..
+					"label[2.5,0.1;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]"..
 					"label[0,2.5;"..S("Punch this hand-driven mill").."]"..
 					"label[0,3.0;"..S("to grind various items.").."]"..
                                 "list[current_player;main;0,4;8,4;]");

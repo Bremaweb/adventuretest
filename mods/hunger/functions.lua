@@ -122,6 +122,10 @@ if minetest.setting_getbool("enable_damage") then
 		for _,player in ipairs(minetest.get_connected_players()) do
 			local name = player:get_player_name()
 			local tab = hunger[name]
+			if minetest.check_player_privs(name, {immortal=true}) then
+				update_hunger(player,20)
+				return
+			end
 			if tab then
 				local hunger = tab.lvl
 				if hunger > 0 then
