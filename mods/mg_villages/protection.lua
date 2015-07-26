@@ -16,6 +16,10 @@ mg_villages.get_town_id_at_pos = function( pos )
 				   and minetest.registered_nodes[ node.name ].groups
 				   and minetest.registered_nodes[ node.name ].groups.leaves ) then
 					return nil;
+				elseif( node
+				   and node.name
+				   and node.name == 'bones:bones' ) then
+					return nil;
 				else
 					return id;
 				end

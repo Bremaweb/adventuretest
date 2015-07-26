@@ -27,7 +27,7 @@ mg_villages.VILLAGE_DETECT_RANGE = 400;
 mg_villages.REQUIRE_PRIV_FOR_TELEPORT = true;
 
 -- if set to true, players cannot modify spawned villages without buying the house from the village first
-mg_villages.ENABLE_PROTECTION = false;
+mg_villages.ENABLE_PROTECTION = true;
 
 -- the first village - the one the player spawns in - will be of this type
 mg_villages.FIRST_VILLAGE_TYPE = 'nore';
