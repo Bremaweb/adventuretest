@@ -21,15 +21,14 @@ minetest.register_globalstep(adventuretest_globalstep)
 
 local function adventuretest_die_player(player)
 	bones_on_dieplayer(player)
-	skills_on_dieplayer(player)
-	energy.respawnplayer(player)
+	skills_on_dieplayer(player)	
   	hunger.update_hunger(player, 20)
   	affects.player_died(player)
   	player:set_hp(20)
   	if sethome_respawnplayer(player) == false then  		
   		mg_villages.spawnplayer(player)
   	end
-  	print("on respawn")
+  	energy.respawnplayer(player)
   	return true
 end
 
