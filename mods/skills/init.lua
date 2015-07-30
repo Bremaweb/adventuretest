@@ -73,6 +73,10 @@ function skills.add_exp(name, exp)
 		skills.player_levels[name].level = skills.player_levels[name].level + 1
 		skills.player_levels[name].exp = skills.player_levels[name].exp - next_level
 		minetest.chat_send_player(name,"You have gained a level! You are now level "..tostring(skills.player_levels[name].level))
+		minetest.sound_play("levelup", {
+			to_player = name,
+			gain = 10.0,
+		})
 	end	
 end
 
