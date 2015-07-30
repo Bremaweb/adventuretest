@@ -700,7 +700,7 @@ function mobs:register_mob(name, def)
 			if self.object:get_hp() <= 0 then
 				if hitter and hitter:is_player() and hitter:get_inventory() then
 					for _,drop in ipairs(self.drops) do
-						if math.random(1, drop.chance) == 1 then
+						if math.random(1, 100) < drop.chance then
 							local d = ItemStack(drop.name.." "..math.random(drop.min, drop.max))
 							default.drop_item(pos,d)
 						end

@@ -120,6 +120,19 @@ minetest.register_craftitem("potions:magic_replenish3", {
 	end,
 })
 
+minetest.register_craftitem("potions:antidote",{
+	description = "Jungle Spider Poison Antidote",
+	stack_max = 1,
+	liquids_pointable = false,
+	inventory_image = "potions_antidote.png",	
+	on_use = function ( itemstack, player, pointed_thing )
+		local name = player:get_player_name()
+		affects.removeAffect(name,"spider_poison")
+		itemstack:take_item()
+		return itemstack
+	end,
+})
+
 
 
 local ground_items = {
@@ -194,5 +207,12 @@ minetest.register_craft({
 	type="shapeless",
 	output="potions:bones",
 	recipe = {"potions:ground_bones","vessels:glass_bottle","bucket:bucket_water","potions:ground_magic"},
+	replacements = { { "bucket:bucket_water","bucket:bucket_empty" } },
+})
+
+minetest.register_craft({
+	type="shapeless",
+	output="potions:antidote",
+	recipe = {"mobs:jungle_spider_fang","vessels:glass_bottle","bucket:bucket_water","potions:ground_rose"},
 	replacements = { { "bucket:bucket_water","bucket:bucket_empty" } },
 })

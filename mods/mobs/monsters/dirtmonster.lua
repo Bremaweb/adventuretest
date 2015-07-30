@@ -14,12 +14,7 @@ mobs:register_mob("mobs:dirt_monster", {
 	walk_velocity = 1.25,
 	run_velocity = 3.75,
 	damage = 2,
-	drops = {
-		{name = "default:dirt",
-		chance = 1,
-		min = 3,
-		max = 5,},
-	},
+	drops = { },
 	armor = 100,
 	drawtype = "front",
 	water_damage = 1,

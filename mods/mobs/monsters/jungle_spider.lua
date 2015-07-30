@@ -17,9 +17,15 @@ mobs:register_mob("mobs:jungle_spider",{
 	damage = 1,
 	drops = {
 		{name = "farming:string",
-		chance = 70,
+		chance = 40,
 		min = 3,
 		max = 6,},
+		
+		{name = "mobs:jungle_spider_fang",
+		chance = 70,
+		min = 1,
+		max = 2,
+		},
 	},
     light_resistant = false,
 	drawtype = "front",
@@ -138,6 +144,14 @@ end
 function come_to(name)
 	physics.unfreeze_player(name)
 end
+
+minetest.register_craftitem("mobs:jungle_spider_fang",{
+	description = "Jungle Spider Fang",
+	stack_max = 99,
+	liquids_pointable = false,
+	inventory_image = "mobs_jungle_spider_fang.png",
+})
+
 
 mobs:register_spawn("mobs:jungle_spider", {"default:jungleleaves", "default:junglegrass"}, 22, -1, 5000, 4, 31000)
 mobs:register_spawn("mobs:jungle_spider", {"default:jungleleaves", "default:junglegrass"}, 10, -1, 2000, 6, 31000)

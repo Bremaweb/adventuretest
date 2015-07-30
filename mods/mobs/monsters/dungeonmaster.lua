@@ -16,7 +16,7 @@ mobs:register_mob("mobs:dungeon_master", {
 	damage = 4,
 	drops = {
 		{name = "default:mese",
-		chance = 100,
+		chance = 65,
 		min = 1,
 		max = 2,},
 	},

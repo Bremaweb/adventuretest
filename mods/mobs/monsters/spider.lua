@@ -17,7 +17,7 @@ mobs:register_mob("mobs:spider",{
 	damage = 3,
 	drops = {
 		{name = "farming:string",
-		chance = 70,
+		chance = 40,
 		min = 3,
 		max = 6,},
 	},
