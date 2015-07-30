@@ -21,7 +21,7 @@ function energy.update_energy(p,name)
 				local anim = default.player_get_animation(p)
 				local adj = 0.2
 				if anim.animation == "lay" then
-					adj = adj + 0.75
+					adj = adj + 1.15
 					if math.random(0,4) == 1 then
 						minetest.sound_play("default_snore",{object=p})
 					end
@@ -72,6 +72,7 @@ function energy.update_energy(p,name)
 				  if player_stamina[name] < 0.65 then
 				    player_stamina[name] = player_stamina[name] + 0.003
 				    --print("Boosted player stamina "..tostring(player_stamina[name]))
+				    default.serialize_to_file(stamina_file,player_stamina)
 				  end
 				end
 				if player_energy[name] < 2 then
