@@ -35,7 +35,7 @@ minetest.register_biome({
 	node_top = "default:sand",
 	depth_top = 1,
 	node_filler = "default:sandstone",
-	depth_filler = 15,
+	depth_filler = 5,
 	node_dust = "air",
 	node_underwater = "default:sand",
 	y_min = -25,
@@ -47,15 +47,15 @@ minetest.register_biome({
 
 minetest.register_biome({
 	name = "gravelbar",	
-	node_top = "default:gravel",
+	node_top = "default:river_gravel",
 	depth_top = 1,
 	node_filler = "default:gravel",
 	depth_filler = 2,
-	node_dust = "air",
+	--node_dust = "air",
 	node_underwater = "default:dirt",
 	y_min = -25,
 	y_max = 1,
-	node_shore_filler = "default:gravel",
+	--node_shore_filler = "default:gravel",
 	heat_point = 45,
 	humidity_point = 45,
 })
@@ -78,7 +78,7 @@ minetest.register_biome({
 
 minetest.register_biome({
 	name = "forest_gravelbar",	
-	node_top = "default:gravel",
+	node_top = "default:river_gravel",
 	depth_top = 1,
 	node_filler = "default:gravel",
 	depth_filler = 2,
@@ -137,7 +137,7 @@ minetest.register_biome({
 	y_min = 1,
 	y_max = 230,
 	heat_point = 95,
-	humidity_point = 45,
+	humidity_point = 50,
 })
 
 minetest.register_biome({
@@ -173,6 +173,41 @@ minetest.register_biome({
 	heat_point = 10,
 	humidity_point = 40,
 })
+
+minetest.register_biome({
+	name = "artic",
+	--node_dust = "",
+	node_top = "default:snowblock",
+	depth_top = 5,
+	node_filler = "default:dirt",
+	depth_filler = 4,
+	node_stone = "default:stone",
+	node_water_top = "default:ice",
+	depth_water_top = 10,
+	--node_water = "",
+	y_min = -15,
+	y_max = 230,
+	heat_point = -10,
+	humidity_point = 20,
+})
+
+minetest.register_biome({
+	name = "doom",
+	--node_dust = "",
+	node_top = "default:dirt",
+	depth_top = 1,
+	node_filler = "default:dirt",
+	depth_filler = 4,
+	node_stone = "default:stone",
+	node_water_top = "default:lavasource",
+	depth_water_top = 2,
+	node_water = "default:lavasource",
+	y_min = -25,
+	y_max = 31000,
+	heat_point = 115,
+	humidity_point = 100,
+})
+
 
 minetest.register_biome({
 	name = "jungle",
