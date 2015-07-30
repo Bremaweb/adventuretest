@@ -376,10 +376,10 @@ function default.drop_item(pos,itemstack,vel,acc)
 	local x = math.random(0, 15)/10 - 0.5
 	local z = math.random(0, 15)/10 - 0.5
 	--local y = math.random(0, 15)/10 - 2
-	local np = pos
-	np.x = np.x + x
-	np.z = np.z + z
-	np.y = np.y + .25
+	local np = { }
+	np.x = pos.x + x
+	np.z = pos.z + z
+	np.y = pos.y + .25
 	local obj = minetest.add_item(np, itemstack)
 	if obj then
 		obj:get_luaentity().collect = true

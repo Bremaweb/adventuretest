@@ -83,6 +83,7 @@ local spider_poison = {
 							ny = ny * 0.15
 						end
 						player:set_look_yaw(ny)
+						minetest.chat_send_player(name,"You feel a little dizzy")
 					end}
 				},
 				{
@@ -101,6 +102,7 @@ local spider_poison = {
 						h = h - 2
 						hunger.update_hunger(player,h)
 						player_energy[name] = player_energy[name] - 2
+						minetest.chat_send_player(name,"You feel a very dizzy")
 					end
 					},
 				},
@@ -123,6 +125,7 @@ local spider_poison = {
 						if randomChance(40) then
 							pass_out(name,player)
 						end
+						minetest.chat_send_player(name,"You can hardly stand...")
 					end
 					},
 				},

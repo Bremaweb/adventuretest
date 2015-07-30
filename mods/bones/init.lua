@@ -164,28 +164,24 @@ minetest.register_node("bones:bones", {
 	on_timer = function(pos, elapsed)
 		local meta = minetest.get_meta(pos)
 		local time = meta:get_int("time")+elapsed
-		local publish = 1200
-		local delete = 2400
-		if tonumber(minetest.setting_get("share_bones_time")) then
-			publish = tonumber(minetest.setting_get("share_bones_time"))
-		end
-		if publish == 0 then
-			return
-		end
-		if time >= publish then
+		meta:set_int("time",time)
+		local publish = 1800
+		local delete = 7200
+
+		if time >= publish and meta:get_string("owner") ~= "" then
 			meta:set_string("infotext", meta:get_string("owner").."'s old bones")
 			meta:set_string("owner", "")
-			return
 		end
 		
 		if time >= delete then
-			inv = meta:get_inventory()
+			local inv = meta:get_inventory()
 			if inv:is_empty("main") == false then
 				dump_bones(pos)
 			end
-			minetest.remove_node(pos)
+			minetest.after(5,minetest.remove_node,pos)
 			player_bones[meta:get_string("owner")] = nil
 			default.serialize_to_file(bone_file,player_bones)
+			return false
 		end
 		
 		return true
