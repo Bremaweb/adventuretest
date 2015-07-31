@@ -21,85 +21,14 @@
 
 -- TODO: option so that it works without nodeboxes
 
--- Boilerplate to support localized strings if intllib mod is installed.
-local S
-if intllib then
-  S = intllib.Getter()
-else
-  S = function(s) return s end
-end
+local S = cottages.S
 
 barrel = {};
-
-barrel.make_pipe = function( pipes, horizontal )
-
-   local result = {};
-   for i, v in pairs( pipes ) do
- 
-      local f  = v.f;
-      local h1 = v.h1;
-      local h2 = v.h2;
-      if( not( v.b ) or v.b == 0 ) then
- 
-         table.insert( result,   {-0.37*f,  h1,-0.37*f, -0.28*f, h2,-0.28*f});
-         table.insert( result,   {-0.37*f,  h1, 0.28*f, -0.28*f, h2, 0.37*f});
-         table.insert( result,   { 0.37*f,  h1,-0.28*f,  0.28*f, h2,-0.37*f});
-         table.insert( result,   { 0.37*f,  h1, 0.37*f,  0.28*f, h2, 0.28*f});
-
-
-         table.insert( result,   {-0.30*f,  h1,-0.42*f, -0.20*f, h2,-0.34*f});
-         table.insert( result,   {-0.30*f,  h1, 0.34*f, -0.20*f, h2, 0.42*f});
-         table.insert( result,   { 0.20*f,  h1,-0.42*f,  0.30*f, h2,-0.34*f});
-         table.insert( result,   { 0.20*f,  h1, 0.34*f,  0.30*f, h2, 0.42*f});
-
-         table.insert( result,   {-0.42*f,  h1,-0.30*f, -0.34*f, h2,-0.20*f});
-         table.insert( result,   { 0.34*f,  h1,-0.30*f,  0.42*f, h2,-0.20*f});
-         table.insert( result,   {-0.42*f,  h1, 0.20*f, -0.34*f, h2, 0.30*f});
-         table.insert( result,   { 0.34*f,  h1, 0.20*f,  0.42*f, h2, 0.30*f});
-
-
-         table.insert( result,   {-0.25*f,  h1,-0.45*f, -0.10*f, h2,-0.40*f});
-         table.insert( result,   {-0.25*f,  h1, 0.40*f, -0.10*f, h2, 0.45*f});
-         table.insert( result,   { 0.10*f,  h1,-0.45*f,  0.25*f, h2,-0.40*f});
-         table.insert( result,   { 0.10*f,  h1, 0.40*f,  0.25*f, h2, 0.45*f});
-
-         table.insert( result,   {-0.45*f,  h1,-0.25*f, -0.40*f, h2,-0.10*f});
-         table.insert( result,   { 0.40*f,  h1,-0.25*f,  0.45*f, h2,-0.10*f});
-         table.insert( result,   {-0.45*f,  h1, 0.10*f, -0.40*f, h2, 0.25*f});
-         table.insert( result,   { 0.40*f,  h1, 0.10*f,  0.45*f, h2, 0.25*f});
-
-         table.insert( result,   {-0.15*f,  h1,-0.50*f,  0.15*f, h2,-0.45*f});
-         table.insert( result,   {-0.15*f,  h1, 0.45*f,  0.15*f, h2, 0.50*f});
-
-         table.insert( result,   {-0.50*f,  h1,-0.15*f, -0.45*f, h2, 0.15*f});
-         table.insert( result,   { 0.45*f,  h1,-0.15*f,  0.50*f, h2, 0.15*f});
- 
-      -- filled horizontal part
-      else
-         table.insert( result,   {-0.35*f,  h1,-0.40*f,  0.35*f, h2,0.40*f});
-         table.insert( result,   {-0.40*f,  h1,-0.35*f,  0.40*f, h2,0.35*f});
-         table.insert( result,   {-0.25*f,  h1,-0.45*f,  0.25*f, h2,0.45*f});
-         table.insert( result,   {-0.45*f,  h1,-0.25*f,  0.45*f, h2,0.25*f});
-         table.insert( result,   {-0.15*f,  h1,-0.50*f,  0.15*f, h2,0.50*f});
-         table.insert( result,   {-0.50*f,  h1,-0.15*f,  0.50*f, h2,0.15*f});
-      end
-   end
-
-   -- make the whole thing horizontal
-   if( horizontal == 1 ) then
-      for i,v in ipairs( result ) do
-         result[ i ] = { v[2], v[1], v[3],   v[5], v[4], v[6] };
-      end
-   end
-
-   return result;
-end
-
 
 -- prepare formspec
 barrel.on_construct = function( pos )
 
-   local meta = minetest.env:get_meta(pos);
+   local meta = minetest.get_meta(pos);
    local percent = math.random( 1, 100 ); -- TODO: show real filling
 
    meta:set_string( 'formspec', 
@@ -125,7 +54,7 @@ end
 -- can only be digged if there are no more vessels/buckets in any of the slots
 -- TODO: allow digging of a filled barrel? this would disallow stacking of them
 barrel.can_dig = function( pos, player )
-   local  meta = minetest.env:get_meta(pos);
+   local  meta = minetest.get_meta(pos);
    local  inv = meta:get_inventory()
 
    return ( inv:is_empty('input')
@@ -142,25 +71,18 @@ end
         minetest.register_node("cottages:barrel", {
                 description = S("barrel (closed)"),
                 paramtype = "light",
-                tiles = {"cottages_minimal_wood.png","cottages_minimal_wood.png","cottages_barrel.png"}, -- "default_tree_top.png", "default_tree_top.png", "default_tree.png"},
-                is_ground_content = true,
-                drawtype = "nodebox",
-                node_box = {
-                        type = "fixed",
-                        fixed = barrel.make_pipe( { {f=0.9,h1=-0.2,h2=0.2,b=0}, {f=0.75,h1=-0.50,h2=-0.35,b=0}, {f=0.75,h1=0.35,h2=0.5,b=0},
-                                                                                          {f=0.82,h1=-0.35,h2=-0.2,b=0},  {f=0.82,h1=0.2, h2=0.35,b=0},
-                                                                                          {f=0.75,h1= 0.37,h2= 0.42,b=1},   -- top closed
-                                                                                          {f=0.75,h1=-0.42,h2=-0.37,b=1}}, 0 ), -- bottom closed
-                },
+                drawtype = "mesh",
+				mesh = "cottages_barrel_closed.obj",
+                tiles = {"cottages_barrel.png" },
                 groups = { tree = 1, snappy = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2
                 },
 		drop = "cottages:barrel",
 --                on_rightclick = function(pos, node, puncher)
---                    minetest.env:add_node(pos, {name = "cottages:barrel_open", param2 = node.param2})
+--                    minetest.add_node(pos, {name = "cottages:barrel_open", param2 = node.param2})
 --                end,
 -- TODO: on_rightclick is no longer available - maybe open if empty and closed if full?
                 on_punch      = function(pos, node, puncher)
-                    minetest.env:add_node(pos, {name = "cottages:barrel_lying", param2 = node.param2})
+                    minetest.add_node(pos, {name = "cottages:barrel_lying", param2 = node.param2})
                 end,
 
                 on_construct = function( pos )
@@ -171,7 +93,8 @@ end
                 end,
                 on_metadata_inventory_put = function(pos, listname, index, stack, player)
                    return barrel.on_metadata_inventory_put( pos, listname, index, stack, player );
-                end
+                end,
+		is_ground_content = false,
 
         })
 
@@ -179,85 +102,67 @@ end
         minetest.register_node("cottages:barrel_open", {
                 description = S("barrel (open)"),
                 paramtype = "light",
-                tiles = {"cottages_minimal_wood.png","cottages_minimal_wood.png","cottages_barrel.png"},--"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
-                is_ground_content = true,
-                drawtype = "nodebox",
-                node_box = {
-                        type = "fixed",
-                        fixed = barrel.make_pipe( { {f=0.9,h1=-0.2,h2=0.2,b=0}, {f=0.75,h1=-0.50,h2=-0.35,b=0}, {f=0.75,h1=0.35,h2=0.5,b=0},
-                                                                                          {f=0.82,h1=-0.35,h2=-0.2,b=0},  {f=0.82,h1=0.2, h2=0.35,b=0},
---                                                                                          {f=0.75,h1= 0.37,h2= 0.42,b=1},   -- top closed
-                                                                                          {f=0.75,h1=-0.42,h2=-0.37,b=1}}, 0 ), -- bottom closed
-                },
-                groups = { tree = 1, snappy = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2
+                drawtype = "mesh",
+				mesh = "cottages_barrel.obj",
+                tiles = {"cottages_barrel.png" },
+                groups = { tree = 1, snappy = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2, not_in_creative_inventory=1,
                 },
 		drop = "cottages:barrel",
 --                on_rightclick = function(pos, node, puncher)
---                    minetest.env:add_node(pos, {name = "cottages:barrel", param2 = node.param2})
+--                    minetest.add_node(pos, {name = "cottages:barrel", param2 = node.param2})
 --                end,
                 on_punch      = function(pos, node, puncher)
-                    minetest.env:add_node(pos, {name = "cottages:barrel_lying_open", param2 = node.param2})
+                    minetest.add_node(pos, {name = "cottages:barrel_lying_open", param2 = node.param2})
                 end,
+		is_ground_content = false,
         })
 
         -- horizontal barrel
         minetest.register_node("cottages:barrel_lying", {
                 description = S("barrel (closed), lying somewhere"),
                 paramtype = "light",
-	        paramtype2 = "facedir",
-                tiles = {"cottages_barrel_lying.png","cottages_barrel_lying.png","cottages_minimal_wood.png","cottages_minimal_wood.png","cottages_barrel_lying.png"},--"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
-                is_ground_content = true,
-                drawtype = "nodebox",
-                node_box = {
-                        type = "fixed",
-                        fixed = barrel.make_pipe( { {f=0.9,h1=-0.2,h2=0.2,b=0}, {f=0.75,h1=-0.50,h2=-0.35,b=0}, {f=0.75,h1=0.35,h2=0.5,b=0},
-                                                                                          {f=0.82,h1=-0.35,h2=-0.2,b=0},  {f=0.82,h1=0.2, h2=0.35,b=0},
-                                                                                          {f=0.75,h1= 0.37,h2= 0.42,b=1},   -- top closed
-                                                                                          {f=0.75,h1=-0.42,h2=-0.37,b=1}}, 1 ), -- bottom closed
-                },
-                groups = { tree = 1, snappy = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2
+	            paramtype2 = "facedir",
+                drawtype = "mesh",
+				mesh = "cottages_barrel_closed_lying.obj",
+                tiles = {"cottages_barrel.png" },
+                groups = { tree = 1, snappy = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2, not_in_creative_inventory=1,
                 },
 		drop = "cottages:barrel",
                 on_rightclick = function(pos, node, puncher)
-                    minetest.env:add_node(pos, {name = "cottages:barrel_lying_open", param2 = node.param2})
+                    minetest.add_node(pos, {name = "cottages:barrel_lying_open", param2 = node.param2})
                 end,
                 on_punch      = function(pos, node, puncher)
                     if( node.param2 < 4 ) then
-                       minetest.env:add_node(pos, {name = "cottages:barrel_lying", param2 = (node.param2+1)})
+                       minetest.add_node(pos, {name = "cottages:barrel_lying", param2 = (node.param2+1)})
                     else
-                       minetest.env:add_node(pos, {name = "cottages:barrel", param2 = 0})
+                       minetest.add_node(pos, {name = "cottages:barrel", param2 = 0})
                     end
                 end,
+		is_ground_content = false,
         })
 
         -- horizontal barrel, open
         minetest.register_node("cottages:barrel_lying_open", {
                 description = S("barrel (opened), lying somewhere"),
                 paramtype = "light",
-	        paramtype2 = "facedir",
-                tiles = {"cottages_barrel_lying.png","cottages_barrel_lying.png","cottages_minimal_wood.png","cottages_minimal_wood.png","cottages_barrel_lying.png"},--"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
-                is_ground_content = true,
-                drawtype = "nodebox",
-                node_box = {
-                        type = "fixed",
-                        fixed = barrel.make_pipe( { {f=0.9,h1=-0.2,h2=0.2,b=0}, {f=0.75,h1=-0.50,h2=-0.35,b=0}, {f=0.75,h1=0.35,h2=0.5,b=0},
-                                                                                          {f=0.82,h1=-0.35,h2=-0.2,b=0},  {f=0.82,h1=0.2, h2=0.35,b=0},
---                                                                                          {f=0.75,h1= 0.37,h2= 0.42,b=1},   -- top closed
-                                                                                          {f=0.75,h1=-0.42,h2=-0.37,b=1}}, 1 ), -- bottom closed
-                },
-                groups = { tree = 1, snappy = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2
+	            paramtype2 = "facedir",
+                drawtype = "mesh",
+				mesh = "cottages_barrel_lying.obj",
+                tiles = {"cottages_barrel.png" },
+                groups = { tree = 1, snappy = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2, not_in_creative_inventory=1,
                 },
 		drop = "cottages:barrel",
                 on_rightclick = function(pos, node, puncher)
-                    minetest.env:add_node(pos, {name = "cottages:barrel_lying", param2 = node.param2})
+                    minetest.add_node(pos, {name = "cottages:barrel_lying", param2 = node.param2})
                 end,
                 on_punch      = function(pos, node, puncher)
                     if( node.param2 < 4 ) then
-                       minetest.env:add_node(pos, {name = "cottages:barrel_lying_open", param2 = (node.param2+1)})
+                       minetest.add_node(pos, {name = "cottages:barrel_lying_open", param2 = (node.param2+1)})
                     else
-                       minetest.env:add_node(pos, {name = "cottages:barrel_open", param2 = 0})
+                       minetest.add_node(pos, {name = "cottages:barrel_open", param2 = 0})
                     end
                 end,
+		is_ground_content = false,
 
         })
 
@@ -265,24 +170,21 @@ end
         minetest.register_node("cottages:tub", {
                 description = S("tub"),
                 paramtype = "light",
-                tiles = {"cottages_minimal_wood.png","cottages_minimal_wood.png","cottages_barrel.png"},--"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
-                is_ground_content = true,
-                drawtype = "nodebox",
-                node_box = {
-                        type = "fixed",
-                        fixed = barrel.make_pipe( { {f=1.0,h1=-0.5,h2=0.0,b=0}, {f=1.0,h1=-0.46,h2=-0.41,b=1}}, 0 ),
-                },
+                drawtype = "mesh",
+				mesh = "cottages_tub.obj",
+                tiles = {"cottages_barrel.png" },
                 groups = { tree = 1, snappy = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2
                 },
+		is_ground_content = false,
         })
 
 
 minetest.register_craft({
 	output = "cottages:barrel",
 	recipe = {
-		{"default:wood",        "",              "default:wood" },
-		{"default:steel_ingot", "",              "default:steel_ingot"},
-		{"default:wood",        "default:wood",  "default:wood" },
+		{cottages.craftitem_wood,          "",              cottages.craftitem_wood },
+		{cottages.craftitem_steel, "",              cottages.craftitem_steel},
+		{cottages.craftitem_wood,          cottages.craftitem_wood,    cottages.craftitem_wood },
 	},
 })
 

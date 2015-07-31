@@ -1,23 +1,71 @@
-minetest.register_entity(":__builtin:item", {
+-- Minetest: builtin/item_entity.lua (5th July 2015)
+
+function core.spawn_item(pos, item)
+	-- Take item in any format
+	local stack = ItemStack(item)
+	local obj = core.add_entity(pos, "__builtin:item")
+	obj:get_luaentity():set_item(stack:to_string())
+	return obj
+end
+
+-- If item_entity_ttl is not set, enity will have default life time 
+-- Setting it to -1 disables the feature
+
+local time_to_live = tonumber(core.setting_get("item_entity_ttl")) or 180 -- 3 mins
+
+-- If destroy_item is 1 then dropped items will burn inside lava
+
+local destroy_item = tonumber(core.setting_get("destroy_item")) or 1
+
+-- Particle effects when item removed
+
+local function add_effects(pos)
+	minetest.add_particlespawner({
+		amount = 1,
+		time = 0.25,
+		minpos = pos,
+		maxpos = pos,
+		minvel = {x = -1, y = 2, z = -1},
+		maxvel = {x = 1, y = 5, z = 1},
+		minacc = vector.new(),
+		maxacc = vector.new(),
+		minexptime = 1,
+		maxexptime = 3,
+		minsize = 1,
+		maxsize = 4,
+		texture = "tnt_smoke.png",
+	})
+end
+
+core.register_entity(":__builtin:item", {
 	initial_properties = {
 		hp_max = 1,
 		physical = true,
-		collisionbox = {-0.17,-0.17,-0.17, 0.17,0.17,0.17},
-		visual = "sprite",
-		visual_size = {x=0.5, y=0.5},
+		collide_with_objects = false,
+		collisionbox = {-0.3, -0.3, -0.3, 0.3, 0.3, 0.3},
+		visual = "wielditem",
+		visual_size = {x = 0.4, y = 0.4},
 		textures = {""},
-		spritediv = {x=1, y=1},
-		initial_sprite_basepos = {x=0, y=0},
+		spritediv = {x = 1, y = 1},
+		initial_sprite_basepos = {x = 0, y = 0},
 		is_visible = false,
-		timer = 0,
 	},
-	
+
 	itemstring = '',
 	physical_state = true,
+	age = 0,
 
 	set_item = function(self, itemstring)
 		self.itemstring = itemstring
 		local stack = ItemStack(itemstring)
+		local count = stack:get_count()
+		local max_count = stack:get_stack_max()
+		if count > max_count then
+			count = max_count
+			self.itemstring = stack:get_name().." "..max_count
+		end
+		local s = 0.2 + 0.1 * (count / max_count)
+		local c = s
 		local itemtable = stack:to_table()
 		local itemname = nil
 		if itemtable then
@@ -25,90 +73,218 @@ minetest.register_entity(":__builtin:item", {
 		end
 		local item_texture = nil
 		local item_type = ""
-		if minetest.registered_items[itemname] then
-			item_texture = minetest.registered_items[itemname].inventory_image
-			item_type = minetest.registered_items[itemname].type
+		if core.registered_items[itemname] then
+			item_texture = core.registered_items[itemname].inventory_image
+			item_type = core.registered_items[itemname].type
 		end
 		local prop = {
 			is_visible = true,
-			visual = "sprite",
-			textures = {"unknown_item.png"}
+			visual = "wielditem",
+			textures = {itemname},
+			visual_size = {x = s, y = s},
+			collisionbox = {-c, -c, -c, c, c, c},
+			automatic_rotate = math.pi * 0.5,
 		}
-		if item_texture and item_texture ~= "" then
-			prop.visual = "sprite"
-			prop.textures = {item_texture}
-			prop.visual_size = {x=0.50, y=0.50}
-		else
-			prop.visual = "wielditem"
-			prop.textures = {itemname}
-			prop.visual_size = {x=0.20, y=0.20}
-			prop.automatic_rotate = math.pi * 0.25
-		end
 		self.object:set_properties(prop)
 	end,
 
 	get_staticdata = function(self)
-		--return self.itemstring
-		return minetest.serialize({
+		return core.serialize({
 			itemstring = self.itemstring,
 			always_collect = self.always_collect,
-			timer = self.timer,
+			age = self.age
 		})
 	end,
 
 	on_activate = function(self, staticdata, dtime_s)
 		if string.sub(staticdata, 1, string.len("return")) == "return" then
-			local data = minetest.deserialize(staticdata)
+			local data = core.deserialize(staticdata)
 			if data and type(data) == "table" then
 				self.itemstring = data.itemstring
 				self.always_collect = data.always_collect
-				self.timer = data.timer
-				if not self.timer then
-					self.timer = 0
+				if data.age then 
+					self.age = data.age + dtime_s
+				else
+					self.age = dtime_s
 				end
-				self.timer = self.timer+dtime_s
 			end
 		else
 			self.itemstring = staticdata
 		end
-		self.object:set_armor_groups({immortal=1})
-		self.object:setvelocity({x=0, y=2, z=0})
-		self.object:setacceleration({x=0, y=-10, z=0})
+		self.object:set_armor_groups({immortal = 1})
+		self.object:setvelocity({x = 0, y = 2, z = 0})
+		self.object:setacceleration({x = 0, y = -10, z = 0})
 		self:set_item(self.itemstring)
 	end,
-	
+
+	try_merge_with = function(self, own_stack, object, obj)
+		local stack = ItemStack(obj.itemstring)
+		if own_stack:get_name() == stack:get_name() and stack:get_free_space() > 0 then
+			local overflow = false
+			local count = stack:get_count() + own_stack:get_count()
+			local max_count = stack:get_stack_max()
+			if count > max_count then
+				overflow = true
+				count = count - max_count
+			else
+				self.itemstring = ''
+			end
+			local pos = object:getpos()
+			pos.y = pos.y + (count - stack:get_count()) / max_count * 0.15
+			object:moveto(pos, false)
+			local s, c
+			local max_count = stack:get_stack_max()
+			local name = stack:get_name()
+			if not overflow then
+				obj.itemstring = name .. " " .. count
+				s = 0.2 + 0.1 * (count / max_count)
+				c = s
+				object:set_properties({
+					visual_size = {x = s, y = s},
+					collisionbox = {-c, -c, -c, c, c, c}
+				})
+				self.object:remove()
+				-- merging succeeded
+				return true
+			else
+				s = 0.4
+				c = 0.3
+				object:set_properties({
+					visual_size = {x = s, y = s},
+					collisionbox = {-c, -c, -c, c, c, c}
+				})
+				obj.itemstring = name .. " " .. max_count
+				s = 0.2 + 0.1 * (count / max_count)
+				c = s
+				self.object:set_properties({
+					visual_size = {x = s, y = s},
+					collisionbox = {-c, -c, -c, c, c, c}
+				})
+				self.itemstring = name .. " " .. count
+			end
+		end
+		-- merging didn't succeed
+		return false
+	end,
+
 	on_step = function(self, dtime)
-		local time = minetest.setting_get("remove_items")
-		if not time then
-			time = 300
-		end
-		if not self.timer then
-			self.timer = 0
-		end
-		self.timer = self.timer + dtime
-		if time ~= 0 and (self.timer > time) then
-			self.object:remove()
-		end
-		
-		local p = self.object:getpos()
-		local vel = self.object:getvelocity()
-		self.object:setacceleration({x=((vel.x)*-1), y=-10, z=((vel.z)*-1)})
-		local name = minetest.env:get_node(p).name
-		if name == "default:lava_flowing" or name == "default:lava_source" then
-			minetest.sound_play("builtin_item_lava", {pos=self.object:getpos()})
+		self.age = self.age + dtime
+		if time_to_live > 0 and self.age > time_to_live then
+			self.itemstring = ''
+			add_effects(self.object:getpos())
 			self.object:remove()
 			return
+		end
+
+		local p = self.object:getpos()
+		p.y = p.y - 0.5
+		local node = core.get_node_or_nil(p)
+		local in_unloaded = (node == nil)
+		if in_unloaded then
+			-- Don't infinetly fall into unloaded map
+			self.object:setvelocity({x = 0, y = 0, z = 0})
+			self.object:setacceleration({x = 0, y = 0, z = 0})
+			self.physical_state = false
+			self.object:set_properties({physical = false})
+			return
+		end
+		local nn = node.name
+
+		-- If item drops into lava then destroy if enabled
+		if destroy_item > 0 and minetest.get_item_group(nn, "lava") > 0 then
+			minetest.sound_play("builtin_item_lava", {
+				pos = p,
+				max_hear_distance = 6,
+				gain = 0.5
+			})
+			self.object:remove()
+			add_effects(p)
+			return
+		end
+
+		p.y = p.y + 0.5
+
+		-- Flowing water pushes item along
+		local nod = minetest.get_node_or_nil(p)
+		if nod and minetest.registered_nodes[nod.name].liquidtype == "flowing" then
+
+			local pos = self.object:getpos()
+			pos = vector.round(pos)
+			local p2 = node.param2
+			if p2 > 6 then p2 = 0 end
+
+			local v = self.object:getvelocity()
+
+			nod = minetest.get_node({x = pos.x + 1, y = pos.y, z = pos.z})
+			if minetest.registered_nodes[nod.name].liquidtype == "flowing"
+			and nod.param2 < p2 and nod.param2 < 7 then
+				v.x = 0.8
+			end
+
+			nod = minetest.get_node({x = pos.x - 1, y = pos.y, z = pos.z})
+			if minetest.registered_nodes[nod.name].liquidtype == "flowing"
+			and nod.param2 < p2 and nod.param2 < 7 then
+				v.x = -0.8
+			end
+
+			nod = minetest.get_node({x = pos.x, y = pos.y, z = pos.z + 1})
+			if minetest.registered_nodes[nod.name].liquidtype == "flowing"
+			and nod.param2 < p2 and nod.param2 < 7 then
+				v.z = 0.8
+			end
+
+			nod = minetest.get_node({x = pos.x, y = pos.y, z = pos.z - 1})
+			if minetest.registered_nodes[nod.name].liquidtype == "flowing"
+			and nod.param2 < p2 and nod.param2 < 7 then
+				v.z = -0.8
+			end
+
+			self.object:setvelocity(v)
+			return
+		end
+
+		p.y = p.y - 0.5
+
+		-- If node is not registered or node is walkably solid and resting on nodebox
+		if not core.registered_nodes[nn]
+		or core.registered_nodes[nn].walkable
+		and self.object:getvelocity().y == 0 then
+			if self.physical_state then
+				local own_stack = ItemStack(self.object:get_luaentity().itemstring)
+				-- Merge with close entities of the same item
+				for _, object in ipairs(core.get_objects_inside_radius(p, 1.0)) do
+					local obj = object:get_luaentity()
+					if obj and obj.name == "__builtin:item"
+							and obj.physical_state == false then
+						if self:try_merge_with(own_stack, object, obj) then
+							return
+						end
+					end
+				end
+				self.object:setvelocity({x = 0, y = 0, z = 0})
+				self.object:setacceleration({x = 0, y = 0, z = 0})
+				self.physical_state = false
+				self.object:set_properties({physical = false})
+			end
+		else
+			if not self.physical_state then
+				self.object:setvelocity({x = 0, y = 0, z = 0})
+				self.object:setacceleration({x = 0, y = -10, z = 0})
+				self.physical_state = true
+				self.object:set_properties({physical = true})
+			end
 		end
 	end,
 
 	on_punch = function(self, hitter)
 		if self.itemstring ~= '' then
-			hitter:get_inventory():add_item("main", self.itemstring)
+			local left = hitter:get_inventory():add_item("main", self.itemstring)
+			if not left:is_empty() then
+				self.itemstring = left:to_string()
+				return
+			end
 		end
+		self.itemstring = ''
 		self.object:remove()
 	end,
 })
-
-if minetest.setting_get("log_mods") then
-	minetest.log("action", "builtin_item loaded")
-end

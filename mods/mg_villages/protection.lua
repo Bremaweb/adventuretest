@@ -10,12 +10,14 @@ mg_villages.get_town_id_at_pos = function( pos )
 			if( mg_villages.inside_village_area( pos.x,  pos.z, v, village_noise)) then
 
 				local node = minetest.get_node( pos );
+				-- leaves can be digged in villages
 				if( node
 				   and node.name
 				   and minetest.registered_nodes[ node.name ]
 				   and minetest.registered_nodes[ node.name ].groups
 				   and minetest.registered_nodes[ node.name ].groups.leaves ) then
 					return nil;
+				-- bones can be digged in villages
 				elseif( node
 				   and node.name
 				   and node.name == 'bones:bones' ) then
@@ -44,6 +46,9 @@ minetest.is_protected = function(pos, name)
 			if(   p.x <= pos.x and (p.x + p.bsizex) >= pos.x
 			  and p.z <= pos.z and (p.z + p.bsizez) >= pos.z) then
 				if( p.owner and p.owner == name ) then
+					return false;
+				-- the allmende can be used by all
+				elseif( mg_villages.BUILDINGS[p.btype] and mg_villages.BUILDINGS[p.btype].typ=="allmende" ) then
 					return false;
 				-- the player cannot modify other plots, even though he may be house owner of another house and be allowed to modify common ground
 				else

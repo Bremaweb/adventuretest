@@ -30,7 +30,7 @@ mg_villages.REQUIRE_PRIV_FOR_TELEPORT = true;
 mg_villages.ENABLE_PROTECTION = true;
 
 -- the first village - the one the player spawns in - will be of this type
-mg_villages.FIRST_VILLAGE_TYPE = 'nore';
+mg_villages.FIRST_VILLAGE_TYPE = 'medieval';
 
 -- choose the debug level you want
 mg_villages.DEBUG_LEVEL = mg_villages.DEBUG_LEVEL_NONE
@@ -162,7 +162,7 @@ mg_villages.VILLAGE_CHECK_COUNT = 1
 mg_villages.VILLAGE_CHANCE = 28
 -- min and max size are only used in case of them beeing not provided by the village type (see buildings.lua)
 mg_villages.VILLAGE_MIN_SIZE = 10
-mg_villages.VILLAGE_MAX_SIZE = 30 --55
+mg_villages.VILLAGE_MAX_SIZE = 15 --55
 mg_villages.FIRST_ROADSIZE = 3
 mg_villages.BIG_ROAD_CHANCE = 0
 
