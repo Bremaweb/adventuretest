@@ -8,7 +8,10 @@ local ground_nodes = {"default:dirt",
 		      "default:desert_sand",
 		      "mg:dirt_with_dry_grass",
 		      "default:dirt_with_snow",
-		      "default:snow"
+		      "default:snow",
+		      "default:gravel",
+		      "deafult:river_gravel",
+		      
 }
 
 local treasure_markers = { [0] = "default:stonebrick",	   
@@ -108,6 +111,7 @@ quests.treasure.generateQuest = function()
   
   if allair == true then
     quests.treasure.data.do_on_generate = true
+    default.serialize_to_file(quest_file,quests.treasure.data)
     return
   end
   quests.treasure.place_treasure({x=tx,y=0,z=tz},vm,e1,e2)  
@@ -179,10 +183,10 @@ quests.treasure.place_treasure = function (pos,minp,maxp)
   
   -- find ground level
   for tz = minp.z, maxp.z,1 do
-    for tx=minp.x, maxp.x, 1 do
-      for ty=16,-16,-1 do	
+    for tx=minp.x, maxp.x,1 do
+      for ty=32,-32,-1 do	
 		if data[area:index(tx, ty, tz)] ~= c_air then
-		    if is_ground_node(data[area:index(tx, ty, tz)]) then
+		    --if is_ground_node(data[area:index(tx, ty, tz)]) then
 		      if prevnode == c_air or prevnode == c_water then
 				quests.treasure.data.pos = {x=tx,y=ty-2,z=tz}
 				quests.treasure.data.do_on_generate = false
@@ -196,14 +200,16 @@ quests.treasure.place_treasure = function (pos,minp,maxp)
 				default.serialize_to_file(quest_file,quests.treasure.data)
 				return
 		      end
-		    end
+		    --end
 		end
 		prevnode = data[area:index(tx, ty, tz)]
       end
       prevnode = nil
     end
   end
-  quests.treasure.data.do_on_generate = true
+  -- placing treasure failed
+  minetest.after(60,quests.treasure.generateQuest)
+  --quests.treasure.data.do_on_generate = true
 end
 
 quests.treasure.set_inventory = function (pos)
@@ -239,7 +245,7 @@ quests.treasure.end_quest = function (player)
 	quests.treasure.data.quest_end = os.time()
 	quests.treasure.data.completed = true
 	quests.treasure.data.completed_by = name
-	minetest.after(86400,quests.treasure.generateQuest)
+	minetest.after(120,quests.treasure.generateQuest)
 	default.serialize_to_file(quest_file,quests.treasure.data)
 end
 
