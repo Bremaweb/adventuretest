@@ -22,6 +22,27 @@ minetest.register_decoration({
 
 minetest.register_decoration({
 	deco_type = "simple",
+	place_on = {"default:sand","default:desert_sand","default:river_gravel"},
+	spawn_by = "default:water_source",
+	num_spawn_by = 1,
+	sidelen = 16,
+	noise_params = {
+		offset = -0.3,
+		scale = 0.7,
+		spread = {x=200, y=200, z=200},
+		seed = 354,
+		octaves = 3,
+		persist = 0.7
+	},
+	y_min = -2,
+	y_max = 70,
+	decoration = "default:papyrus",
+	height = 3,
+	height_max = 5,
+})
+
+minetest.register_decoration({
+	deco_type = "simple",
 	place_on = {"default:desert_sand"},
 	sidelen = 80,
 	noise_params = {
