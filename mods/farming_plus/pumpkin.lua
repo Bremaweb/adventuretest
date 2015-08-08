@@ -412,7 +412,7 @@ minetest.register_craft({
 minetest.register_craftitem(":farming:pumpkin_bread", {
 	description = S("Pumpkin Bread"),
 	inventory_image = "farming_bread_pumpkin.png",
-	stack_max = 1,
+	stack_max = 99,
 	on_use = minetest.item_eat(8)
 })
 
