@@ -211,6 +211,9 @@ function hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sound)
 		if sat < HUNGER_MAX and hunger_change then
 			sat = sat + hunger_change
 			hunger.update_hunger(user, sat)
+			if sat >= HUNGER_MAX then
+				minetest.chat_send_player(name, "You feel full.");
+			end
 		end
 		-- Healing
 		if hp < 20 and heal then
