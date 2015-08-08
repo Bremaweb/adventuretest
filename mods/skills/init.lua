@@ -45,15 +45,15 @@ function skills.set_default_skills ( name )
 end 
 
 function skills.get_skill(name, skill_id)
-	if skills.player_skills[name] ~= nil then
-		--print(name.." in skill table")
-		if skills.player_skills[name][skill_id] ~= nil then
-			--print(name.." has "..tostring(skill_id).." in skill table")
-			return skills.player_skills[name][skill_id]
-		end
+	-- Return skill.
+	local playerSkills = skills.player_skills[name]
+	if playerSkills ~= nil then
+		return playerSkills[skill_id]
 	end
+
+	-- Return skill for new players.
 	skills.set_default_skills(name)
-	return skills.get_skill(name,skill_id)
+	return skills.get_skill(name, skill_id)
 end
 
 function skills.get_player_level(name)
@@ -99,7 +99,7 @@ function skills.get_skills_formspec(player)
 		.."list[current_player;main;8,0.5;4,8;]"
 	local i = 0
 	for id,skill in pairs(skills.available_skills) do
-		sk = skills.get_skill(name,id)	
+		local sk = skills.get_skill(name,id)	
 		formspec = formspec.."label[1.5,"..tostring(i)..".2;"..skill.desc.."]"
 		formspec = formspec.."label[3.5,"..tostring(i)..".2;"..sk.exp.." / "..tostring( (math.floor((sk.level^1.75)) * skill.level_exp) ).."]"
 		formspec = formspec.."label[6,"..tostring(i)..".2;"..tostring(sk.level).." / "..tostring(skill.max_level).."]"
@@ -120,13 +120,12 @@ minetest.register_on_joinplayer(function (player)
 				local name = player:get_player_name()
 				local skill_id = tonumber(listname)
 				local exp_dropped = stack:get_definition().exp_value * stack:get_count()
-				
 				local sk = skills.get_skill(name,skill_id)
 				local skill = skills.available_skills[skill_id]
 				local next_level = math.floor(((sk.level^1.75) * skill.level_exp))
 				
 				skills.player_skills[name][skill_id].exp = skills.player_skills[name][skill_id].exp + exp_dropped
-				
+
 				if skills.player_skills[name][skill_id].exp >= next_level then
 					if skills.player_skills[name][skill_id].level ~= skill.max_level then
 						skills.player_skills[name][skill_id].level = skills.player_skills[name][skill_id].level + 1
