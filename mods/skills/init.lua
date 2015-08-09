@@ -45,15 +45,29 @@ function skills.set_default_skills ( name )
 end 
 
 function skills.get_skill(name, skill_id)
-	-- Return skill.
+	-- Existing skill
+	
 	local playerSkills = skills.player_skills[name]
-	if playerSkills ~= nil then
-		return playerSkills[skill_id]
+	local skill = playerSkills and playerSkills[skill_id]
+	if skill ~= nil then
+		return skill
 	end
 
-	-- Return skill for new players.
+	-- Missing player or skill
+	
+	minetest.log("info", "Requesting skill (id="..tostring(skill_id)..") for player '"..name.."'. Player is new or missing the skill.")
 	skills.set_default_skills(name)
-	return skills.get_skill(name, skill_id)
+	
+	playerSkills = skills.player_skills[name]
+	skill = playerSkills and playerSkills[skill_id]
+
+	if playerSkills == nil then
+		minetest.log("error", "Failed to add default skills for player '"..name.."'.")
+	elseif skill == nil then
+		minetest.log("error", "Failed to add default skill (id="..tostring(skill_id)..") for player '"..name.."'.")
+	end
+
+	return skill
 end
 
 function skills.get_player_level(name)
