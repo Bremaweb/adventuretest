@@ -21,7 +21,7 @@ HUD_ARMOR_OFFSET = {x = -262, y = -135}
 local damage_enabled = minetest.setting_getbool("enable_damage")
 
 hud.show_hunger = minetest.get_modpath("hunger") ~= nil
-hud.show_armor = minetest.get_modpath("3d_armor") ~= nil
+hud.show_armor = true
 
 if damage_enabled then
     hud.register("health", {

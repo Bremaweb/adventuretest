@@ -14,8 +14,8 @@ function mobs:register_mob(name, def)
 		textures = def.textures,
 		makes_footstep_sound = def.makes_footstep_sound,
 		view_range = def.view_range,
-		walk_velocity = def.walk_velocity,
-		run_velocity = def.run_velocity,
+		walk_velocity = def.walk_velocity or 0,
+		run_velocity = def.run_velocity or 0,
 		damage = def.damage,
 		light_damage = def.light_damage,
 		water_damage = def.water_damage or 1,
@@ -149,12 +149,23 @@ function mobs:register_mob(name, def)
 		
 		in_fov = function(self,pos)
 			-- checks if POS is in self's FOV
-			
-			local yaw = self.object:getyaw()
+			return true
+			--[[
+			local yaw = (self.object:getyaw() * 180 / math.pi)
 			if self.drawtype == "side" then
 				yaw = yaw+(math.pi/2)
 			end
 			
+			if yaw < 0 then
+				yaw = 360 - yaw
+			end
+			
+			if yaw > 360 then
+				yaw = yaw - 360
+			end
+			
+			print("Yaw: "..tostring(yaw))
+			print("FOV: "..tostring(self.fov))
 			local vx = math.sin(yaw)
 			local vz = math.cos(yaw)
 			local ds = math.sqrt(vx^2 + vz^2)
@@ -162,12 +173,15 @@ function mobs:register_mob(name, def)
 			local d = { x = vx / ds, z = vz / ds }
 			local p = { x = pos.x / ps, z = pos.z / ps }
 			
-			local an = ( d.x * p.x ) + ( d.z * p.z )
+			print("DS "..tostring(ds))
+			print("PS "..tostring(ps))
+			print("D: x="..tostring(d.x)..", z="..tostring(d.z))
+			print("P: x="..tostring(p.x)..", z="..tostring(p.z))
 			
-			local a = math.deg( math.acos( an ) )
-
-			return true
-			--[[
+			local an = ( d.x * p.x ) + ( d.z * p.z )
+			print("AN: "..tostring(an))
+			local a = math.deg ( math.acos( an ) )
+			print("A: "..tostring(a))
 			if a > ( self.fov / 2 ) then
 				return false
 			else
@@ -240,21 +254,22 @@ function mobs:register_mob(name, def)
 				self.object:remove()
 			end
 			
-			self.lifetimer = self.lifetimer - dtime
-			if self.lifetimer <= 0 and not self.tamed and self.type ~= "npc" then
-				local player_count = 0
-				for _,obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 10)) do
-					if obj:is_player() then
-						player_count = player_count+1
+			if self.lifetimer ~= false then
+				self.lifetimer = self.lifetimer - dtime
+				if self.lifetimer <= 0 and not self.tamed and self.type ~= "npc" then
+					local player_count = 0
+					for _,obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 10)) do
+						if obj:is_player() then
+							player_count = player_count+1
+						end
+					end
+					if player_count == 0 and self.state ~= "attack" then
+						minetest.log("action","lifetimer expired, removed mob "..self.name)
+						self.object:remove()
+						return
 					end
 				end
-				if player_count == 0 and self.state ~= "attack" then
-					minetest.log("action","lifetimer expired, removed mob "..self.name)
-					self.object:remove()
-					return
-				end
 			end
-			
 			if self.object:getvelocity().y > 0.1 then
 				local yaw = self.object:getyaw()
 				if self.drawtype == "side" then
@@ -887,6 +902,18 @@ function mobs:spawn_mob(pos,name)
 			local newHP = mob.hp_min + math.floor( mob.hp_max * distance_rating )
 			mob.object:set_hp( newHP )
 			mob.state = "walk"	-- make them walk when they spawn so they walk away from their original spawn position
+			-- vary the walk and run velocity when a mob is spawned so groups of mobs don't clump up so bad
+			math.randomseed(os.clock())
+			
+			mob.walk_velocity = mob.walk_velocity - ( mob.walk_velocity * ( math.random(0,12) / 100 ) )
+			if mob.walk_velocity < 0 then
+				mob.walk_velocity = 0
+			end
+			
+			mob.run_velocity = mob.run_velocity - ( mob.run_velocity * ( math.random(0,12) / 100 ) )
+			if mob.run_velocity < 0 then
+				mob.run_velocity = 0
+			end
 			return true
 		end
 	end

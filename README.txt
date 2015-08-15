@@ -58,3 +58,21 @@ Copyright (C) 2013 BlockMen CC BY-3.0
 
 License of Spider model
 Copyright (C) 2013 AspireMint CC BY-SA
+
+goblins_goblin.b3d and goblins_goblin.blend
+Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) by FreeLikeGNU
+http://creativecommons.org/licenses/by-sa/3.0/
+
+above meshes based on character from minetest_game
+MirceaKitsune (WTFPL)
+https://github.com/minetest/minetest_game/blob/master/mods/default/README.txt#L71
+
+goblins_goblins*.png files and goblins_goblin.xcf file by FreeLikeGNU
+Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) FreeLikeGNU
+http://creativecommons.org/licenses/by-sa/3.0/
+
+Thanks to Napiophelios for the goblin king skin
+https://forum.minetest.net/viewtopic.php?f=9&t=13004#p186921
+goblins_goblin_king.png
+License: Creative Commons CC-BY-SA-3.0 SummerFeilds TP
+

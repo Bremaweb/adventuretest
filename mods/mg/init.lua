@@ -45,6 +45,7 @@ dofile(mgpath.."/biomes.lua")
 dofile(mgpath.."/decorations.lua")
 dofile(mgpath.."/villages.lua")
 dofile(mgpath.."/fill_chests.lua")
+dofile(mgpath.."/dungeons.lua")
 
 minetest.register_on_mapgen_init(function(params)
 	minetest.set_mapgen_params({

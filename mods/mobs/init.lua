@@ -15,6 +15,7 @@ dofile(minetest.get_modpath("mobs").."/monsters/jungle_spider.lua")
 dofile(minetest.get_modpath("mobs").."/monsters/stonemonster.lua")
 dofile(minetest.get_modpath("mobs").."/monsters/treemonster.lua")
 dofile(minetest.get_modpath("mobs").."/monsters/yeti.lua")
+dofile(minetest.get_modpath("mobs").."/monsters/goblins.lua")
 
 dofile(minetest.get_modpath("mobs").."/animals/rat.lua")
 dofile(minetest.get_modpath("mobs").."/animals/sheep.lua")

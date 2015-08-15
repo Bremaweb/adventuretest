@@ -168,4 +168,16 @@ local numNPCs = math.random(0,1)
 		end
 end
 
+function mobs.add_spawner(pos,mob,ao,aow)
+	local r = mobs:spawn_mob(pos,mob)
+	if r ~= -1 then
+		local spos = {x=pos.x,y=pos.y-5,z=pos.z}
+		minetest.set_node(spos,{name="mobs:spawner"})
+		local meta = minetest.get_meta(spos)
+		meta:set_string("entity",mob)
+		meta:set_string("infotext",mob)
+		meta:set_int("active_objects",ao)
+		meta:set_int("active_objects_wider",aow)
+	end
+end
 
