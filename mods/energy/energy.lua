@@ -35,12 +35,12 @@ function energy.update_energy(p,name)
 				-- adjust their energy
 				local vdiff = pos.y - player_lastpos[name].y
 				if vdiff > 0 then
-					adj = adj - ( vdiff * 0.15 )
+					adj = adj - ( vdiff * 0.2 )
 				end
 				
 				local hdiff = math.sqrt(math.pow(pos.x-player_lastpos[name].x, 2) + math.pow(pos.z-player_lastpos[name].z, 2))
 				
-				adj = adj - ( hdiff * 0.05 )
+				adj = adj - ( hdiff * 0.03 )
 				--print("Energy Adjustments")
 				--print(tostring(adj))
 				--print("After stamina adjustment")
@@ -95,14 +95,14 @@ local affect_tired = {
 	stages = {
 				{ 
 					time = 120,
-					physics = { speed = -0.6 },
+					physics = { speed = -0.2 },
 					custom = { chance=100, func = function(name, player, affectid)
 						minetest.chat_send_player(name,"You are exhausted")
 					end,runonce=true},
 				},
 			},
 	onremove = function(name, player, affectid)
-		physics.adjust_physics(player,{speed=0.6})
+		physics.adjust_physics(player,{speed=0.2})
 		minetest.chat_send_player(name,"You don't feel as tired anymore",false)
 	end,
 	removeOnDeath = true,
