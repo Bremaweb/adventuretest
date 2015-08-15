@@ -145,10 +145,35 @@ mg_villages.lower_or_raise_terrain_at_point = function( x, z, target_height, min
 	local ptree         = false;
 	local old_height    = maxp.y;
 	local y = maxp.y;
+
+	local look_for_snow = true;
+	if( cid.c_snow==cid.c_ignore or cid.c_snow==cid.c_air
+	 or cid.c_ice ==cid.c_ignore or cid.c_ice ==cid.c_air ) then
+		look_for_snow = nil;
+	end
+
+	-- if we are working on a mapchunk above, set all to air;
+	-- any terrain blending happens in the mapchunk below
+	if( minp.y > vh ) then
+		local air_counted = 0;
+		for y=minp.y, minp.y+16 do
+			if( data[a:index( x, y, z )] == cid.c_air ) then
+				air_counted = air_counted + 1;
+			end
+		end
+		if( air_counted > 3 or blend==0) then
+			for y=minp.y+15, maxp.y do
+				data[a:index( x, y, z)] = cid.c_air;
+			end
+		end
+		-- else do nothing
+		return;
+	end
+
 	-- search for a surface and set everything above target_height to air
 	while( y > minp.y) do
 		local ci = data[a:index(x, y, z)];
-		if(     ci == cid.c_snow or ci == cid.c_ice ) then
+		if(     look_for_snow and (ci == cid.c_snow or ci == cid.c_ice or ci == cid.c_snowblock)) then
 			has_snow = true;
 		elseif( ci == cid.c_tree ) then
 			tree  = true;
@@ -162,7 +187,7 @@ mg_villages.lower_or_raise_terrain_at_point = function( x, z, target_height, min
 			-- we have found a surface of some kind
 			surface_node = ci;
 			old_height   = y;
-			if( surface_node == cid.c_dirt_with_snow ) then
+			if( look_for_snow and surface_node == cid.c_dirt_with_snow and cid.c_dirt_with_snow~=cid.c_ignore) then
 				has_snow = true;
 			end
 		end
@@ -186,7 +211,7 @@ mg_villages.lower_or_raise_terrain_at_point = function( x, z, target_height, min
 	if( not( surface_node ) or surface_node == cid.c_dirt) then
 		surface_node = cid.c_dirt_with_grass;
 	end
-	if( has_snow and surface_node == cid.c_dirt_with_grass and target_height > 1) then
+	if( look_for_snow and has_snow and surface_node == cid.c_dirt_with_grass and target_height > 1) then
 		surface_node = cid.c_dirt_with_snow;
 	end
 	local below_1 = cid.c_dirt;
@@ -211,7 +236,7 @@ mg_villages.lower_or_raise_terrain_at_point = function( x, z, target_height, min
 	end
 
 	-- do terrain blending; target_height has to be calculated based on old_height
-	if( target_height == maxp.y ) then
+	if( target_height == maxp.y and old_height < maxp.y ) then
 		local yblend = old_height;
 		if blend > 0 then -- leave some cliffs unblended
 			yblend = math.floor(vh + blend * (old_height - vh))
@@ -219,7 +244,7 @@ mg_villages.lower_or_raise_terrain_at_point = function( x, z, target_height, min
 		else	
 			target_height = old_height;
 		end
-		for y = yblend, maxp.y do
+		for y = math.max( minp.y, yblend), maxp.y do
 			if( y<=MG_VILLAGES_WATER_LEVEL ) then
 				-- keep ice
 				if( data[a:index( x, y, z )] ~= cid.c_ice ) then
@@ -231,30 +256,33 @@ mg_villages.lower_or_raise_terrain_at_point = function( x, z, target_height, min
 		end
 	end
 	
-	if( target_height < 1 ) then
-		-- no trees or snow below water level
-	elseif( tree  and not( mg_villages.ethereal_trees ) and treepos) then
-		data[       a:index( x, target_height+1, z)] = cid.c_sapling
-		table.insert( treepos, {x=x, y=target_height+1, z=z, typ=0, snow=has_artificial_snow});
-	elseif( jtree and not( mg_villages.ethereal_trees ) and treepos) then
-		data[       a:index( x, target_height+1, z)] = cid.c_jsapling
-		table.insert( treepos, {x=x, y=target_height+1, z=z, typ=1, snow=has_artificial_snow});
-	elseif( ptree and not( mg_villages.ethereal_trees ) and treepos) then
-		data[       a:index( x, target_height+1, z)] = cid.c_psapling
-		table.insert( treepos, {x=x, y=target_height+1, z=z, typ=2, snow=has_artificial_snow});
-	elseif( has_snow ) then
-		data[       a:index( x, target_height+1, z)] = cid.c_snow;
-	end
-	data[               a:index( x, target_height,   z)] = surface_node;
-	if( target_height-1 >= minp.y ) then
-		data[       a:index( x, target_height-1, z)] = below_1;
+	-- only place the surface node if it is actually contained in this node
+	if( target_height >= minp.y and target_height < maxp.y ) then
+		if( target_height < 1 ) then
+			-- no trees or snow below water level
+		elseif( tree  and not( mg_villages.ethereal_trees ) and treepos) then
+			data[       a:index( x, target_height+1, z)] = cid.c_sapling
+			table.insert( treepos, {x=x, y=target_height+1, z=z, typ=0, snow=has_artificial_snow});
+		elseif( jtree and not( mg_villages.ethereal_trees ) and treepos) then
+			data[       a:index( x, target_height+1, z)] = cid.c_jsapling
+			table.insert( treepos, {x=x, y=target_height+1, z=z, typ=1, snow=has_artificial_snow});
+		elseif( ptree and not( mg_villages.ethereal_trees ) and treepos) then
+			data[       a:index( x, target_height+1, z)] = cid.c_psapling
+			table.insert( treepos, {x=x, y=target_height+1, z=z, typ=2, snow=has_artificial_snow});
+		elseif( has_snow ) then
+			data[       a:index( x, target_height+1, z)] = cid.c_snow;
+		end
+		data[               a:index( x, target_height,   z)] = surface_node;
+		if( target_height-1 >= minp.y ) then
+			data[       a:index( x, target_height-1, z)] = below_1;
+		end
 	end
 
 	-- not every column will get a coal block; some may get two
 	local coal_height1 = math.random( minp.y, maxp.y );
 	local coal_height2 = math.random( minp.y, maxp.y );
 	y = target_height-2;
-	while( y > minp.y and y > target_height-40 ) do
+	while( y > minp.y and y > target_height-40 and y <=maxp.y) do
 		local old_node = data[a:index( x, y, z)];
 		-- abort as soon as we hit anything other than air
 		if( old_node == cid.c_air or old_node == cid.c_water ) then
@@ -318,7 +346,44 @@ end
 
 -- TODO: limit this function to the shell in order to speed things up
 -- repair mapgen griefings
-mg_villages.repair_outer_shell = function( villages, minp, maxp, vm, data, param2_data, a, village_area, cid )
+mg_villages.repair_outer_shell = function( villages, minp, maxp, vm, data, param2_data, a, village_area, cid, edge_min, edge_max )
+	-- find out if this part of the shell has already been generated or not
+	if(    data[a:index(minp.x,minp.y,minp.z)] == cid.c_ignore
+
+	   and data[a:index(maxp.x,minp.y,minp.z)] == cid.c_ignore
+	   and data[a:index(minp.x,maxp.y,minp.z)] == cid.c_ignore
+	   and data[a:index(minp.x,minp.y,maxp.z)] == cid.c_ignore
+
+	   and data[a:index(maxp.x,maxp.y,maxp.z)] == cid.c_ignore
+
+	   and data[a:index(maxp.x,maxp.y,minp.z)] == cid.c_ignore
+	   and data[a:index(maxp.x,minp.y,maxp.z)] == cid.c_ignore
+	   and data[a:index(minp.x,maxp.y,maxp.z)] == cid.c_ignore ) then
+
+		-- no - none of the edges has been created yet; no point to place anything there
+		return;
+	end
+
+	if( minp.x < edge_min.x ) then
+		edge_min.x = minp.x;
+	end
+	if( minp.y < edge_min.y ) then
+		edge_min.y = minp.y;
+	end
+	if( minp.z < edge_min.z ) then
+		edge_min.z = minp.z;
+	end
+	if( maxp.x > edge_max.x ) then
+		edge_max.x = maxp.x;
+	end
+	if( maxp.y > edge_max.y ) then
+		edge_max.y = maxp.y;
+	end
+	if( maxp.z > edge_max.z ) then
+		edge_max.z = maxp.z;
+	end
+
+
 	for z = minp.z, maxp.z do
 	for x = minp.x, maxp.x do
 		-- inside a village
@@ -645,6 +710,10 @@ end
 
 -- places trees and plants at empty spaces
 mg_villages.village_area_fill_with_plants = function( village_area, villages, minp, maxp, data, param2_data, a, cid )
+	-- do not place any plants if we are working on the mapchunk above
+	if( minp.y > 0 ) then
+		return;
+	end
 	-- trees which require grow functions to be called
 	cid.c_savannasapling  = minetest.get_content_id( 'mg:savannasapling');
 	cid.c_pinesapling     = minetest.get_content_id( 'mg:pinesapling');
@@ -692,7 +761,7 @@ mg_villages.village_area_fill_with_plants = function( village_area, villages, mi
 				local plant_selected = false;
 				local has_snow_cover = false;
 				for _,v in ipairs( village.to_add_data.plantlist ) do
-					if( plant_id == cid.c_snow or g==cid.c_dirt_with_snow) then
+					if( plant_id == cid.c_snow or g==cid.c_dirt_with_snow or g==cid.c_snowblock) then
 						has_snow_cover = true;
 					end
 					-- select the first plant that fits; if the node is not air, keep what is currently inside
@@ -782,6 +851,7 @@ mg_villages.place_villages_via_voxelmanip = function( villages, minp, maxp, vm, 
 	cid.c_stone  = minetest.get_content_id( 'default:stone');
 	cid.c_dirt   = minetest.get_content_id( 'default:dirt');
 	cid.c_snow   = minetest.get_content_id( 'default:snow');
+	cid.c_snowblock   = minetest.get_content_id( 'default:snowblock');
 	cid.c_dirt_with_snow  = minetest.get_content_id( 'default:dirt_with_snow' );
 	cid.c_dirt_with_grass = minetest.get_content_id( 'default:dirt_with_grass' );
 	cid.c_desert_sand = minetest.get_content_id( 'default:desert_sand' ); -- PM v
@@ -834,7 +904,7 @@ mg_villages.place_villages_via_voxelmanip = function( villages, minp, maxp, vm, 
 		if( not( village.is_single_house )) then
 			-- only add artificial snow if the village has at least a size of 15 (else it might look too artificial)
 			village.artificial_snow=0
-			--[[			
+						
 			if( not( village.artificial_snow ) and village.vs > 15) then
 				if( mg_villages.artificial_snow_probability and math.random( 1, mg_villages.artificial_snow_probability )==1
 				    and minetest.registered_nodes['default:snow']) then
@@ -843,7 +913,7 @@ mg_villages.place_villages_via_voxelmanip = function( villages, minp, maxp, vm, 
 					village.artificial_snow = 0;
 				end
 			end
-			]]
+	
 			-- will set village_area to N where .. is:
 			--  2: a building
 			--  3: border around a building
@@ -923,10 +993,12 @@ mg_villages.place_villages_via_voxelmanip = function( villages, minp, maxp, vm, 
 	mg_villages.flatten_village_area( villages, tmin, tmax, vm, data, param2_data, a, village_area, cid );
 	t1 = time_elapsed( t1, 'flatten_village_area' );
 	-- repair cavegen griefings and mudflow which may have happened in the outer shell (which is part of other mapnodes)
-	mg_villages.repair_outer_shell(   villages, {x=tmin.x,   y=tmin.y,z=tmin.z},    {x=tmin.x+16, y=tmax.y, z=tmax.z}, vm, data, param2_data, a, village_area, cid );
-	mg_villages.repair_outer_shell(   villages, {x=tmax.x-16,y=tmin.y,z=tmin.z},    {x=tmax.x,    y=tmax.y, z=tmax.z}, vm, data, param2_data, a, village_area, cid );
-	mg_villages.repair_outer_shell(   villages, {x=tmin.x+16,y=tmin.y,z=tmin.z},    {x=tmax.x-16, y=tmax.y, z=tmin.z+16}, vm, data, param2_data, a, village_area, cid );
-	mg_villages.repair_outer_shell(   villages, {x=tmin.x+16,y=tmin.y,z=tmax.z-16}, {x=tmax.x-16, y=tmax.y, z=tmax.z},    vm, data, param2_data, a, village_area, cid );
+	local e1 = {x=minp.x,y=minp.y,z=minp.z};
+	local e2 = {x=maxp.x,y=maxp.y,z=maxp.z};
+	mg_villages.repair_outer_shell(   villages, {x=tmin.x,   y=tmin.y,z=tmin.z},    {x=tmin.x+16, y=tmax.y, z=tmax.z}, vm, data, param2_data, a, village_area, cid, e1, e2 );
+	mg_villages.repair_outer_shell(   villages, {x=tmax.x-16,y=tmin.y,z=tmin.z},    {x=tmax.x,    y=tmax.y, z=tmax.z}, vm, data, param2_data, a, village_area, cid, e1, e2 );
+	mg_villages.repair_outer_shell(   villages, {x=tmin.x+16,y=tmin.y,z=tmin.z},    {x=tmax.x-16, y=tmax.y, z=tmin.z+16}, vm, data, param2_data, a, village_area, cid, e1, e2 );
+	mg_villages.repair_outer_shell(   villages, {x=tmin.x+16,y=tmin.y,z=tmax.z-16}, {x=tmax.x-16, y=tmax.y, z=tmax.z},    vm, data, param2_data, a, village_area, cid, e1, e2 );
 --	mg_villages.repair_outer_shell(   villages, tmin, tmax, vm, data, param2_data, a, village_area, cid );
 
 	t1 = time_elapsed( t1, 'repair_outer_shell' );
@@ -959,7 +1031,8 @@ mg_villages.place_villages_via_voxelmanip = function( villages, minp, maxp, vm, 
 	vm:set_param2_data(param2_data)
 	t1 = time_elapsed( t1, 'vm data set' );
 
-	vm:calc_lighting()
+	-- only update lighting where we actually placed the nodes
+	vm:calc_lighting( e1, e2 ); --minp, maxp ); --tmin, tmax)
 	t1 = time_elapsed( t1, 'vm calc lighting' );
 
 	vm:write_to_map(data)
@@ -1050,7 +1123,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 --	print('STRUCTURES BY MAPGEN: '..minetest.serialize( structures ));
 
 	-- only generate village on the surface chunks
-	if( minp.y ~= -32 or minp.y < -32 or minp.y > 64) then
+	if( minp.y < -32 or minp.y > mg_villages.MAX_HEIGHT_TREATED) then --64
 		return;
 	end
 	

@@ -32,6 +32,11 @@ mg_villages.ENABLE_PROTECTION = true;
 -- the first village - the one the player spawns in - will be of this type
 mg_villages.FIRST_VILLAGE_TYPE = 'medieval';
 
+-- the mapgen will disregard mapchunks where min.y > mg_villages.MAX_HEIGHT_TREATED;
+-- you can set this value to 64 if you have a slow machine and a mapgen which does not create extreme mountains
+-- (or if you don't care if extreme mountains may create burried villages occasionally)
+mg_villages.MAX_HEIGHT_TREATED = 200;
+
 -- choose the debug level you want
 mg_villages.DEBUG_LEVEL = mg_villages.DEBUG_LEVEL_NONE
 
@@ -49,6 +54,8 @@ end
 -- currently not really used; does not look as good as expected
 mg_villages.medieval_subtype = false;
 
+-- set this to true if you want to use normal lava - but beware: charachoal villages may cause bushfires!
+--mg_villages.use_normal_unsafe_lava = false;
 
 -----------------------------------------------------------------------------
 -- decrese these values slightly if you want MORE trees around your villages;

@@ -762,7 +762,14 @@ mirror = nil;
 		build_chest.stages_on_receive_fields(pos, formname, fields, player, meta);
 	end
 
-	meta:set_string( 'formspec', build_chest.update_formspec( pos, 'main', player, fields ));
+	local formspec = build_chest.update_formspec( pos, 'main', player, fields );
+	-- add the position information so that we can show the formspec directly and still find out
+	-- which build chest was responsible
+	formspec = formspec.."field[20,20;0.1,0.1;pos2str;Pos;"..minetest.pos_to_string( pos ).."]";
+	-- save the formspec data to the chest
+	meta:set_string( 'formspec', formspec );
+	-- show the formspec directly to the player to make it react more smoothly
+	minetest.show_formspec( pname, "handle_schematics:build", formspec );
 end
 
 
@@ -844,6 +851,7 @@ minetest.register_node("handle_schematics:build", { --TODO
                if( stage==nil or stage < 6 ) then
                   build_chest.update_needed_list( pos, stage+1 ); -- request the material for the very first building step
                else
+		  -- TODO: show this update directly to the player via minetest.show_formspec( pname, formname, formspec );
                   meta:set_string( 'formspec', build_chest.update_formspec( pos, 'finished', player, {} ));
                end
             end
@@ -856,3 +864,13 @@ minetest.register_node("handle_schematics:build", { --TODO
 })
 
 
+-- a player clicked on something in a formspec he was shown
+handle_schematics.form_input_handler = function( player, formname, fields)
+	if(formname == "handle_schematics:build" and fields and fields.pos2str) then
+		local pos = minetest.string_to_pos( fields.pos2str );
+		build_chest.on_receive_fields(pos, formname, fields, player);
+	end
+end
+
+-- make sure we receive player input; needed for showing formspecs directly (which is in turn faster than just updating the node)
+minetest.register_on_player_receive_fields( handle_schematics.form_input_handler );

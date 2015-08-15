@@ -79,10 +79,33 @@ end
 local build_chest_check_all_directories = function()
 	-- find the name of the directory directly above the current worldpath
 	local worldpath = minetest.get_worldpath();
+
+	local p = 1;
+	local last_found = 1;
+	while( last_found ) do
+		p =         last_found;
+		last_found = string.find( worldpath, '/', last_found+1 );
+	end 
+	-- abort on Windows
+	if( p == 1 ) then
+		return;
+	end
+	worldpath = string.sub( worldpath, 1, p );	
+		
+--[[
 	local p = 1;
 	while( not( string.find( worldpath, '/', -1*p ))) do
 		p = p+1;
 	end
+	local found = 1;
+	for p=string.len( worldpath ),1,-1 do
+		if(  p>found
+		  and (string.byte( worldpath, p )=='/'
+		    or string.byte( worldpath, p )=='\\')) then
+			found = p;
+		end
+	end
+--]]
 	worldpath = string.sub( worldpath, 1, string.len( worldpath )-p );
 
 

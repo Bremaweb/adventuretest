@@ -199,7 +199,7 @@ print('FILE SIZE: '..tostring( string.len( data_string ))); -- TODO
 				end
 				-- print a few warning messages in case something goes wrong - but do not exaggerate
 				if( not( new_node[2] and max_msg>0)) then
-					print('[handle_schematics:schematic] MISSING param2: '..minetest.serialize( new_node ));
+--					print('[handle_schematics:schematic] MISSING param2: '..minetest.serialize( new_node ));
 					new_node[2]=0;
 					max_msg=max_msg-1;
 				end

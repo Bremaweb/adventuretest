@@ -343,69 +343,54 @@ minetest.register_node("cottages:threshing_floor", {
 })
 
 
+local cottages_handmill_formspec = "size[8,8]"..
+				"image[0,1;1,1;"..cottages.texture_wheat_seed.."]"..
+                                "list[current_name;seeds;1,1;1,1;]"..
+                                "list[current_name;flour;5,1;2,2;]"..
+					"label[0,0.5;"..S("Wheat seeds:").."]"..
+					"label[4,0.5;"..S("Flour:").."]"..
+					"label[0,-0.3;"..S("Mill").."]"..
+					"label[0,2.5;"..S("Punch this hand-driven mill").."]"..
+					"label[0,3.0;"..S("to convert wheat seeds into flour.").."]"..
+                                "list[current_player;main;0,4;8,4;]";
+
 minetest.register_node("cottages:handmill", {
-	drawtype = "nodebox",
-	description = S("Mill, powered by punching"),
-	tiles = {"default_stone.png"},
+	description = S("mill, powered by punching"),
+	drawtype = "mesh",
+	mesh = "cottages_handmill.obj",
+	tiles = {"cottages_stone.png"},
 	paramtype  = "light",
-        paramtype2 = "facedir",
+	paramtype2 = "facedir",
 	groups = {cracky=2},
-	node_box = {
-		type = "fixed",
-		fixed = {
-
-				-- taken from 3dfornitures tree redefinition
-				{-0.35,-0.50,-0.4,  0.35,-0.32,0.4},
-				{-0.4, -0.50,-0.35, 0.4, -0.32,0.35},
-				{-0.25,-0.50,-0.45, 0.25,-0.32,0.45},
-				{-0.45,-0.50,-0.25, 0.45,-0.32,0.25},
-				{-0.15,-0.50,-0.5,  0.15,-0.32,0.5},
-				{-0.5, -0.50,-0.15, 0.5, -0.32,0.15},
-
-				-- upper mill wheel
-				{-0.35,-0.27,-0.4,  0.35,-0.05,0.4},
-				{-0.4, -0.27,-0.35, 0.4, -0.05,0.35},
-				{-0.25,-0.27,-0.45, 0.25,-0.05,0.45},
-				{-0.45,-0.27,-0.25, 0.45,-0.05,0.25},
-				{-0.15,-0.27,-0.5,  0.15,-0.05,0.5},
-				{-0.5, -0.27,-0.15, 0.5, -0.05,0.15},
-
-				-- middle axis
-				{-0.05,-0.50,-0.05, 0.05, 0.15,0.05},
-				-- handle
-				{-0.35,-0.05,-0.35,-0.25, 0.25,-0.25},
-			}
-	},
+	is_ground_content = false,
 	selection_box = {
 		type = "fixed",
 		fixed = {
 					{-0.50, -0.5,-0.50, 0.50,  0.25, 0.50},
 			}
 	},
+	collision_box = {
+		type = "fixed",
+		fixed = {
+					{-0.50, -0.5,-0.50, 0.50,  0.25, 0.50},
+			}
+	},
 	on_construct = function(pos)
-
-               	local meta = minetest.env:get_meta(pos);
+               	local meta = minetest.get_meta(pos);
                	meta:set_string("infotext", S("Mill, powered by punching"));
                	local inv = meta:get_inventory();
                	inv:set_size("seeds", 1);
                	inv:set_size("flour", 4);
+                meta:set_string("formspec", cottages_handmill_formspec );
        	end,
 
 	after_place_node = function(pos, placer)
 		local meta = minetest.get_meta(pos);
 		meta:set_string("owner", placer:get_player_name() or "");
 		meta:set_string("infotext", S("Mill, powered by punching (owned by %s)"):format(meta:get_string("owner") or ""));
-                meta:set_string("formspec",
-                               "size[8,8]"..
-                                "list[current_name;seeds;1,1;1,1;]"..
-                                "list[current_name;flour;5,1;2,2;]"..
-					"label[0,0.5;"..S("Grind This:").."]"..
-					"label[4,0.5;"..S("Ground Object:").."]"..
-					"label[0,0.1;"..S("Mill").."]"..
-					"label[2.5,0.1;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]"..
-					"label[0,2.5;"..S("Punch this hand-driven mill").."]"..
-					"label[0,3.0;"..S("to grind various items.").."]"..
-                                "list[current_player;main;0,4;8,4;]");
+		meta:set_string("formspec",
+				cottages_handmill_formspec..
+				"label[2.5,-0.5;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]" );
         end,
 
         can_dig = function(pos,player)
@@ -426,7 +411,7 @@ minetest.register_node("cottages:handmill", {
 
 	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		local meta = minetest.get_meta(pos)
-                if( player and player:get_player_name() ~= meta:get_string('owner' )) then
+		if( not( cottages_can_use( meta, player ))) then
                         return 0
 		end
 		return count;
@@ -434,15 +419,21 @@ minetest.register_node("cottages:handmill", {
 
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
-			if( player and player:get_player_name() ~= meta:get_string('owner' )) then
-        	return 0
+		-- only accept input the threshing floor can use/process
+		if(    listname=='flour'
+		    or (listname=='seeds' and stack and not( cottages.handmill_product[ stack:get_name()] ))) then
+			return 0;
+		end
+
+		if( not( cottages_can_use( meta, player ))) then
+                        return 0
 		end
 		return stack:get_count()
 	end,
 
 	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
-                if( player and player:get_player_name() ~= meta:get_string('owner' )) then
+		if( not( cottages_can_use( meta, player ))) then
                         return 0
 		end
 		return stack:get_count()
@@ -456,28 +447,49 @@ minetest.register_node("cottages:handmill", {
 		end
 		local name = puncher:get_player_name();
 
-               	local meta = minetest.env:get_meta(pos);
+               	local meta = minetest.get_meta(pos);
                	local inv = meta:get_inventory();
 
 		local input = inv:get_list('seeds');
 		local stack1 = inv:get_stack( 'seeds', 1);
 
-		if( ( stack1:is_empty()) or( not( stack1:is_empty()) and stack1:get_definition().ground == nil )) then
+		if(       (      stack1:is_empty())
+			or( not( stack1:is_empty())
+			     and not( cottages.handmill_product[ stack1:get_name() ] ))) then
+
 			if not( stack1:is_empty() ) then
 				minetest.chat_send_player(name,"Nothing happens...")
 			end
+			-- update the formspec
+			meta:set_string("formspec",
+				cottages_handmill_formspec..
+				"label[2.5,-0.5;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]" );
 			return;
 		end
 
-		local anz = 1 + math.random( 0, 3 );
+		-- turning the mill is a slow process; 1-21 flour are generated per turn
+		local anz = 1 + math.random( cottages.handmill_min_per_turn, cottages.handmill_max_per_turn );
+		-- we already made sure there is only wheat inside
 		local found = stack1:get_count();
 		
-		if( inv:room_for_item('flour',stack1:get_definition().ground.." "..tostring(anz))) then
+		-- do not process more wheat than present in the input slots
+		if( found < anz ) then
+			anz = found;
+		end
 
-			inv:add_item("flour", stack1:get_definition().ground.." "..tostring(anz) );
-			inv:remove_item("seeds", stack1:get_name());
+		local product_stack = ItemStack( cottages.handmill_product[ stack1:get_name() ]);
+		local anz_result = anz;
+		-- items that produce more
+		if( product_stack:get_count()> 1 ) then
+			anz_result = anz * product_stack:get_count();
+		end
 
-			local anz_left = found - 1;
+		if(    inv:room_for_item('flour', product_stack:get_name()..' '..tostring( anz_result ))) then
+
+			inv:add_item(    'flour', product_stack:get_name()..' '..tostring( anz_result ));
+			inv:remove_item( 'seeds', stack1:get_name()..' '..tostring( anz ));
+
+			local anz_left = found - anz;
 			if( anz_left > 0 ) then
 				minetest.chat_send_player( name, S('You have ground a %s (%s are left).'):format(stack1:get_definition().description,(anz_left)));
 			else
