@@ -108,6 +108,7 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 			local stack = inv:get_stack("src",1)
 			if stack:get_count() == 0 then
 				chat.local_chat(player:getpos(),"Blacksmith: Please give me something to smelt",3)
+				active_blacksmiths[name] = nil
 				return
 			else
 				-- see if it's a smeltable item
@@ -125,8 +126,15 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 				local start = blacksmith.object:getpos()
 				start.y = start.y - 1
 				-- find a path to the furnace
-				local path = minetest.find_path(start,dest,5,1,1,"Dijkstra")
+				local path = minetest.find_path(start,dest,5,2,3,"A*")
 				if path ~= nil then	
+					local crNeeded = (stack:get_count() * 2)
+					if money.get(name) < crNeeded then
+						chat.local_chat(player:getpos(),"Blacksmith: Sorry, you don't have enough money. I charge 2cr per lump.")
+						active_blacksmiths[name] = nil
+						return
+					end
+					money.dec(name,crNeeded)
 					-- move the inventory from the detached inventory to the inventory variable
 					active_blacksmiths[name].inventory = stack
 					active_blacksmiths[name].furnace = furnace
@@ -189,7 +197,7 @@ function blacksmith_globalstep(dtime)
 					active_blacksmiths[name] = nil		-- I think it's all byref so bs = nil should also work
 					meta:set_int("in_use",0)
 				end
-			print("processing done")
+			--print("processing done")
 			end
 		end
 		-- when there are more blacksmiths active slow down this loop
