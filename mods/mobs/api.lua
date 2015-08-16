@@ -819,7 +819,7 @@ function mobs:register_spawn(name, nodes, max_light, min_light, chance, active_o
 	mobs.spawning_mobs[name] = true	
 	minetest.register_abm({
 		nodenames = nodes,
-		neighbors = {"air"},
+		--neighbors = {"air"},
 		interval = 30,
 		chance = chance,
 		action = function(pos, node, _, active_object_count_wider)
@@ -882,12 +882,14 @@ end
 
 function mobs:spawn_mob(pos,name)  
 	-- make sure the nodes above are walkable
-	if minetest.registered_nodes[minetest.get_node(pos).name] ~= nil then
-		if minetest.registered_nodes[minetest.get_node(pos).name].walkable == true or minetest.registered_nodes[minetest.get_node(pos).name].walkable == nil then
+	local nodename = minetest.get_node(pos).name
+	if minetest.registered_nodes[nodename] ~= nil then
+		if minetest.registered_nodes[nodename].walkable == true or minetest.registered_nodes[nodename].walkable == nil or nodename == "default:water_source" then
 			return -1
 		end  
 		pos.y = pos.y + 1
-		if minetest.registered_nodes[minetest.get_node(pos).name].walkable == true or minetest.registered_nodes[minetest.get_node(pos).name].walkable == nil then
+		nodename = minetest.get_node(pos).name
+		if minetest.registered_nodes[nodename].walkable == true or minetest.registered_nodes[nodename].walkable == nil or nodename == "default:water_source" then
 			return -1
 		end
 		pos.y = pos.y - 1
