@@ -819,7 +819,7 @@ function mobs:register_spawn(name, nodes, max_light, min_light, chance, active_o
 	mobs.spawning_mobs[name] = true	
 	minetest.register_abm({
 		nodenames = nodes,
-		--neighbors = {"air"},
+		neighbors = {"air"},
 		interval = 30,
 		chance = chance,
 		action = function(pos, node, _, active_object_count_wider)
