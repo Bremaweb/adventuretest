@@ -882,6 +882,7 @@ end
 
 function mobs:spawn_mob(pos,name)  
 	-- make sure the nodes above are walkable
+	minetest.log("action","Attempting to spawn "..name)
 	local nodename = minetest.get_node(pos).name
 	if minetest.registered_nodes[nodename] ~= nil then
 		if minetest.registered_nodes[nodename].walkable == true or minetest.registered_nodes[nodename].walkable == nil or nodename == "default:water_source" then
@@ -898,9 +899,10 @@ function mobs:spawn_mob(pos,name)
 	local mob = minetest.add_entity(pos, name)
 	-- setup the hp, armor, drops, etc... for this specific mob
 	local distance_rating = ( ( get_distance({x=0,y=0,z=0},pos) ) / 15000 )	
-	if mob ~= nil then
+	if mob ~= nil then		
 		mob = mob:get_luaentity()
 		if mob ~= nil then
+			minetest.log("action",name.." spawned at "..minetest.pos_to_string(pos))
 			local newHP = mob.hp_min + math.floor( mob.hp_max * distance_rating )
 			mob.object:set_hp( newHP )
 			mob.state = "walk"	-- make them walk when they spawn so they walk away from their original spawn position
