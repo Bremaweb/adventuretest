@@ -38,12 +38,13 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 	local notify = minetest.get_mapgen_object("gennotify")	
 	if notify ~= nil then
 		if notify.dungeon ~= nil then
-			--print("Dungeon generated")
+			minetest.log("action","Dungeon generated")
 			local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 			local area = VoxelArea:new{MinEdge=emin, MaxEdge=emax}
 			local data = vm:get_data()	
 			local spawn = {}
 			local chests = {}
+			local c = 0
 			for k,v in ipairs(notify.dungeon) do
 				--print(minetest.pos_to_string(v))
 				-- find the size of this room
@@ -52,26 +53,32 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 					
 					local ycheck = {x=center.x,y=center.y,z=center.z}
 					local i = area:indexp(ycheck)
-					while data[i] == d_air do
+					c = 0
+					while data[i] == d_air and c < 25 do
 						ycheck.y = ycheck.y + 1
 						i = area:indexp(ycheck)
+						c = c + 1
 					end
 					ycheck.y = ycheck.y - 1
 					local height = ( ycheck.y - center.y )
 					
 					local xcheck = {x=center.x,y=center.y,z=center.z}
 					local i = area:indexp(xcheck)
-					while data[i] == d_air do
+					c = 0
+					while data[i] == d_air and c < 25 do
 						xcheck.x = xcheck.x + 1
 						i = area:indexp(xcheck)
+						c = c + 1
 					end
 					xcheck.x = xcheck.x - 1
 										
 					local zcheck = {x=center.x,y=center.y,z=center.z}
 					local i = area:indexp(zcheck)
-					while data[i] == d_air do
+					c = 0
+					while data[i] == d_air and c < 25 do
 						zcheck.z = zcheck.z + 1
 						i = area:indexp(zcheck)
+						c = c + 1
 					end
 					zcheck.z = zcheck.z - 1
 										
