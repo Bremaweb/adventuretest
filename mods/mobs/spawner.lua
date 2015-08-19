@@ -115,6 +115,12 @@ function getformspec(pos)
 end
 
 function mobs.spawn_npc_and_spawner(pos,barbarian_village)
+
+if randomChance(30) then
+	return
+end
+
+math.randomseed(os.clock())
 local numNPCs = math.random(0,1)
 		--print("Spawning "..tostring(numNPCs).." NPCs")
 		if numNPCs > 0 then

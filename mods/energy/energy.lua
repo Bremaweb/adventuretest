@@ -40,6 +40,8 @@ function energy.update_energy(p,name)
 				
 				local hdiff = math.sqrt(math.pow(pos.x-player_lastpos[name].x, 2) + math.pow(pos.z-player_lastpos[name].z, 2))
 				
+				stats.increment(name,STAT_TRAVEL,math.floor(hdiff))
+				
 				adj = adj - ( hdiff * 0.03 )
 				--print("Energy Adjustments")
 				--print(tostring(adj))

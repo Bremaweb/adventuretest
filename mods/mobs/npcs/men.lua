@@ -55,7 +55,8 @@ mobs:register_mob("mobs:male1_npc",{
 		{chance=60, item="experience:6_exp"},
 		{chance=50, item="potions:magic_replenish1"},
 	},
-	walk_chance = 10,
+	walk_chance = 5,
+	lifetimer = false,
 })
 
 mobs:register_mob("mobs:male2_npc",{
@@ -115,7 +116,8 @@ mobs:register_mob("mobs:male2_npc",{
 		{chance=60, item="experience:6_exp"},
 		{chance=50, item="potions:magic_replenish1"},
 	},
-	walk_chance = 10,
+	walk_chance = 5,
+	lifetimer = false,
 })
 
 mobs:register_mob("mobs:male3_npc",{
@@ -175,5 +177,6 @@ mobs:register_mob("mobs:male3_npc",{
 		{chance=60, item="experience:6_exp"},
 		{chance=50, item="potions:magic_replenish1"},
 	},
-	walk_chance = 10,
+	walk_chance = 2,
+	lifetimer = false,
 })

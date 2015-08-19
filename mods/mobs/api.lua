@@ -479,6 +479,7 @@ function mobs:register_mob(name, def)
 			
 			if self.state == "stand" then
 				-- randomly turn
+				math.randomseed(os.clock())
 				if math.random(1, 100) < self.activity_level then
 					-- if there is a player nearby look at them
 					local lp = nil

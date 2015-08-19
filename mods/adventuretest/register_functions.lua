@@ -29,6 +29,7 @@ local function adventuretest_die_player(player)
   		mg_villages.spawnplayer(player)
   	end
   	energy.respawnplayer(player)
+  	stats.increment(player:get_player_name(),STAT_DIED,1)
   	return true
 end
 
@@ -56,8 +57,21 @@ local function adventuretest_dignode(pos, node, digger)
   if digger ~= nil and digger ~= "" then
     local name= digger:get_player_name()
     if player_energy[name] ~= nil then
-      player_energy[name] = player_energy[name] - 0.08
+      player_energy[name] = player_energy[name] - 0.05
     end
+    
+    stats.increment(name,STAT_DUG,1)
+    local dug = stats.get(name,STAT_DUG)
+	if dug % 100 == 0 then
+		local ppos = digger:getpos()
+		-- every 100 give them some experience
+		local multiplier = dug / 100
+		local exp = 5 * multiplier
+		local e = experience.exp_to_items(exp)
+		for _,item in pairs(e) do
+			default.drop_item(ppos,item)
+		end
+	end
   end
   
   hunger.handle_node_actions(pos, node, digger)
@@ -66,6 +80,22 @@ minetest.register_on_dignode(adventuretest_dignode)
 
 local function adventuretest_placenode(pos, node, placer)
   hunger.handle_node_actions(pos,node,placer)
+  if placer:is_player() then
+	  local name = placer:get_player_name()
+	  stats.increment(name,STAT_PLACED,1)
+	  
+	  local placed = stats.get(name,STAT_PLACED)
+	  if placed % 100 == 0 then
+	  	local ppos = placer:getpos()
+	  	-- every 100 give them some experience
+	  	local multiplier = placed / 100
+	  	local exp = 5 * multiplier
+	  	local e = experience.exp_to_items(exp)
+	  	for _,item in pairs(e) do
+	  		default.drop_item(ppos,item)
+	  	end
+	  end
+  end
 end
 minetest.register_on_placenode(adventuretest_placenode)
 
@@ -75,3 +105,20 @@ local function on_generated(minp,maxp,seed)
 end
 minetest.register_on_generated(on_generated)
 
+local function on_join(player)
+	stats.load(player:get_player_name())
+end
+minetest.register_on_joinplayer(on_join)
+
+local function on_leave(player)
+	local name = player:get_player_name()
+	stats.save(name)
+	stats.unload(name)
+end
+minetest.register_on_leaveplayer(on_leave)
+
+local function on_shutdown()
+	stats.save_all()
+end
+
+minetest.register_on_shutdown(on_shutdown)

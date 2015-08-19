@@ -57,7 +57,9 @@ mobs:register_mob("mobs:blacksmith",{
 	group_attack = false,
 	blood_amount = 35,
 	blood_offset = 0.25,
-	activity_level = 15,
+	activity_level = 1,
+	lifetimer = false,
+	
 })
 
 -- list of active blacksmiths... I'm not sure how this is going to work when an entity is unloaded
