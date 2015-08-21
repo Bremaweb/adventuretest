@@ -1001,26 +1001,28 @@ function get_distance(pos1,pos2)
 	end
 end
 
-blood_particles = function(pos,offset,amount,texture)
-	if amount > 0 and pos ~= nil then
+blood_particles = function(pos,offset,amt,tex)
+	if amt > 0 and pos ~= nil then
 		local p = pos
 		p.y = p.y + offset
-		minetest.add_particlespawner(
-	        amount, --amount
-	        0.25, --time
-	        {x=p.x-0.2, y=p.y-0.2, z=p.z-0.2}, --minpos
-	        {x=p.x+0.2, y=p.y+0.2, z=p.z+0.2}, --maxpos
-	        {x=0, y=-2, z=0}, --minvel
-	        {x=2, y=2, z=2}, --maxvel
-	        {x=-4,y=-4,z=-4}, --minacc
-	        {x=4,y=-4,z=4}, --maxacc
-	        0.1, --minexptime
-	        1, --maxexptime
-	        0.5, --minsize
-	        1, --maxsize
-	        false, --collisiondetection
-	        texture --texture
-	    )
+		
+		local ps_def = { 
+			amount = amt,
+			time = 0.25,
+			minpos = {x=p.x-0.2, y=p.y-0.2, z=p.z-0.2},
+			maxpos = {x=p.x+0.2, y=p.y+0.2, z=p.z+0.2},
+			minvel = {x=0, y=-2, z=0},
+			maxvel = {x=2, y=2, z=2},
+			minacc = {x=-4,y=-4,z=-4},
+			maxacc = {x=4,y=-4,z=4},
+			minexptime = 0.1,
+			maxexptime = 1,
+			minsize = 0.5,
+			maxsize = 1,
+			collisiondetection = false,
+			texture = tex
+		}
+		minetest.add_particlespawner(ps_def)
     end
 end
 

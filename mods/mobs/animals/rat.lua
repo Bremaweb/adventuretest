@@ -27,7 +27,7 @@ mobs:register_mob("mobs:rat", {
 	blood_amount = 5,
 	blood_offset = 0,
 })
-mobs:register_spawn("mobs:rat", {"default:dirt_with_grass", "default:stone"}, 20, -1, 7000, 1, 31000)
+mobs:register_spawn("mobs:rat", {"default:dirt_with_grass", "default:stone"}, 20, -1, 10000, 1, 31000)
 
 minetest.register_craftitem("mobs:rat", {
 	description = "Rat",

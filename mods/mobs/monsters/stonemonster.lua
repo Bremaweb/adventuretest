@@ -54,4 +54,4 @@ mobs:register_mob("mobs:stone_monster", {
 	},
 	step = 0.5,
 })
-mobs:register_spawn("mobs:stone_monster", {"default:stone"}, 3, -1, 3000, 3, 0)
+mobs:register_spawn("mobs:stone_monster", {"default:stone"}, 7, -1, 8000, 3, 0)

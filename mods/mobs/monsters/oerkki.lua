@@ -43,5 +43,5 @@ mobs:register_mob("mobs:oerkki", {
 	blood_amount = 0,
 	
 })
-mobs:register_spawn("mobs:oerkki", {"default:stone"}, 3, -1, 7000, 3, -10)
-mobs:register_spawn("mobs:oerkki", {"default:stone"}, 3, -1, 2000, 3, -100)
+mobs:register_spawn("mobs:oerkki", {"default:stone"}, 7, -1, 7000, 3, -10)
+mobs:register_spawn("mobs:oerkki", {"default:stone"}, 7, -1, 2000, 3, -100)
