@@ -73,14 +73,14 @@ minetest.register_decoration({
 })
 
 minetest.register_decoration({
-	deco_type = "simple",
+	deco_type = "schematic",
 	place_on = {"mg:dirt_with_dry_grass"},
 	sidelen = 40,
 	fill_ratio = 0.0008,
 	biomes = {"savanna"},
 	y_min = 2,
 	y_max = 40,
-	decoration = "mg:savannasapling_ongen",
+	schematic = minetest.get_modpath("mg") .. "/schematics/acacia_tree.mts",
 })
 
 minetest.register_decoration({
@@ -126,6 +126,23 @@ minetest.register_decoration({
 	y_max = 155,
 	schematic = minetest.get_modpath("mg").."/schematics/apple_tree.mts",
 	flags = "place_center_x, place_center_z",
+})
+
+minetest.register_decoration({
+	deco_type = "schematic",
+	place_on = {"default:dirt_with_snow"},
+	sidelen = 80,
+	noise_params = {
+		offset = -0.3,
+		scale = 0.7,
+		spread = {x=200, y=200, z=200},
+		seed = 354,
+		octaves = 3,
+		persist = 0.7
+	},
+	y_min = -2,
+	y_max = 70,
+	schematic = minetest.get_modpath("mg").."/schematics/pine_tree.mts",
 })
 
 -- Jungle tree

@@ -1,3 +1,25 @@
+minetest.register_alias("mapgen_stone", "default:stone")
+minetest.register_alias("mapgen_dirt", "default:dirt")
+minetest.register_alias("mapgen_dirt_with_grass", "default:dirt_with_grass")
+minetest.register_alias("mapgen_sand", "default:sand")
+minetest.register_alias("mapgen_water_source", "default:water_source")
+minetest.register_alias("mapgen_river_water_source", "default:water_source")
+minetest.register_alias("mapgen_lava_source", "default:lava_source")
+minetest.register_alias("mapgen_gravel", "default:gravel")
+minetest.register_alias("mapgen_desert_stone", "default:desert_stone")
+minetest.register_alias("mapgen_desert_sand", "default:desert_sand")
+minetest.register_alias("mapgen_dirt_with_snow", "default:dirt_with_snow")
+minetest.register_alias("mapgen_snowblock", "default:snowblock")
+minetest.register_alias("mapgen_snow", "default:snow")
+minetest.register_alias("mapgen_ice", "default:ice")
+minetest.register_alias("mapgen_sandstone", "default:sandstone")
+
+minetest.register_alias("default:acacia_tree", "mg:savannatree")
+minetest.register_alias("default:acacia_leaves", "mg:savannaleaves")
+
+minetest.register_alias("default:pine_needles", "mg:pineleaves")
+minetest.register_alias("default:pinetree", "mg:pinetree")
+
 minetest.register_node("mg:savannatree", {
 	description = "Savannawood Tree",
 	tiles = {"mg_dry_tree_top.png", "mg_dry_tree_top.png", "mg_dry_tree.png"},
@@ -82,22 +104,6 @@ minetest.register_abm({
 	nodenames = {"mg:savannasapling"},
 	interval = 10,
 	chance = 50,
-	action = function(pos, node)
-		local vm = minetest.get_voxel_manip()
-		local minp, maxp = vm:read_from_map({x=pos.x-10, y=pos.y, z=pos.z-10}, {x=pos.x+10, y=pos.y+20, z=pos.z+10})
-		local a = VoxelArea:new{MinEdge=minp, MaxEdge=maxp}
-		local data = vm:get_data()
-		add_savannatree(data, a, pos.x, pos.y, pos.z, minp, maxp, PseudoRandom(math.random(1,100000)))
-		vm:set_data(data)
-		vm:write_to_map(data)
-		vm:update_map()
-	end
-})
-
-minetest.register_abm({
-	nodenames = {"mg:savannasapling_ongen"},
-	interval = 1,
-	chance = 1,
 	action = function(pos, node)
 		local vm = minetest.get_voxel_manip()
 		local minp, maxp = vm:read_from_map({x=pos.x-10, y=pos.y, z=pos.z-10}, {x=pos.x+10, y=pos.y+20, z=pos.z+10})

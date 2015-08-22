@@ -142,13 +142,13 @@ minetest.register_biome({
 minetest.register_biome({
 	name = "snowy",
 	node_dust = "default:snow",
-	node_top = "default:snowblock",
+	node_top = "default:dirt_with_snow",
 	depth_top = 1,
 	node_filler = "default:dirt",
 	depth_filler = 2,
 	node_stone = "default:stone",
 	node_water_top = "default:ice",
-	depth_water_top = 2,
+	depth_water_top = 1,
 	--node_water = "",
 	y_min = -5,
 	y_max = 245,
@@ -158,8 +158,8 @@ minetest.register_biome({
 
 minetest.register_biome({
 	name = "tundra",
-	--node_dust = "",
-	node_top = "default:dirt_with_snow",
+	node_dust = "default:snow",
+	node_top = "default:snowblock",
 	depth_top = 1,
 	node_filler = "default:dirt",
 	depth_filler = 4,
@@ -175,7 +175,7 @@ minetest.register_biome({
 
 minetest.register_biome({
 	name = "artic",
-	--node_dust = "",
+	node_dust = "default:snow",
 	node_top = "default:snowblock",
 	depth_top = 5,
 	node_filler = "default:dirt",
