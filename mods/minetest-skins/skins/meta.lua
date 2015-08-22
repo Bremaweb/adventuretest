@@ -1,7 +1,7 @@
 skins.meta = {}
 for _, i in ipairs(skins.list) do
 	skins.meta[i] = {}
-	local f = io.open(skins.modpath.."/meta/"..i..".txt")
+	local f = io.open(skins.modpath.."/meta/"..i..".txt", "r")
 	local data = nil
 	if f then
 		data = minetest.deserialize("return {"..f:read('*all').."}")
