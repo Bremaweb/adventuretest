@@ -40,7 +40,7 @@ if use_moreores then
 end
 
 local craft_ingreds = {
-	wood = "default:wood",
+	wood = "group:wood",
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
 	diamond = "default:diamond",
