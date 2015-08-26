@@ -83,7 +83,7 @@ function skills.add_exp(name, exp)
 	skills.player_levels[name].exp = l.exp + exp	
 	local next_level = ((l.level^2) * 50)
 	
-	if skills.player_levels[name].exp >= next_level then
+	while skills.player_levels[name].exp >= next_level do
 		skills.player_levels[name].level = skills.player_levels[name].level + 1
 		skills.player_levels[name].exp = skills.player_levels[name].exp - next_level
 		minetest.chat_send_player(name,"You have gained a level! You are now level "..tostring(skills.player_levels[name].level))
