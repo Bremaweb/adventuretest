@@ -65,9 +65,8 @@ local function adventuretest_dignode(pos, node, digger)
 	if dug % 100 == 0 then
 		local ppos = digger:getpos()
 		-- every 100 give them some experience
-		local multiplier = dug / 100
-		local exp = 5 * multiplier
-		local e = experience.exp_to_items(exp)
+		local xp = math.random(1, 5)
+		local e = experience.exp_to_items(xp)
 		for _,item in pairs(e) do
 			default.drop_item(ppos,item)
 		end
@@ -88,9 +87,8 @@ local function adventuretest_placenode(pos, node, placer)
 	  if placed % 100 == 0 then
 	  	local ppos = placer:getpos()
 	  	-- every 100 give them some experience
-	  	local multiplier = placed / 100
-	  	local exp = 5 * multiplier
-	  	local e = experience.exp_to_items(exp)
+		local xp = math.random(1, 5)
+		local e = experience.exp_to_items(xp)
 	  	for _,item in pairs(e) do
 	  		default.drop_item(ppos,item)
 	  	end
