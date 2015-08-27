@@ -4,17 +4,22 @@
 -- having all dig node code in one function seemed to have the most improvement over calling several dignode
 -- functions 
 
+
+
 local function adventuretest_globalstep(dtime)
   default.player_globalstep(dtime)
   default.leaf_globalstep(dtime)
   energy_globalstep(dtime)
-  hunger.global_step(dtime)
+  if minetest.setting_getbool("enable_damage") then
+  	hunger.global_step(dtime)
+  end  
   itemdrop_globalstep(dtime)
   armor_globalstep(dtime)
   wieldview_globalstep(dtime)
   blacksmith_globalstep(dtime)
   throwing_globalstep(dtime)
   magic_globalstep(dtime)
+  mobs.global_step(dtime)
   --ambience_globalstep(dtime)
 end
 minetest.register_globalstep(adventuretest_globalstep)
