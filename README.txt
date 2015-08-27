@@ -56,6 +56,9 @@ http://creativecommons.org/licenses/by-sa/3.0/
 License of menu/header.png
 Copyright (C) 2013 BlockMen CC BY-3.0
 
+License of AdventureTest menu/icon
+Copyright (C) 2014 hoodedice CC BY-3.0
+
 License of Spider model
 Copyright (C) 2013 AspireMint CC BY-SA
 
