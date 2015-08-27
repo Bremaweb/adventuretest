@@ -39,6 +39,18 @@ minetest.register_node("default:stone_with_iron", {
 	skill=SKILL_METAL,
 })
 
+minetest.register_abm({
+	nodenames = {"default:stone_with_iron"},
+	neighbors = {"group:lava"},
+	interval = 1.0,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		-- change to a fused iron node
+		minetest.set_node(pos, {name = "default:cobble"})
+	end,
+})
+
+
 minetest.register_node("default:stone_with_copper", {
 	description = "Copper Ore",
 	tiles = {"default_stone.png^default_mineral_copper.png"},
@@ -215,6 +227,18 @@ minetest.register_node("default:gravel", {
 	}),
 })
 
+minetest.register_node("default:river_gravel", {
+	description = "Gravel",
+	tiles = {"default_river_gravel.png"},
+	is_ground_content = true,
+	groups = {crumbly=2, falling_node=1},
+	sounds = default.node_sound_dirt_defaults({
+		footstep = {name="default_gravel_footstep", gain=0.5},
+		dug = {name="default_gravel_footstep", gain=1.0},
+	}),
+})
+
+
 minetest.register_node("default:sandstone", {
 	description = "Sandstone",
 	tiles = {"default_sandstone.png"},
@@ -268,7 +292,7 @@ minetest.register_node("default:tree", {
 	tiles = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
 	paramtype2 = "facedir",
 	is_ground_content = false,
-	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2},
+	groups = {tree=1,choppy=2,flammable=2},
 	sounds = default.node_sound_wood_defaults(),
 	on_place = minetest.rotate_node
 })
@@ -278,7 +302,7 @@ minetest.register_node("default:jungletree", {
 	tiles = {"default_jungletree_top.png", "default_jungletree_top.png", "default_jungletree.png"},
 	paramtype2 = "facedir",
 	is_ground_content = false,
-	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2},
+	groups = {tree=1,choppy=2,flammable=2},
 	sounds = default.node_sound_wood_defaults(),
 	on_place = minetest.rotate_node
 })
@@ -297,6 +321,8 @@ minetest.register_node("default:jungleleaves", {
 	tiles = {"default_jungleleaves.png"},
 	paramtype = "light",
 	waving = 1,
+	walkable=false,
+	climbable=true,
 	is_ground_content = false,
 	groups = {snappy=3, leafdecay=3, flammable=2, leaves=1},
 	drop = {
@@ -362,6 +388,8 @@ minetest.register_node("default:leaves", {
 	waving = 1,
 	is_ground_content = false,
 	groups = {snappy=3, leafdecay=3, flammable=2, leaves=1},
+	walkable=false,
+	climbable=true,
 	drop = {
 		max_items = 1,
 		items = {
@@ -432,6 +460,7 @@ minetest.register_node("default:glass", {
 	is_ground_content = false,
 	groups = {cracky=3,oddly_breakable_by_hand=3},
 	sounds = default.node_sound_glass_defaults(),
+	ground = "vessels:glass_fragments",
 })
 
 minetest.register_node("default:fence_wood", {
@@ -926,6 +955,16 @@ function default.get_furnace_active_formspec(pos, percent)
 	return formspec
 end
 
+function default.furnace_available(pos)
+	local meta = minetest.get_meta(pos)
+	print("Furnace in_use: "..tostring(meta:get_int("in_use")))
+	if meta:get_int("in_use") == 1 then
+		return false
+	else
+		return true
+	end
+end
+
 default.furnace_inactive_formspec =
 	"size[8,9]"..
 	"image[2,2;1,1;default_furnace_fire_bg.png]"..
@@ -1037,57 +1076,76 @@ minetest.register_node("default:furnace_active", {
 		inv:set_size("dst", 4)
 	end,
 	can_dig = function(pos,player)
-		local meta = minetest.get_meta(pos);
-		local inv = meta:get_inventory()
-		if not inv:is_empty("fuel") then
-			return false
-		elseif not inv:is_empty("dst") then
-			return false
-		elseif not inv:is_empty("src") then
+		if default.furnace_available(pos) then
+			local meta = minetest.get_meta(pos);
+			local inv = meta:get_inventory()
+			if not inv:is_empty("fuel") then
+				return false
+			elseif not inv:is_empty("dst") then
+				return false
+			elseif not inv:is_empty("src") then
+				return false
+			end
+			return true
+		else
 			return false
 		end
-		return true
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		if listname == "fuel" then
-			if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
-				if inv:is_empty("src") then
-					meta:set_string("infotext","Furnace is empty")
+		if default.furnace_available(pos) then
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			if listname == "fuel" then
+				if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
+					if inv:is_empty("src") then
+						meta:set_string("infotext","Furnace is empty")
+					end
+					return stack:get_count()
+				else
+					return 0
 				end
+			elseif listname == "src" then
+				print(player:get_player_name().." put item into furnace")
+				meta:set_string("owner",player:get_player_name())
 				return stack:get_count()
-			else
+			elseif listname == "dst" then
 				return 0
 			end
-		elseif listname == "src" then
-			print(player:get_player_name().." put item into furnace")
-			meta:set_string("owner",player:get_player_name())
-			return stack:get_count()
-		elseif listname == "dst" then
+		else
 			return 0
 		end
 	end,
 	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		local stack = inv:get_stack(from_list, from_index)
-		if to_list == "fuel" then
-			if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
-				if inv:is_empty("src") then
-					meta:set_string("owner","")
-					meta:set_string("infotext","Furnace is empty")
+		if default.furnace_available(pos) then
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			local stack = inv:get_stack(from_list, from_index)
+			if to_list == "fuel" then
+				if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
+					if inv:is_empty("src") then
+						meta:set_string("owner","")
+						meta:set_string("infotext","Furnace is empty")
+					end
+					return count
+				else
+					return 0
 				end
+			elseif to_list == "src" then
 				return count
-			else
+			elseif to_list == "dst" then
 				return 0
 			end
-		elseif to_list == "src" then
-			return count
-		elseif to_list == "dst" then
+		else
 			return 0
 		end
 	end,
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		if not default.furnace_available(pos) then
+			return 0
+		else
+		  return stack:get_count()
+		end		
+	end
 })
 
 local function swap_node(pos,name)
@@ -1204,6 +1262,7 @@ minetest.register_abm({
 			meta:set_string("infotext","Furnace out of fuel")
 			swap_node(pos,"default:furnace")
 			meta:set_string("formspec", default.furnace_inactive_formspec)
+			meta:set_int("in_use",0)
 			return
 		end
 
@@ -1505,7 +1564,7 @@ minetest.register_node("default:ice", {
 	is_ground_content = true,
 	paramtype = "light",
 	freezemelt = "default:water_source",
-	groups = {cracky=3, melts=1},
+	groups = {choppy=3,cracky=3, melts=1},
 	sounds = default.node_sound_glass_defaults(),
 })
 

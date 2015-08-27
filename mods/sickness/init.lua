@@ -1,4 +1,3 @@
-local prev_physics = {}
 local food_poisoning = {
 	affectid = "food_poisoning",
 	name = "Food Poisoning",
@@ -21,13 +20,12 @@ local food_poisoning = {
 						minetest.log("action",name.." pukes")
 						puke_physics(player)
 						minetest.sound_play("sickness_puke",{object=player})
-						if hud.hunger[name] ~= nil then
-						  if hud.hunger[name] > 4 then
-							  hud.hunger[name] = 4
-							  hud.set_hunger(player)
+						if hunger[name] ~= nil then
+						  if hunger[name].lvl > 4 then
+							  hunger.update_hunger(player,4)							  
 						  end
-						  if player_stamina[name] > 6 then
-							  player_stamina[name] = 6
+						  if player_energy[name] > 6 then
+							  player_energy[name] = 6
 						  end
 						  minetest.after(5,puke_reset,player)
 						end
@@ -41,13 +39,12 @@ local food_poisoning = {
 						minetest.log("action",name.." pukes")
 						puke_physics(player)
 						minetest.sound_play("sickness_puke",{object=player})
-						if hud.hunger[name] ~= nil then
-						  if hud.hunger[name] > 4 then
-							  hud.hunger[name] = 4
-							  hud.set_hunger(player)
+						if hunger[name] ~= nil then
+						  if hunger[name].lvl > 4 then
+							  hunger.update_hunger(player,4)
 						  end
-						  if player_stamina[name] > 10 then
-							  player_stamina[name] = 10
+						  if player_energy[name] > 10 then
+							  player_energy[name] = 10
 						  end	
 						  minetest.after(5,puke_reset,player)
 						end
@@ -61,13 +58,12 @@ local food_poisoning = {
 						minetest.log("action",name.." pukes")
 						puke_physics(player)
 						minetest.sound_play("sickness_puke",{object=player})
-						if hud.hunger[name] ~= nil then
-						  if hud.hunger[name] > 4 then
-							  hud.hunger[name] = 4
-							  hud.set_hunger(player)
+						if hunger[name] ~= nil then
+						  if hunger[name].lvl > 4 then
+							  hunger.update_hunger(player,4)
 						  end
-						  if player_stamina[name] > 16 then
-							  player_stamina[name] = 16
+						  if player_energy[name] > 16 then
+							  player_energy[name] = 16
 						  end	
 						  minetest.after(5,puke_reset,player)
 						end
@@ -78,22 +74,18 @@ local food_poisoning = {
 	onremove = function(name, player, affectid)
 		physics.adjust_physics(player,{speed=0.2})
 		minetest.chat_send_player(name,"You are feeling much better",false)
-	end
-
+	end,
+	removeOnDeath = true,
 }
 
 function puke_physics(player)
 	local name = player:get_player_name()
-	prev_physics[name] = physics.get_player_physics(name)
-	player:set_physics_override({speed=0.01, jump=0})
+	physics.freeze_player(name)
 end
 
 function puke_reset(player)
 	local name = player:get_player_name()
-	if prev_physics[name] ~= nil then
-		player:set_physics_override(prev_physics[name])
-		prev_physics[name] = nil
-	end
+	physics.unfreeze_player(name)
 end
 
 affects.registerAffect(food_poisoning)

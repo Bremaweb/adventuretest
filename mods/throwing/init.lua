@@ -100,7 +100,7 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_globalstep(function (dtime)
+function throwing_globalstep(dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 		if shoot_timer[name] ~= nil then
@@ -109,7 +109,7 @@ minetest.register_globalstep(function (dtime)
 			shoot_timer[name] = 0
 		end
 	end
-end)
+end
 
 dofile(minetest.get_modpath("throwing").."/arrow.lua")
 dofile(minetest.get_modpath("throwing").."/fire_arrow.lua")

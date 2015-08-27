@@ -52,6 +52,7 @@ type = "npc",
 		{chance=40, item="experience:6_exp"},
 		{chance=60, item="potions:magic_replenish1"},
 	},
+	lifetimer = false,
 })
 
 mobs:register_mob("mobs:female2_npc", {
@@ -108,6 +109,8 @@ type = "npc",
 		{chance=40, item="experience:6_exp"},
 		{chance=60, item="potions:magic_replenish1"},
 	},
+	walk_chance = 3,
+	lifetimer = false,
 })
 
 mobs:register_mob("mobs:female3_npc", {
@@ -135,7 +138,7 @@ type = "npc",
 	water_damage = 1,
 	lava_damage = 5,
 	light_damage = 0,
-	on_rightclick = nil,
+	on_rightclick = function ( self, clicker ) quests.chest.go(self, clicker) end,
 	activity_level = 5,
 	attack_type = "dogfight",
 	animation = {
@@ -160,8 +163,11 @@ type = "npc",
 	blood_amount = 35,
 	blood_offset = 0.25,
 	rewards = {
-		{chance=90, item="default:bread"},
-		{chance=40, item="experience:6_exp"},
-		{chance=60, item="potions:magic_replenish1"},
+		{chance=100, item="farming:bread 6"},
+		{chance=70, item="food:cheese 6"},
+		{chance=80, item="experience:6_exp 2"},
+		{chance=40, item="potions:magic_replenish1"},
 	},
+	walk_chance = 4,
+	lifetimer = false,
 })

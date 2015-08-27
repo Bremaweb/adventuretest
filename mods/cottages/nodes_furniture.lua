@@ -13,19 +13,13 @@
 ---------------------------------------------------------------------------------------
 -- TODO: change the textures of the bed (make the clothing white, foot path not entirely covered with cloth)
 
--- Boilerplate to support localized strings if intllib mod is installed.
-local S
-if intllib then
-	S = intllib.Getter()
-else
-	S = function(s) return s end
-end
+local S = cottages.S
 
 -- a bed without functionality - just decoration
 minetest.register_node("cottages:bed_foot", {
 	description = S("Bed (foot region)"),
 	drawtype = "nodebox",
-	tiles = {"cottages_beds_bed_top_bottom.png", "default_wood.png",  "cottages_beds_bed_side.png",  "cottages_beds_bed_side.png",  "cottages_beds_bed_side.png",  "cottages_beds_bed_side.png"},
+	tiles = {"cottages_beds_bed_top_bottom.png", cottages.texture_furniture,  "cottages_beds_bed_side.png",  "cottages_beds_bed_side.png",  "cottages_beds_bed_side.png",  "cottages_beds_bed_side.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
@@ -50,13 +44,14 @@ minetest.register_node("cottages:bed_foot", {
 					{-0.5, -0.5, -0.5, 0.5, 0.3, 0.5},
 				}
 	},
+	is_ground_content = false,
 })
 
 -- the bed is split up in two parts to avoid destruction of blocks on placement
 minetest.register_node("cottages:bed_head", {
 	description = S("Bed (head region)"),
 	drawtype = "nodebox",
-	tiles = {"cottages_beds_bed_top_top.png", "default_wood.png",  "cottages_beds_bed_side_top_r.png",  "cottages_beds_bed_side_top_l.png",  "default_wood.png",  "cottages_beds_bed_side.png"},
+	tiles = {"cottages_beds_bed_top_top.png", cottages.texture_furniture,  "cottages_beds_bed_side_top_r.png",  "cottages_beds_bed_side_top_l.png",  cottages.texture_furniture,  "cottages_beds_bed_side.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
@@ -81,6 +76,7 @@ minetest.register_node("cottages:bed_head", {
 					{-0.5, -0.5, -0.5, 0.5, 0.3, 0.5},
 				}
 	},
+	is_ground_content = false,
 })
 
 
@@ -95,7 +91,6 @@ minetest.register_node("cottages:sleeping_mat", {
         sunlight_propagates = true,
         paramtype = 'light',
         paramtype2 = "facedir",
-        is_ground_content = true,
         walkable = false,
         groups = { snappy = 3 },
         sounds = default.node_sound_leaves_defaults(),
@@ -113,7 +108,8 @@ minetest.register_node("cottages:sleeping_mat", {
                 fixed = {
                                         {-0.48, -0.5,-0.48,  0.48, -0.25, 0.48},
                         }
-        }
+        },
+	is_ground_content = false,
 })
 
 
@@ -144,18 +140,18 @@ minetest.register_node("cottages:bench", {
 					{-0.5, -0.5, 0, 0.5, 0, 0.5},
 				}
 	},
+	is_ground_content = false,
 })
 
 
 -- a simple table; possible replacement: 3dforniture:table
-minetest.register_node("cottages:table", {
+local cottages_table_def = {
 		description = S("table"),
 		drawtype = "nodebox",
                 -- top, bottom, side1, side2, inner, outer
 		tiles = {"cottages_minimal_wood.png"},
 		paramtype = "light",
 		paramtype2 = "facedir",
-		is_ground_content = true,
 		groups = {snappy=2,choppy=2,oddly_breakable_by_hand=2},
 		node_box = {
 			type = "fixed",
@@ -170,8 +166,28 @@ minetest.register_node("cottages:table", {
 				{ -0.5, -0.5, -0.5,  0.5, 0.4,  0.5},
 			},
 		},
-})
+		is_ground_content = false,
+}
 
+
+-- search for the workbench in AdventureTest
+local workbench = minetest.registered_nodes[ "workbench:3x3"];
+if( workbench ) then
+	cottages_table_def.tiles        = {workbench.tiles[1], cottages_table_def.tiles[1]};
+	cottages_table_def.on_rightclick = workbench.on_rightclick;
+end
+-- search for the workbench from RealTEst
+workbench = minetest.registered_nodes[ "workbench:work_bench_birch"];
+if( workbench ) then
+	cottages_table_def.tiles	= {workbench.tiles[1], cottages_table_def.tiles[1]};
+	cottages_table_def.on_construct = workbench.on_construct;
+	cottages_table_def.can_dig      = workbench.can_dig;
+	cottages_table_def.on_metadata_inventory_take = workbench.on_metadata_inventory_take;
+	cottages_table_def.on_metadata_inventory_move = workbench.on_metadata_inventory_move;
+	cottages_table_def.on_metadata_inventory_put  = workbench.on_metadata_inventory_put;
+end
+
+minetest.register_node("cottages:table", cottages_table_def );
 
 -- looks better than two slabs impersonating a shelf; also more 3d than a bookshelf 
 -- the infotext shows if it's empty or not
@@ -182,7 +198,6 @@ minetest.register_node("cottages:shelf", {
 		tiles = {"cottages_minimal_wood.png"},
 		paramtype = "light",
 		paramtype2 = "facedir",
-		is_ground_content = true,
 		groups = {snappy=2,choppy=2,oddly_breakable_by_hand=2},
 		node_box = {
 			type = "fixed",
@@ -204,7 +219,7 @@ minetest.register_node("cottages:shelf", {
 
 		on_construct = function(pos)
 
-                	local meta = minetest.env:get_meta(pos);
+                	local meta = minetest.get_meta(pos);
 
 	                meta:set_string("formspec",
                                 "size[8,8]"..
@@ -216,22 +231,23 @@ minetest.register_node("cottages:shelf", {
         	end,
 
 	        can_dig = function( pos,player )
-	                local  meta = minetest.env:get_meta( pos );
+	                local  meta = minetest.get_meta( pos );
 	                local  inv = meta:get_inventory();
 	                return inv:is_empty("main");
 	        end,
 
                 on_metadata_inventory_put  = function(pos, listname, index, stack, player)
-	                local  meta = minetest.env:get_meta( pos );
+	                local  meta = minetest.get_meta( pos );
                         meta:set_string('infotext', S('open storage shelf (in use)'));
                 end,
                 on_metadata_inventory_take = function(pos, listname, index, stack, player)
-	                local  meta = minetest.env:get_meta( pos );
+	                local  meta = minetest.get_meta( pos );
 	                local  inv = meta:get_inventory();
 	                if( inv:is_empty("main")) then
                            meta:set_string('infotext', S('open storage shelf (empty)'));
                         end
                 end,
+		is_ground_content = false,
 
 
 })
@@ -240,10 +256,9 @@ minetest.register_node("cottages:shelf", {
 minetest.register_node("cottages:stovepipe", {
 		description = S("stovepipe"),
 		drawtype = "nodebox",
-		tiles = {"default_steel_block.png"},
+		tiles = {"cottages_steel_block.png"},
 		paramtype = "light",
 		paramtype2 = "facedir",
-		is_ground_content = true,
 		groups = {snappy=2,choppy=2,oddly_breakable_by_hand=2},
 		node_box = {
 			type = "fixed",
@@ -257,6 +272,7 @@ minetest.register_node("cottages:stovepipe", {
 				{  0.20, -0.5, 0.20,  0.45, 0.5,  0.45},
 			},
 		},
+		is_ground_content = false,
 })
 
 
@@ -265,10 +281,9 @@ minetest.register_node("cottages:washing", {
 		description = S("washing place"),
 		drawtype = "nodebox",
                 -- top, bottom, side1, side2, inner, outer
-		tiles = {"default_clay.png"},
+		tiles = {"cottages_clay.png"},
 		paramtype = "light",
 		paramtype2 = "facedir",
-		is_ground_content = true,
 		groups = {snappy=2,choppy=2,oddly_breakable_by_hand=2},
 		node_box = {
 			type = "fixed",
@@ -291,13 +306,14 @@ minetest.register_node("cottages:washing", {
 		},
                 on_rightclick = function(pos, node, player)
                    -- works only with water beneath
-                   local node_under = minetest.env:get_node( {x=pos.x, y=(pos.y-1), z=pos.z} );
+                   local node_under = minetest.get_node( {x=pos.x, y=(pos.y-1), z=pos.z} );
 		   if( not( node_under ) or node_under.name == "ignore" or (node_under.name ~= 'default:water_source' and node_under.name ~= 'default:water_flowing')) then
                       minetest.chat_send_player( player:get_player_name(), S("Sorry. This washing place is out of water. Please place it above water!"));
 		   else
                       minetest.chat_send_player( player:get_player_name(), S("You feel much cleaner after some washing."));
 		   end
                 end,
+		is_ground_content = false,
 
 })
 
@@ -309,25 +325,25 @@ minetest.register_node("cottages:washing", {
 minetest.register_craft({
 	output = "cottages:bed_foot",
 	recipe = {
-		{"wool:white",    "", "", },
-		{"default:wood",  "", "", },
-		{"default:stick", "", "", }
+		{cottages.craftitem_wool,    "", "", },
+		{cottages.craftitem_wood,  "", "", },
+		{cottages.craftitem_stick, "", "", }
 	}
 })
 
 minetest.register_craft({
 	output = "cottages:bed_head",
 	recipe = {
-		{"", "",              "wool:white", },
-		{"", "default:stick", "default:wood", },
-		{"", "",              "default:stick", }
+		{"", "",              cottages.craftitem_wool, },
+		{"", cottages.craftitem_stick, cottages.craftitem_wood, },
+		{"", "",              cottages.craftitem_stick, }
 	}
 })
 
 minetest.register_craft({
-	output = "cottages:sleeping_mat",
+	output = "cottages:sleeping_mat 3",
 	recipe = {
-		{"wool:white", "cottages:straw_mat","cottages:straw_mat" }
+		{"cottages:wool_tent", "cottages:straw_mat","cottages:straw_mat" }
 	}
 })
 
@@ -335,16 +351,16 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "cottages:table",
 	recipe = {
-		{"", "stairs:slab_wood", "", },
-		{"", "default:stick", "" }
+		{"", cottages.craftitem_slab_wood, "", },
+		{"", cottages.craftitem_stick, "" }
 	}
 })
 
 minetest.register_craft({
 	output = "cottages:bench",
 	recipe = {
-		{"",              "default:wood", "", },
-		{"default:stick", "",             "default:stick", }
+		{"",              cottages.craftitem_wood, "", },
+		{cottages.craftitem_stick, "",             cottages.craftitem_stick, }
 	}
 })
 
@@ -352,24 +368,24 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "cottages:shelf",
 	recipe = {
-		{"default:stick",  "default:wood", "default:stick", },
-		{"default:stick", "default:wood", "default:stick", },
-		{"default:stick", "",             "default:stick"}
+		{cottages.craftitem_stick,  cottages.craftitem_wood, cottages.craftitem_stick, },
+		{cottages.craftitem_stick, cottages.craftitem_wood, cottages.craftitem_stick, },
+		{cottages.craftitem_stick, "",             cottages.craftitem_stick}
 	}
 })
 
 minetest.register_craft({
 	output = "cottages:washing 2",
 	recipe = {
-		{"default:stick", },
-		{"default:clay",  },
+		{cottages.craftitem_stick, },
+		{cottages.craftitem_clay,  },
 	}
 })
 
 minetest.register_craft({
 	output = "cottages:stovepipe 2",
 	recipe = {
-		{'default:steel_ingot', '', 'default:steel_ingot'},
+		{cottages.craftitem_steel, '', cottages.craftitem_steel},
 	}
 })
 

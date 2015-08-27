@@ -19,8 +19,8 @@
 ---
 
 minetest.register_on_punchnode(function(pos, node, puncher)
-	bottom_pos = {x=pos.x, y=pos.y - 1, z=pos.z}
-	bottom_node = minetest.env:get_node(bottom_pos)
+	local bottom_pos = {x=pos.x, y=pos.y - 1, z=pos.z}
+	local bottom_node = minetest.env:get_node(bottom_pos)
 	if (node.name == "locked_sign:sign_wall_locked") and (bottom_node.name == "default:chest_locked") and
 		minetest.env:get_meta(pos):get_string("owner") == minetest.env:get_meta(bottom_pos):get_string("owner") then
 		local sign_text = minetest.env:get_meta(pos):get_string("text")

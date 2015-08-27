@@ -1,105 +1,145 @@
--- init.lua
--- workbench minetest mod, by darkrose
--- Copyright (C) Lisa Milne 2012 <lisa@ltmnet.com>
---
--- This program is free software: you can redistribute it and/or modify
--- it under the terms of the GNU Lesser General Public License as
--- published by the Free Software Foundation, either version 2.1 of the
--- License, or (at your option) any later version.
---
--- This program is distributed in the hope that it will be useful, but
--- WITHOUT ANY WARRANTY; without even the implied warranty of
--- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
--- Lesser General Public License for more details.
---
--- You should have received a copy of the GNU Lesser General Public
--- License along with this program.  If not, see
--- <http://www.gnu.org/licenses/>
+-- Workbench mod by MirceaKitsune
 
+-- Inventory crafting grid size. Use nil to leave the default formspec untouched, recommended if other mods change the inventory window.
+local INVENTORY_CRAFT = 2
 
--- uncomment the next 6 lines to restrict players to a 2x2 inventory craft grid
+--
+-- Internal workbench functions:
+--
+
+local function move_items(s_inv, s_listname, d_inv, d_listname)
+	local s_size = s_inv:get_size(s_listname)
+	for i = 1, s_size do
+		local stack = s_inv:get_stack(s_listname, i)
+		if stack and not stack:is_empty() then
+			d_inv:add_item(d_listname, stack)
+		end
+	end
+	s_inv:set_list(s_listname, {})
+end
+
+local inventory_persistence = {}
+
+local function inventory_set_size(player, size)
+	size = math.min(6, math.max(1, size))
+	local inv = player:get_inventory()
+	if inv:get_size("craft") ~= size*size then
+		move_items(inv, "craft", inv, "main")
+		inv:set_size("craft", size*size)
+		inv:set_width("craft", size)
+	end
+end
+
+local function inventory_set_formspec(player, size)
+	size = math.min(6, math.max(1, size))
+	local inv = player:get_inventory()
+	local msize_x = math.min(inv:get_size("main"), 8)
+	local msize_y = math.min(math.ceil(inv:get_size("main") / 8), 4)
+	local fsize_x = math.max(msize_x, size + 2)
+	local fsize_y = msize_y + size + 1.25
+
+	local formspec = "size["..fsize_x..","..fsize_y.."]"
+	..default.gui_bg
+	..default.gui_bg_img
+	..default.gui_slots
+	.."list[current_player;main;"..(fsize_x-msize_x)..","..(fsize_y-msize_y)..";"..msize_x..",1;]"
+	.."list[current_player;main;"..(fsize_x-msize_x)..","..(fsize_y-msize_y+1.25)..";"..msize_x..","..(msize_y - 1)..";"..msize_x.."]"
+	.."list[current_player;craft;"..(fsize_x-size-2)..",0;"..size..","..size..";]"
+	.."list[current_player;craftpreview;"..(fsize_x-1)..","..(size/2-0.5)..";1,1;]"
+	for i = 0, msize_x - 1, 1 do
+		formspec = formspec.."image["..(fsize_x-msize_x + i)..","..(fsize_y-msize_y)..";1,1;gui_hb_bg.png]"
+	end
+	
+	-- add the shortcut buttons
+	if size ~= 3 then
+		formspec = formspec .. "image_button[0.25,0.25;1,1;inventory_plus_zcg.png;zcg;]"
+		formspec = formspec .. "image_button[1.25,0.25;1,1;inventory_plus_skins.png;skins;]"
+		formspec = formspec .. "image_button[0.25,1.25;1,1;inventory_plus_armor.png;armor;]"
+	end
+	
+	player:set_inventory_formspec(formspec)
+end
+
+local function inventory_set(player, size)
+	local name = player:get_player_name()
+	local inv = player:get_inventory()
+
+	-- When size is a number, we want to presist inventory settings and activate the workbench settings
+	-- When size is nil, we want to re-activate the persisted inventory settings
+	if not size then
+		inv:set_size("craft", inventory_persistence[name].craft_size)
+		inv:set_width("craft", inventory_persistence[name].craft_width)
+		player:set_inventory_formspec(inventory_persistence[name].formspec)
+		inventory_persistence[name] = nil
+	else
+		inventory_persistence[name] = {}
+		inventory_persistence[name].craft_size = inv:get_size("craft")
+		inventory_persistence[name].craft_width = inv:get_width("craft")
+		inventory_persistence[name].formspec = player:get_inventory_formspec()
+
+		inventory_set_size(player, size)
+		inventory_set_formspec(player, size)
+	end
+end
+
+local function on_craft(itemstack,player,old_craftgrid,craft_inv)
+  if itemstack:get_definition().skill ~= nil then
+    local probability = skills.get_probability(player:get_player_name(),SKILL_CRAFTING,itemstack:get_definition().skill)
+    local rangeLow = ( probability - 10 ) / 100
+    probability = probability / 100
+    local wear = math.floor(50000 - ( 50000 * math.random(rangeLow,probability) ))
+    itemstack:add_wear(wear)
+    return itemstack
+  end
+  return nil
+end
+
+minetest.register_on_craft(on_craft)
 
 minetest.register_on_joinplayer(function(player)
-	player:get_inventory():set_width("craft", 2)
-	player:get_inventory():set_size("craft", 4)
-	
-	player:set_inventory_formspec("size[8,7.5]"..
-		"list[current_player;main;0,3.5;8,4;]"..
-		"list[current_player;craft;3,0.5;2,2;]"..
-		"list[current_player;craftpreview;6,1;1,1;]")
+	if minetest.setting_getbool("creative_mode") then
+		inventory_set_size(player, 3)
+	elseif INVENTORY_CRAFT then
+		minetest.after(0, function()
+			inventory_set_size(player, INVENTORY_CRAFT)
+			inventory_set_formspec(player, INVENTORY_CRAFT)
+		end)
+	end
 end)
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname == "workbench:workbench" and fields.quit then
+		inventory_set(player, _)
+	end
+end)
+
+--
+-- Item definitions:
+--
 
 minetest.register_node("workbench:3x3", {
 	description = "WorkBench",
-	tile_images = {"workbench_3x3_top.png","workbench_3x3_bottom.png","workbench_3x3_side.png"},
+	tiles = {"workbench_3x3_top.png", "workbench_3x3_bottom.png", "workbench_3x3_side.png",
+		"workbench_3x3_side.png", "workbench_3x3_side.png", "workbench_3x3_front.png"},
 	paramtype2 = "facedir",
-	groups = {snappy=3,crumbly=3,oddly_breakable_by_hand=3},
+	groups = {choppy=2,oddly_breakable_by_hand=2},
 	legacy_facedir_simple = true,
 	sounds = default.node_sound_wood_defaults(),
 	on_construct = function(pos)
-		local meta = minetest.env:get_meta(pos)
-		meta:set_string("formspec",
-			"size[8,9]"..
-			"list[current_name;table;1,1;3,3;]"..
-			"list[current_name;dst;5,1;2,2;]"..
-			"list[current_player;main;0,5;8,4;]"..
-			"button[5,3;2,1;craft;Craft]")
-		meta:set_string("infotext", "WorkBench")
-		local inv = meta:get_inventory()
-		inv:set_size("table", 9)
-		inv:set_size("dst", 4)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("infotext", "Workbench")
 	end,
-	after_dig_node = function(pos, oldnode, oldmetadata, digger)
-		local meta = minetest:get_meta(pos)
-		meta:from_table(oldmetadata)
-		local inv = meta:get_inventory()
-		default.dump_inv(pos,"table",inv)
-		default.dump_inv(pos,"dst",inv)
-	end,
-	on_receive_fields = function (pos, formname, fields, sender)
-		if fields.craft then
-			local meta = minetest.env:get_meta(pos)
-			local inv = meta:get_inventory()
-			local tablelist = inv:get_list("table")
-			local crafted = nil
-			local left_over = nil
-			local dst = inv:get_list("dst")
-
-			if tablelist then
-				crafted, left_over = minetest.get_craft_result({method = "normal", width = 3, items = tablelist})
-			end
-
-			if crafted then
-				if crafted.item:get_definition().skill ~= nil then
-					
-					-- adjust the quality of the craft item
-					--if crafted.item:get_wear() > 0 then
-					
-						local probability = skills.get_probability(sender:get_player_name(),SKILL_CRAFTING,crafted.item:get_definition().skill)
-						local rangeLow = ( probability - 10 ) / 100
-						probability = probability / 100
-						local wear = math.floor(50000 - ( 50000 * math.random(rangeLow,probability) ))
-						crafted.item:add_wear(wear)
-					--end
-				end
-				if inv:room_for_item("dst", crafted) then
-					-- clear the crafting table first
-					if left_over then
-						inv:set_list("table", left_over.items)
-						tablelist = left_over.items
-					else
-						--inv:set_list("table",nil)
-					end	
-					inv:add_item("dst",crafted.item)
-				end
-			end
-		end
+	on_rightclick = function(pos, node, clicker)
+		inventory_set(clicker, 3)
+		minetest.show_formspec(clicker:get_player_name(), "workbench:workbench", clicker:get_inventory_formspec())
 	end,
 })
-
 
 minetest.register_craft({
-	output = "workbench:3x3",
-	recipe = {{"group:wood","group:wood",""},{"group:wood","group:wood",""},{"","",""}},
+	output = 'workbench:3x3',
+	recipe = {
+		{'group:wood', 'group:wood', ''},
+		{'group:wood', 'group:wood', ''},
+		{'', '', ''},
+	}
 })
-

@@ -8,7 +8,10 @@ local ground_nodes = {"default:dirt",
 		      "default:desert_sand",
 		      "mg:dirt_with_dry_grass",
 		      "default:dirt_with_snow",
-		      "default:snow"
+		      "default:snow",
+		      "default:gravel",
+		      "deafult:river_gravel",
+		      
 }
 
 local treasure_markers = { [0] = "default:stonebrick",	   
@@ -90,6 +93,7 @@ quests.treasure.generateQuest = function()
   local maxp = {x= tx+32, y=32, z=tz+32}
      
   local c_air = minetest.get_content_id("air")
+  local c_ignore = minetest.get_content_id("ignore")
   local vm = VoxelManip()
   local e1, e2 = vm:read_from_map(minp, maxp)
   local area = VoxelArea:new({MinEdge=e1, MaxEdge=e2})
@@ -97,7 +101,7 @@ quests.treasure.generateQuest = function()
   
   local allair = true
   for _,d in ipairs(data) do
-    if d ~= c_air then
+    if d ~= c_air and d ~= c_ignore then
       allair = false
     end
   end
@@ -107,9 +111,9 @@ quests.treasure.generateQuest = function()
   
   if allair == true then
     quests.treasure.data.do_on_generate = true
+    default.serialize_to_file(quest_file,quests.treasure.data)
     return
   end
-  
   quests.treasure.place_treasure({x=tx,y=0,z=tz},vm,e1,e2)  
 end
 
@@ -118,7 +122,7 @@ quests.treasure.tell_story = function(pos)
 	if quests.treasure.data.completed == false and quests.treasure.data.pos ~= nil then
 	  local directions = "The old explorer says, 'If you search about "
 	  local diff = math.floor(pos.x - quests.treasure.data.pos.x)
-	  diff = diff - ( diff % 50 ) 
+	  diff = diff - ( diff % 5 ) 
 	  directions = directions .. tostring(math.abs(diff)) .. " meters "
 	  if pos.x < quests.treasure.data.pos.x then
 	    directions = directions .. "east"
@@ -127,7 +131,7 @@ quests.treasure.tell_story = function(pos)
 	  end
 	  
 	  diff = math.floor(pos.z - quests.treasure.data.pos.z)
-	  diff = diff - ( diff % 50 )
+	  diff = diff - ( diff % 5 )
 	  directions = directions .. " and about " .. tostring(math.abs(diff)) .. " meters "
 	  if pos.z > quests.treasure.data.pos.z then
 	     directions = directions .. "south"
@@ -141,7 +145,7 @@ quests.treasure.tell_story = function(pos)
 	  minetest.after(8,chat.local_chat,pos,"The old explorer says, 'You should find the treasure buried under a "..minetest.registered_nodes[quests.treasure.data.marker].description.."'",12)
 	else
 		chat.local_chat(pos,"The old explorer says, 'I hear "..tostring(quests.treasure.data.completed_by).." recently found some treasure'")
-		minetest.after(4,chat.local_chat,pos,"The old explorer says, 'Come talk to me again and I may be able to help you find some treasure'")
+		minetest.after(4,chat.local_chat,pos,"The old explorer says, 'Come talk to me later and I will let you know if I hear of any more treasure'")
 	end
 end
 
@@ -166,21 +170,23 @@ function is_ground_node(nodeid)
     return false
 end
 
-quests.treasure.place_treasure = function (pos,vm,minp,maxp)
+quests.treasure.place_treasure = function (pos,minp,maxp)
   local c_air = minetest.get_content_id("air")
   local c_water = minetest.get_content_id("default:water_source")
   local prevnode = nil  
   
+  local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+    
   local e1, e2 = vm:read_from_map(minp, maxp)
   local area = VoxelArea:new({MinEdge=e1, MaxEdge=e2})
   local data = vm:get_data()
   
   -- find ground level
   for tz = minp.z, maxp.z,1 do
-    for tx=minp.x, maxp.x, 1 do
-      for ty=16,-16,-1 do	
+    for tx=minp.x, maxp.x,1 do
+      for ty=32,-32,-1 do	
 		if data[area:index(tx, ty, tz)] ~= c_air then
-		    if is_ground_node(data[area:index(tx, ty, tz)]) then
+		    --if is_ground_node(data[area:index(tx, ty, tz)]) then
 		      if prevnode == c_air or prevnode == c_water then
 				quests.treasure.data.pos = {x=tx,y=ty-2,z=tz}
 				quests.treasure.data.do_on_generate = false
@@ -194,13 +200,16 @@ quests.treasure.place_treasure = function (pos,vm,minp,maxp)
 				default.serialize_to_file(quest_file,quests.treasure.data)
 				return
 		      end
-		    end
+		    --end
 		end
 		prevnode = data[area:index(tx, ty, tz)]
       end
       prevnode = nil
     end
   end
+  -- placing treasure failed
+  minetest.after(60,quests.treasure.generateQuest)
+  --quests.treasure.data.do_on_generate = true
 end
 
 quests.treasure.set_inventory = function (pos)
@@ -236,18 +245,23 @@ quests.treasure.end_quest = function (player)
 	quests.treasure.data.quest_end = os.time()
 	quests.treasure.data.completed = true
 	quests.treasure.data.completed_by = name
-	minetest.after(86400,quests.treasure.generateQuest)
+	minetest.after(120,quests.treasure.generateQuest)
 	default.serialize_to_file(quest_file,quests.treasure.data)
 end
 
-minetest.register_on_generated(function(minp, maxp, seed)	
+--[[minetest.register_on_generated(function(minp, maxp, seed)	
+  
+end)]]
+
+-- called from mg mod
+quests.treasure.on_generated = function (minp,maxp)
   if quests.treasure.data.do_on_generate == true then
     if quests.treasure.data.pos.x > minp.x and quests.treasure.data.pos.x < maxp.x and quests.treasure.data.pos.z > minp.z and quests.treasure.data.pos.z < maxp.z then
-      local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-      quests.treasure.place_treasure(quests.treasure.data.pos,vm,emin,emax)
+      --local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+      quests.treasure.place_treasure(quests.treasure.data.pos,minp,maxp)
     end
   end
-end)
+end
 
 minetest.register_node("quests:treasure_chest", {
 	description = "Treasure Chest",

@@ -74,9 +74,18 @@ MAGICMISSLE_ENTITY.on_step = function(self, dtime)
 	})
 	]]
 	local rnd = math.random(0,1)*-1
-	local rnd2 = math.random(1,2) 
-	minetest.add_particle(pos, {x=0.1*rnd, y=0, z=-0.1*rnd}, {x=0, y=-12, z=0}, 4,
-   					1.2, true, "magic_magicmissle_particle1.png")
+	local rnd2 = math.random(1,2)
+
+	local ps_def = {
+		pos = pos,
+		velocity = {x=0.1*rnd, y=0, z=-0.1*rnd}, 
+		acceleration = {x=0, y=-12, z=0},
+		expirationtime = 4,
+		size = 1.2,
+		collisiondetection = true,
+		texture = "magic_magicmissle_particle1.png",
+	}
+	minetest.add_particle(ps_def)
 	
 	if self.timer > 1.5 then
 		minetest.sound_play("magic_magicmissle_hit",{object=self.object})
@@ -86,22 +95,23 @@ MAGICMISSLE_ENTITY.on_step = function(self, dtime)
 end
 
 function hitparticles(pos)
-	minetest.add_particlespawner(
-        45, --amount
-        0.75, --time
-        {x=pos.x-0.3, y=pos.y+0.3, z=pos.z-0.3}, --minpos
-        {x=pos.x+0.3, y=pos.y+0.5, z=pos.z+0.3}, --maxpos
-        {x=0, y=-2, z=0}, --minvel
-        {x=2, y=2, z=2}, --maxvel
-        {x=-4,y=-4,z=-4}, --minacc
-        {x=4,y=-4,z=4}, --maxacc
-        0.1, --minexptime
-        1, --maxexptime
-        1, --minsize
-        3, --maxsize
-        false, --collisiondetection
-        "magic_magicmissle_particle1.png" --texture
-    )
+	local ps_def = {
+		amount = 45,
+		time = 0.75,
+		minpos = {x=pos.x-0.3, y=pos.y+0.3, z=pos.z-0.3},
+        maxpos = {x=pos.x+0.3, y=pos.y+0.5, z=pos.z+0.3},
+        minvel = {x=0, y=-2, z=0},
+        maxvel = {x=2, y=2, z=2},
+        minacc = {x=-4,y=-4,z=-4},
+        maxacc = {x=4,y=-4,z=4},
+        minexptime = 0.1,
+        maxexptime = 1,
+        minsize = 1,
+        maxsize = 3,
+        collisiondetection = false,
+        texture = "magic_magicmissle_particle1.png",
+	}
+	minetest.add_particlespawner(ps_def)
 end
 
 minetest.register_entity("magic:magicmissle", MAGICMISSLE_ENTITY)

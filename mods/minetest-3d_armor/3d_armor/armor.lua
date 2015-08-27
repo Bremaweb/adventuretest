@@ -25,6 +25,7 @@ armor = {
 armor.def = {
 	state = 0,
 	count = 0,
+	level = 0,
 }
 
 armor.update_player_visuals = function(self, player)
@@ -97,6 +98,7 @@ armor.set_player_armor = function(self, player)
 	self.textures[name].armor = armor_texture
 	self.def[name].state = state
 	self.def[name].count = items
+	self.def[name].level = armor_level
 	self:update_player_visuals(player)
 end
 
@@ -198,13 +200,11 @@ minetest.register_on_joinplayer(function(player)
 	local armor_inv = minetest.create_detached_inventory(name.."_armor",{
 		on_put = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, stack)
-			-- TODO apply physics
 			physics.apply_item_physics(player,stack:get_name())
 			armor:set_player_armor(player)
 		end,
 		on_take = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, nil)
-			-- TODO remove applied physics
 			physics.remove_item_physics(player,stack:get_name())
 			armor:set_player_armor(player)
 		end,
@@ -256,7 +256,7 @@ minetest.register_on_joinplayer(function(player)
 	end, player)
 end)
 
-minetest.register_globalstep(function(dtime)
+function armor_globalstep (dtime)
 	time = time + dtime
 	if time > update_time then
 		for _,player in ipairs(minetest.get_connected_players()) do
@@ -264,5 +264,5 @@ minetest.register_globalstep(function(dtime)
 		end
 		time = 0
 	end
-end)
+end
 

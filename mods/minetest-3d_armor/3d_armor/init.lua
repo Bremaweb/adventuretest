@@ -188,7 +188,7 @@ minetest.register_tool("3d_armor:boots_mithril", {
 -- Register Craft Recipies
 
 local craft_ingreds = {
-	wood = "default:wood",
+	wood = "group:wood",
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
 	diamond = "default:diamond",

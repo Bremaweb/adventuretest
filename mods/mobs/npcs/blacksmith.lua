@@ -57,7 +57,9 @@ mobs:register_mob("mobs:blacksmith",{
 	group_attack = false,
 	blood_amount = 35,
 	blood_offset = 0.25,
-	activity_level = 15,
+	activity_level = 1,
+	lifetimer = false,
+	
 })
 
 -- list of active blacksmiths... I'm not sure how this is going to work when an entity is unloaded
@@ -108,6 +110,7 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 			local stack = inv:get_stack("src",1)
 			if stack:get_count() == 0 then
 				chat.local_chat(player:getpos(),"Blacksmith: Please give me something to smelt",3)
+				active_blacksmiths[name] = nil
 				return
 			else
 				-- see if it's a smeltable item
@@ -125,8 +128,15 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 				local start = blacksmith.object:getpos()
 				start.y = start.y - 1
 				-- find a path to the furnace
-				local path = minetest.find_path(start,dest,5,1,1,"Dijkstra")
+				local path = minetest.find_path(start,dest,5,2,3,"A*")
 				if path ~= nil then	
+					local crNeeded = (stack:get_count() * 2)
+					if money.get(name) < crNeeded then
+						chat.local_chat(player:getpos(),"Blacksmith: Sorry, you don't have enough money. I charge 2cr per lump.")
+						active_blacksmiths[name] = nil
+						return
+					end
+					money.dec(name,crNeeded)
 					-- move the inventory from the detached inventory to the inventory variable
 					active_blacksmiths[name].inventory = stack
 					active_blacksmiths[name].furnace = furnace
@@ -159,20 +169,21 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 local bs_timer = 5
-minetest.register_globalstep(function(dtime)
+function blacksmith_globalstep(dtime)
 	bs_timer = bs_timer - dtime
 	if bs_timer <= 0 then
-		print("bs timer")
-		bs_timer = 5
+		bs_timer = 3
 		-- loop through the active blacksmiths and check their furnaces
+		local addtl = 0
 		for name,bs in pairs(active_blacksmiths) do
-			print("Processing "..name.." blacksmith")
 			if bs.active == true then
+				addtl = addtl + 1
 				bs.entity.set_animation(bs.entity,"punch")
 				bs.entity.state = "working"
-				print("furnace not nil")
+				mobs:face_pos(bs.entity,bs.furnace)	-- make sure he is facing the correct furnace
 				local meta = minetest.get_meta(bs.furnace)
 				local inv = meta:get_inventory()
+				meta:set_int("in_use",1)
 				if inv:is_empty("src") then
 					-- empty the fuel
 					inv:set_stack("fuel",1,nil)
@@ -186,10 +197,13 @@ minetest.register_globalstep(function(dtime)
 					bs.entity.set_animation(bs.entity,"stand")
 					chat.local_chat(bs.entity.object:getpos(),"Blacksmith: "..name.." your ingots are ready!",25)
 					active_blacksmiths[name] = nil		-- I think it's all byref so bs = nil should also work
+					meta:set_int("in_use",0)
 				end
-			print("processing done")
+			--print("processing done")
 			end
 		end
+		-- when there are more blacksmiths active slow down this loop
+		bs_timer = bs_timer + addtl
 	end
-end)
+end
 

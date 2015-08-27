@@ -10,7 +10,7 @@ local max_distance = 5000
 
 local homes_file = minetest.get_worldpath()..'/homes'
 --local homes_file = minetest.get_worldpath() .. "/homes"
-local homepos = {}
+homepos = {}
 local last_moved = {}
 
 local function loadhomes()
@@ -86,6 +86,7 @@ minetest.register_chatcommand("home", {
                 return true
             end
             last_moved[name] = time
+            player_lastpos[pname] = homepos[pname]
             player:setpos(homepos[pname])
             minetest.chat_send_player(name, "Teleported to home!")
         else
@@ -122,7 +123,7 @@ minetest.register_chatcommand("sethome", {
     end,
 })
 
-minetest.register_on_respawnplayer( function (player)
+function sethome_respawnplayer (player)
 	local name = player:get_player_name()
 	if minetest.check_player_privs(name,{immortal = true}) then
 		return true
@@ -131,8 +132,9 @@ minetest.register_on_respawnplayer( function (player)
 		player:moveto(homepos[name])
 		return true
 	else
+	
 		return false
 	end
-end)
+end
 
 

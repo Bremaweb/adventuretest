@@ -1,10 +1,7 @@
-minetest.register_globalstep(function(dtime)
+function itemdrop_globalstep(dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
 		if player:get_hp() > 0 or not minetest.setting_getbool("enable_damage") then
 			local pos = player:getpos()
-			if ( pos == nil ) then
-				return
-			end
 			pos.y = pos.y+0.5
 			local inv = player:get_inventory()
 			
@@ -36,6 +33,10 @@ minetest.register_globalstep(function(dtime)
 							vec.y = vec.y*3
 							vec.z = vec.z*3
 							object:setvelocity(vec)
+							object:get_luaentity().physical_state = false
+							object:get_luaentity().object:set_properties({
+								physical = false
+							})
 							
 							minetest.after(1, function(args)
 								local lua = object:get_luaentity()
@@ -54,6 +55,10 @@ minetest.register_globalstep(function(dtime)
 									object:remove()
 								else
 									object:setvelocity({x=0,y=0,z=0})
+									object:get_luaentity().physical_state = true
+									object:get_luaentity().object:set_properties({
+										physical = true
+									})
 								end
 							end, {player, object})
 							
@@ -63,7 +68,7 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 	end
-end)
+end
 
 if minetest.setting_get("log_mods") then
 	minetest.log("action", "item_drop loaded")

@@ -356,9 +356,9 @@ minetest.register_tool("default:sword_diamond", {
 		full_punch_interval = 0.6,
 		max_drop_level=1,
 		groupcaps={
-			snappy={times={[1]=1.90, [2]=0.90, [3]=0.30}, uses=40, maxlevel=3},
+			snappy={times={[1]=1.80, [2]=0.90, [3]=0.30}, uses=40, maxlevel=3},
 		},
-		damage_groups = {fleshy=8},
+		damage_groups = {fleshy=9},
 	},
 	skill=SKILL_CRYSTAL,
 	sounds = {[0]="default_sword_steel",[1]="default_sword_steel2"},

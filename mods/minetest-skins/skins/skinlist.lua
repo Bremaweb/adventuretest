@@ -7,7 +7,7 @@ local id
 
 id = 1
 while true do
-	local f = io.open(minetest.get_modpath("skins").."/textures/player_"..id..".png")
+	local f = io.open(minetest.get_modpath("skins").."/textures/player_"..id..".png", "r")
 	if (not f) then break end
 	f:close()
 	skins.add("player_"..id)
@@ -16,7 +16,7 @@ end
 
 id = 1
 while true do
-	local f = io.open(minetest.get_modpath("skins").."/textures/character_"..id..".png")
+	local f = io.open(minetest.get_modpath("skins").."/textures/character_"..id..".png", "r")
 	if (not f) then break end
 	f:close()
 	skins.add("character_"..id)

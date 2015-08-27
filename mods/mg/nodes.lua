@@ -1,7 +1,29 @@
+minetest.register_alias("mapgen_stone", "default:stone")
+minetest.register_alias("mapgen_dirt", "default:dirt")
+minetest.register_alias("mapgen_dirt_with_grass", "default:dirt_with_grass")
+minetest.register_alias("mapgen_sand", "default:sand")
+minetest.register_alias("mapgen_water_source", "default:water_source")
+minetest.register_alias("mapgen_river_water_source", "default:water_source")
+minetest.register_alias("mapgen_lava_source", "default:lava_source")
+minetest.register_alias("mapgen_gravel", "default:gravel")
+minetest.register_alias("mapgen_desert_stone", "default:desert_stone")
+minetest.register_alias("mapgen_desert_sand", "default:desert_sand")
+minetest.register_alias("mapgen_dirt_with_snow", "default:dirt_with_snow")
+minetest.register_alias("mapgen_snowblock", "default:snowblock")
+minetest.register_alias("mapgen_snow", "default:snow")
+minetest.register_alias("mapgen_ice", "default:ice")
+minetest.register_alias("mapgen_sandstone", "default:sandstone")
+
+minetest.register_alias("default:acacia_tree", "mg:savannatree")
+minetest.register_alias("default:acacia_leaves", "mg:savannaleaves")
+
+minetest.register_alias("default:pine_needles", "mg:pineleaves")
+minetest.register_alias("default:pinetree", "mg:pinetree")
+
 minetest.register_node("mg:savannatree", {
 	description = "Savannawood Tree",
 	tiles = {"mg_dry_tree_top.png", "mg_dry_tree_top.png", "mg_dry_tree.png"},
-	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2},
+	groups = {tree=1,choppy=2,flammable=2},
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -11,6 +33,8 @@ minetest.register_node("mg:savannaleaves", {
 	visual_scale = 1.3,
 	tiles = {"mg_dry_leaves.png"},
 	paramtype = "light",
+	walkable=false,
+	climbable=true,
 	groups = {snappy=3, leafdecay=3, flammable=2, leaves=1},
 	waving = 1,
 	drop = {
@@ -31,7 +55,7 @@ minetest.register_node("mg:savannaleaves", {
 minetest.register_node("mg:savannawood", {
 	description = "Savannawood Planks",
 	tiles = {"mg_dry_wood.png"},
-	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	groups = {choppy=2,flammable=3,wood=1},
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -58,6 +82,23 @@ minetest.register_node("mg:savannasapling", {
 	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 })
+
+minetest.register_node("mg:savannasapling_ongen", {
+	description = "Savannawood Sapling",
+	drawtype = "plantlike",
+	visual_scale = 1.0,
+	tiles = {"mg_dry_sapling.png"},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				items = {'mg:savannasapling'},
+				
+			},
+		}
+	},
+})
+
 
 minetest.register_abm({
 	nodenames = {"mg:savannasapling"},
@@ -127,7 +168,7 @@ minetest.register_abm({
 minetest.register_node("mg:pinetree", {
 	description = "Pine Tree",
 	tiles = {"mg_pine_tree_top.png", "mg_pine_tree_top.png", "mg_pine_tree.png"},
-	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2},
+	groups = {tree=1,choppy=2,flammable=2},
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -136,6 +177,8 @@ minetest.register_node("mg:pineleaves", {
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
 	tiles = {"mg_pine_leaves.png"},
+	walkable=false,
+	climbable=true,
 	paramtype = "light",
 	groups = {snappy=3, leafdecay=3, flammable=2, leaves=1},
 	waving = 1,
@@ -157,7 +200,7 @@ minetest.register_node("mg:pineleaves", {
 minetest.register_node("mg:pinewood", {
 	description = "Pine Planks",
 	tiles = {"mg_pine_wood.png"},
-	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	groups = {choppy=2,flammable=3,wood=1},
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -205,5 +248,7 @@ minetest.register_node("mg:ignore", {
 	description = "MG Ignore",
 	drawtype = "airlike",
 	sunlight_propagates = true,
+	walkable=false,
+	pointable=false,
 	groups = {snappy=2,not_in_creative_inventory=1},
 })

@@ -12,9 +12,9 @@ mobs:register_mob("mobs:rabbit", {
 	armor = 200,
 	drops = {
 		{name = "mobs:meat_raw",
-		chance = 1,
-		min = 0,
-		max = 1,},
+		chance = 90,
+		min = 1,
+		max = 2,},
 	},
 	drawtype = "front",
 	water_damage = 1,

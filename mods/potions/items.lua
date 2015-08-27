@@ -85,7 +85,7 @@ minetest.register_craftitem("potions:magic_replenish1", {
 	description = "Level 1 Magic Replenisher",
 	stack_max=99,
 	liquids_pointable = false,
-	inventory_image = "potion_magic.png",
+	inventory_image = "potions_magic.png",
 	on_use = function ( itemstack,player,pointed_thing )
 		local name = player:get_player_name()
 		magic.player_magic[name] = magic.player_magic[name] + 5
@@ -98,7 +98,7 @@ minetest.register_craftitem("potions:magic_replenish2", {
 	description = "Level 2 Magic Replenisher",
 	stack_max=99,
 	liquids_pointable = false,
-	inventory_image = "potion_magic2.png",
+	inventory_image = "potions_magic2.png",
 	on_use = function ( itemstack,player,pointed_thing )
 		local name = player:get_player_name()
 		magic.player_magic[name] = magic.player_magic[name] + 10
@@ -111,10 +111,23 @@ minetest.register_craftitem("potions:magic_replenish3", {
 	description = "Level 3 Magic Replenisher",
 	stack_max=99,
 	liquids_pointable = false,
-	inventory_image = "potion_magic3.png",
+	inventory_image = "potions_magic3.png",
 	on_use = function ( itemstack,player,pointed_thing )
 		local name = player:get_player_name()
 		magic.player_magic[name] = 20
+		itemstack:take_item()
+		return itemstack
+	end,
+})
+
+minetest.register_craftitem("potions:antidote",{
+	description = "Jungle Spider Poison Antidote",
+	stack_max = 1,
+	liquids_pointable = false,
+	inventory_image = "potions_antidote.png",	
+	on_use = function ( itemstack, player, pointed_thing )
+		local name = player:get_player_name()
+		affects.removeAffect(name,"spider_poison")
 		itemstack:take_item()
 		return itemstack
 	end,
@@ -129,9 +142,8 @@ local ground_items = {
 	{ "flowers:geranium", "ground_geranium", "Ground Geranium" },
 	{ "flowers:tulip", "ground_tulip", "Ground Tulip" },
 	{ "flowers:viola", "ground_viola", "Ground Viola" },
-	{ "flowers:seaweed", "ground_seaweed", "Ground Seaweed" },
-	{ "flowers:waterlily", "ground_waterlily", "Ground Waterlily" },
-	{ "bones:bones","ground_bones","Ground Bones" }	
+	{ "bones:bones","ground_bones","Ground Bones" },
+	{ "flowers:magic", "ground_magic","Ground Magic Flower"}
 }
 
 for _, data in pairs(ground_items) do
@@ -141,17 +153,21 @@ for _, data in pairs(ground_items) do
 		liquids_pointable = false,
 		inventory_image = "potions_"..data[2]..".png"
 	})
+	local gitem = "potions:"..data[2]
 	minetest.register_craft({
 		type="shapeless",
-		output="potions:"..data[2],
-		recipe = {data[1],"default:gravel"}
+		output=gitem,
+		recipe = {data[1]}
+	})
+	minetest.override_item(data[1], {
+		ground = gitem 
 	})
 end
 
 minetest.register_craft({
 	type = "shapeless",
 	output = "potions:fly1_raw",
-	recipe = {"bushes:sugar","potions:ground_rose","default:mese_crystal_fragment","vessels:glass_bottle","bucket:bucket_water"},
+	recipe = {"bushes:sugar","potions:ground_rose","default:mese_crystal_fragment","vessels:glass_bottle","bucket:bucket_water","potions:ground_magic"},
 	replacements = { { "bucket:bucket_water","bucket:bucket_empty" } }	
 })
 
@@ -164,7 +180,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "shapeless",
 	output = "potions:fly2_raw",
-	recipe = {"bushes:sugar","potions:ground_rose","default:mese_crystal","vessels:glass_bottle","bucket:bucket_water"},
+	recipe = {"bushes:sugar","potions:ground_rose","default:mese_crystal","vessels:glass_bottle","bucket:bucket_water","potions:ground_magic"},
 	replacements = { { "bucket:bucket_water","bucket:bucket_empty" } }	
 })
 
@@ -177,7 +193,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type="shapeless",
 	output="potions:gravity1_raw",
-	recipe = {"dye:green","farming:wheat","potions:ground_bones","default:mese_crystal_fragment","vessels:glass_bottle","bucket:bucket_water"},
+	recipe = {"dye:green","farming:wheat","potions:ground_bones","default:mese_crystal_fragment","vessels:glass_bottle","bucket:bucket_water","potions:ground_magic"},
 	replacements = { { "bucket:bucket_water","bucket:bucket_empty" } }
 })
 
@@ -190,6 +206,13 @@ minetest.register_craft({
 minetest.register_craft({
 	type="shapeless",
 	output="potions:bones",
-	recipe = {"potions:ground_bones","vessels:glass_bottle","bucket:bucket_water"},
+	recipe = {"potions:ground_bones","vessels:glass_bottle","bucket:bucket_water","potions:ground_magic"},
+	replacements = { { "bucket:bucket_water","bucket:bucket_empty" } },
+})
+
+minetest.register_craft({
+	type="shapeless",
+	output="potions:antidote",
+	recipe = {"mobs:jungle_spider_fang","vessels:glass_bottle","bucket:bucket_water","potions:ground_rose"},
 	replacements = { { "bucket:bucket_water","bucket:bucket_empty" } },
 })

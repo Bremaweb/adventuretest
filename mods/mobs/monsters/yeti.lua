@@ -42,4 +42,4 @@ mobs:register_mob("mobs:snow_monster", {
 	},
 	step = 0.5,
 })
-mobs:register_spawn("mobs:snow_monster", {"default:snow","default:snow_with_grass"}, 10, -1, 7000, 2, 31000)
+mobs:register_spawn("mobs:snow_monster", {"default:snow","default:snow_with_grass","default:snowblock"}, 10, -1, 7000, 2, 31000)

@@ -16,7 +16,7 @@ mobs:register_mob("mobs:dungeon_master", {
 	damage = 4,
 	drops = {
 		{name = "default:mese",
-		chance = 100,
+		chance = 65,
 		min = 1,
 		max = 2,},
 	},
@@ -45,6 +45,7 @@ mobs:register_mob("mobs:dungeon_master", {
 	},
 	jump = true,
 	step=0.5,
+	lifetimer = false,
 })
 mobs:register_spawn("mobs:dungeon_master", {"default:stone"}, 3, -1, 7000, 1, -50)
 
@@ -73,7 +74,7 @@ mobs:register_arrow("mobs:fireball", {
 					if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <= 30 then
 						minetest.env:set_node(p, {name="fire:basic_flame"})
 					else
-						minetest.env:remove_node(p)
+						--minetest.env:remove_node(p)
 					end
 				end
 			end
@@ -89,7 +90,7 @@ mobs:register_arrow("mobs:fireball", {
 					if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <= 30 then
 						minetest.env:set_node(p, {name="fire:basic_flame"})
 					else
-						minetest.env:remove_node(p)
+						--minetest.env:remove_node(p)
 					end
 				end
 			end

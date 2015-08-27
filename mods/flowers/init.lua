@@ -30,6 +30,25 @@ minetest.register_node("flowers:dandelion_white", {
 	},
 })
 
+minetest.register_node("flowers:magic", {
+	description = "Magic Flower",
+	drawtype = "plantlike",
+	tiles = { "flowers_magic.png" },
+	inventory_image = "flowers_magic.png",
+	wield_image = "flowers_magic.png",
+	sunlight_propagates = true,
+	paramtype = "light",
+	light_source = 12,
+	walkable = false,
+	buildable_to = true,
+	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_white=1},
+	sounds = default.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
+	},
+})
+
 minetest.register_node("flowers:dandelion_yellow", {
 	description = "Yellow Dandelion",
 	drawtype = "plantlike",
@@ -118,6 +137,27 @@ minetest.register_node("flowers:viola", {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
 	},
+})
+
+-- regrow some magic flowers
+minetest.register_abm({
+	nodenames = {"default:dirt_with_snow","default:snowblock"},
+	interval = 80,
+	chance = 600,
+	action = function(pos, node)
+		if pos.y < 300 then
+			return
+		end
+		local light = minetest.get_node_light(pos)
+		if not light or light < 10 then
+			return
+		end
+		local pos2 = {x=pos.x,y=(pos.y+1),z=pos.z}
+		local above = minetest.get_node(pos2).name
+		if above == "default:snow" or above == "air" then
+			minetest.set_node(pos2,"flowers:magic")
+		end
+	end,
 })
 
 minetest.register_abm({

@@ -17,7 +17,7 @@ mobs:register_mob("mobs:spider",{
 	damage = 3,
 	drops = {
 		{name = "farming:string",
-		chance = 70,
+		chance = 40,
 		min = 3,
 		max = 6,},
 	},
@@ -46,5 +46,5 @@ mobs:register_mob("mobs:spider",{
 	blood_amount = 22,
 	blood_offset = 0.1,
 })
-mobs:register_spawn("mobs:spider", {"default:leaves", "default:jungleleaves", "mg:savannaleaves"}, 22, -1, 7000, 4, 31000)
-mobs:register_spawn("mobs:spider", {"default:leaves", "default:jungleleaves", "mg:savannaleaves"}, 7, -1, 3000, 6, 31000)
+mobs:register_spawn("mobs:spider", {"default:leaves", "mg:savannaleaves"}, 22, -1, 7000, 4, 31000)
+mobs:register_spawn("mobs:spider", {"default:leaves", "mg:savannaleaves"}, 7, -1, 3000, 6, 31000)

@@ -38,7 +38,7 @@ local THROWING_ARROW_ENTITY={
 	lastpos={},
 	collisionbox = {0,0,0,0,0,0},
 	player = nil,
-	max_damage=25,
+	max_damage=110,
 	velocity = 12,		--for mobs using this arrow
 	drop_rate = -2,		--for mobs using this arrow - for players this is defined in the bow
 }
@@ -47,7 +47,8 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:getpos()
 	local node = minetest.env:get_node(pos)
-
+	local hitter
+	
 	if self.timer>0.2 then
 		if self.player ~= nil then
 			hitter = self.player

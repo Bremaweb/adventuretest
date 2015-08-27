@@ -14,6 +14,15 @@ function skills.initialize()
 	minetest.log("action","Loading player skills and levels")
 	skills.player_skills = default.deserialize_from_file(skill_file)
 	skills.player_levels = default.deserialize_from_file(level_file)
+	dofile(minetest.get_modpath("skills").."/register_skills.lua")
+	minetest.after(120,skills.save)
+end
+
+function skills.save()
+	minetest.log("action","Saving levels and skills")
+	default.serialize_to_file(skill_file,skills.player_skills)
+	default.serialize_to_file(level_file,skills.player_levels)
+	minetest.after(120,skills.save)
 end
 
 function skills.get_def(skill_id)
@@ -36,15 +45,29 @@ function skills.set_default_skills ( name )
 end 
 
 function skills.get_skill(name, skill_id)
-	if skills.player_skills[name] ~= nil then
-		--print(name.." in skill table")
-		if skills.player_skills[name][skill_id] ~= nil then
-			--print(name.." has "..tostring(skill_id).." in skill table")
-			return skills.player_skills[name][skill_id]
-		end
+	-- Existing skill
+	
+	local playerSkills = skills.player_skills[name]
+	local skill = playerSkills and playerSkills[skill_id]
+	if skill ~= nil then
+		return skill
 	end
+
+	-- Missing player or skill
+	
+	minetest.log("info", "Requesting skill (id="..tostring(skill_id)..") for player '"..name.."'. Player is new or missing the skill.")
 	skills.set_default_skills(name)
-	return skills.get_skill(name,skill_id)
+	
+	playerSkills = skills.player_skills[name]
+	skill = playerSkills and playerSkills[skill_id]
+
+	if playerSkills == nil then
+		minetest.log("error", "Failed to add default skills for player '"..name.."'.")
+	elseif skill == nil then
+		minetest.log("error", "Failed to add default skill (id="..tostring(skill_id)..") for player '"..name.."'.")
+	end
+
+	return skill
 end
 
 function skills.get_player_level(name)
@@ -64,6 +87,10 @@ function skills.add_exp(name, exp)
 		skills.player_levels[name].level = skills.player_levels[name].level + 1
 		skills.player_levels[name].exp = skills.player_levels[name].exp - next_level
 		minetest.chat_send_player(name,"You have gained a level! You are now level "..tostring(skills.player_levels[name].level))
+		minetest.sound_play("levelup", {
+			to_player = name,
+			gain = 10.0,
+		})
 	end	
 end
 
@@ -86,9 +113,9 @@ function skills.get_skills_formspec(player)
 		.."list[current_player;main;8,0.5;4,8;]"
 	local i = 0
 	for id,skill in pairs(skills.available_skills) do
-		sk = skills.get_skill(name,id)	
+		local sk = skills.get_skill(name,id)	
 		formspec = formspec.."label[1.5,"..tostring(i)..".2;"..skill.desc.."]"
-		formspec = formspec.."label[3.5,"..tostring(i)..".2;"..sk.exp.." / "..tostring( ((sk.level^2) * skill.level_exp) ).."]"
+		formspec = formspec.."label[3.5,"..tostring(i)..".2;"..math.floor(sk.exp).." / "..tostring( (math.floor((sk.level^1.75)) * skill.level_exp) ).."]"
 		formspec = formspec.."label[6,"..tostring(i)..".2;"..tostring(sk.level).." / "..tostring(skill.max_level).."]"
 		formspec = formspec.."list[detached:"..name.."_skills;"..tostring(id)..";0.5,"..tostring(i)..";1,1;]"
 		i = i + 1
@@ -107,13 +134,12 @@ minetest.register_on_joinplayer(function (player)
 				local name = player:get_player_name()
 				local skill_id = tonumber(listname)
 				local exp_dropped = stack:get_definition().exp_value * stack:get_count()
-				
 				local sk = skills.get_skill(name,skill_id)
 				local skill = skills.available_skills[skill_id]
-				local next_level = ((sk.level^2) * skill.level_exp)
+				local next_level = math.floor(((sk.level^1.75) * skill.level_exp))
 				
 				skills.player_skills[name][skill_id].exp = skills.player_skills[name][skill_id].exp + exp_dropped
-				
+
 				if skills.player_skills[name][skill_id].exp >= next_level then
 					if skills.player_skills[name][skill_id].level ~= skill.max_level then
 						skills.player_skills[name][skill_id].level = skills.player_skills[name][skill_id].level + 1
@@ -138,6 +164,9 @@ minetest.register_on_joinplayer(function (player)
 		skill_inv:set_size(list, 1)
 		skill_inv:set_stack(list, 1, player_inv:get_stack(list, 1))
 	end
+	if skills.player_levels[name] == nil then
+	 skills.player_levels[name] = {level=1,exp=1}
+	end
 end)
 
 minetest.register_on_shutdown(function()
@@ -147,7 +176,7 @@ end)
 
 minetest.register_on_newplayer(function(player)
 	skills.set_default_skills(player:get_player_name())
-	skills.player_levels[player:get_player_name()] = {level=1, exp=0}
+	skills.player_levels[player:get_player_name()] = {level=1,exp=1}
 end)
 
 minetest.register_on_leaveplayer(function(player)
@@ -167,12 +196,12 @@ minetest.register_chatcommand("skills", {
 	end,
 })
 
-minetest.register_on_dieplayer(function(player)
+function skills_on_dieplayer (player)
     local name = player:get_player_name()
     local level  = skills.get_player_level(name)
     local decrease = level.exp * -0.1
     print(tostring(decrease))
     skills.add_exp(name,decrease)
-end)
+end
 
-minetest.after(1, skills.initialize)
+skills.initialize()

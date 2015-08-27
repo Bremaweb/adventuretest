@@ -16,15 +16,15 @@ mobs:register_mob("mobs:stone_monster", {
 	damage = 3,
 	drops = {
 		{name = "default:torch",
-		chance = 2,
+		chance = 70,
 		min = 3,
 		max = 5,},
 		{name = "default:iron_lump",
-		chance=5,
+		chance=50,
 		min=1,
 		max=2,},
 		{name = "default:coal_lump",
-		chance=3,
+		chance=50,
 		min=1,
 		max=3,},
 	},
@@ -54,4 +54,4 @@ mobs:register_mob("mobs:stone_monster", {
 	},
 	step = 0.5,
 })
-mobs:register_spawn("mobs:stone_monster", {"default:stone"}, 3, -1, 3000, 3, 0)
+mobs:register_spawn("mobs:stone_monster", {"default:stone"}, 7, -1, 8000, 3, 0)

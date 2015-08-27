@@ -27,7 +27,6 @@ function magic.register_spell(def)
 			minetest.log("error","Unable to register spell, missing on_cast function")
 			return
 		end
-		print("Cast spell good")
 		magic._spells[def.id] = def
 	end
 	
@@ -41,7 +40,6 @@ function magic.register_spell(def)
 			minetest.log("error","Unable to register spell, missing wand_texture")
 			return
 		end
-		print("wand spell good")
 		-- register the wand tool
 		minetest.register_tool("magic:wand_"..def.id,{
 			description = def.desc,

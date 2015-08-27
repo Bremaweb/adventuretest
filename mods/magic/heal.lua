@@ -15,11 +15,14 @@ local heal_spell = {
 		else
 			t = minetest.get_player_by_name(name)
 		end
-		 
-		if get_distance(t:getpos(),p:getpos()) < max_dist then
-			t:set_hp(t:get_hp() + health)
+		if t ~= nil then 
+		  if get_distance(t:getpos(),p:getpos()) < max_dist then
+			 t:set_hp(t:get_hp() + health)
+		  else
+			 minetest.chat_send_player(name,tostring(target).." is too far away!")
+		  end
 		else
-			minetest.chat_send_player(name,tostring(target).." is too far away!")
+		  minetest.chat_send_player(name,tostring(target).." does not exist!")
 		end
 	end,
 	max_mana = 15,

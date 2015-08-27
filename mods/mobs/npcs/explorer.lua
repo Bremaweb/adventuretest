@@ -58,4 +58,6 @@ mobs:register_mob("mobs:explorer",{
 		{chance=60, item="experience:6_exp"},
 		{chance=50, item="potions:magic_replenish1"},
 	},
+	lifetimer = false,
+	activity_level = 2,
 })

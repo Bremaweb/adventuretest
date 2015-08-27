@@ -7,6 +7,7 @@ affectsFile = minetest.get_worldpath().."/affects.txt"
 
 affects._affects = {}
 affects._affectedPlayers = {}
+affects._removeOnDieAffects = {}
 
 dofile(affectsPath.."/functions.lua")
 dofile(affectsPath.."/api.lua")

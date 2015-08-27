@@ -102,58 +102,6 @@ function default.register_falling_node(nodename, texture)
 	end
 end
 
---
--- Global callbacks
---
-
--- Global environment step function
-function on_step(dtime)
-	-- print("on_step")
-end
-minetest.register_globalstep(on_step)
-
-function on_placenode(p, node)
-	--print("on_placenode")
-end
-minetest.register_on_placenode(on_placenode)
-
-function on_dignode(pos, node, digger)
-	--print("on_dignode")
-	-- going to try to consolidate all on_dignode calls here so there is only one function call
-	
-	-- ON DIG NODE FOR MONEY MOD
-	for k,v in pairs(money.convert_items) do
-		if ( node.name == money.convert_items[k].dig_block ) then			
-			money.stats[k].running_dug = money.stats[k].running_dug + 1 
-		end
-	end
-	
-	-- EXPERIENCE
-	if minetest.registered_nodes[node.name] ~= nil then
-		if minetest.registered_nodes[node.name]["skill"] ~= nil then
-			 default.drop_item(pos,"experience:1_exp")
-		end
-	end
-	-- STAMINA
-	if digger ~= nil and digger ~= "" then
-		local name= digger:get_player_name()
-		if player_stamina[name] ~= nil then
-			player_stamina[name] = player_stamina[name] - 0.1
-		end
-	end
-	
-end
-minetest.register_on_dignode(on_dignode)
-
-function on_punchnode(p, node)
-end
-minetest.register_on_punchnode(on_punchnode)
-
-
---
--- Grow trees
---
-
 minetest.register_abm({
 	nodenames = {"default:sapling"},
 	interval = 10,
@@ -309,11 +257,11 @@ default.leafdecay_enable_cache = true
 -- Spread the load of finding trunks
 default.leafdecay_trunk_find_allow_accumulator = 0
 
-minetest.register_globalstep(function(dtime)
+function default.leaf_globalstep(dtime)
 	local finds_per_second = 5000
 	default.leafdecay_trunk_find_allow_accumulator =
 			math.floor(dtime * finds_per_second)
-end)
+end
 
 minetest.register_abm({
 	nodenames = {"group:leafdecay"},
@@ -397,13 +345,13 @@ end
 function default.deserialize_from_file(filename)
 	local f = io.open(filename, "r")
 		if f==nil then 
-			minetest.log("error","File "..filename.." not found, returning empty table")
+			--minetest.log("error","File "..filename.." not found, returning empty table")
 			return {}
 		end
 			local t = f:read("*all")
 			f:close()
 		if t=="" or t==nil then 
-			minetest.log("error","File "..filename.." is blank, returning empty table")
+			--minetest.log("error","File "..filename.." is blank, returning empty table")
 			return {}
 		end
 		return minetest.deserialize(t)
@@ -428,10 +376,10 @@ function default.drop_item(pos,itemstack,vel,acc)
 	local x = math.random(0, 15)/10 - 0.5
 	local z = math.random(0, 15)/10 - 0.5
 	--local y = math.random(0, 15)/10 - 2
-	local np = pos
-	np.x = np.x + x
-	np.z = np.z + z
-	np.y = np.y + .25
+	local np = { }
+	np.x = pos.x + x
+	np.z = pos.z + z
+	np.y = pos.y + .25
 	local obj = minetest.add_item(np, itemstack)
 	if obj then
 		obj:get_luaentity().collect = true
@@ -463,4 +411,9 @@ function default.get_file_contents(filename)
 			return ""
 		end
 		return t
+end
+
+function randomChance (percent) 
+	math.randomseed( os.clock() )
+	return percent >= math.random(1, 100)                                          
 end

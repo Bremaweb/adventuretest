@@ -23,13 +23,14 @@ function experience.exp_to_items(exp)
 	-- and returns a table containing the number of items required to make that amount of expericne
 	local exp_table = { }
 	local remaining = exp
+	local ee = 0;
 	for e = 12, 0, -3 do
 		if  e == 0 then
 			ee = 1
 		else
 			ee = e
 		end
-		ef = math.floor(remaining / ee)
+		local ef = math.floor(remaining / ee)
 		remaining = remaining % ee
 		if ef > 0 then
 			table.insert(exp_table, ItemStack("experience:"..tostring(ee).."_exp " .. tostring(ef)))

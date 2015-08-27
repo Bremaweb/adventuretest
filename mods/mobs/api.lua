@@ -14,8 +14,8 @@ function mobs:register_mob(name, def)
 		textures = def.textures,
 		makes_footstep_sound = def.makes_footstep_sound,
 		view_range = def.view_range,
-		walk_velocity = def.walk_velocity,
-		run_velocity = def.run_velocity,
+		walk_velocity = def.walk_velocity or 0,
+		run_velocity = def.run_velocity or 0,
 		damage = def.damage,
 		light_damage = def.light_damage,
 		water_damage = def.water_damage or 1,
@@ -27,6 +27,8 @@ function mobs:register_mob(name, def)
 		on_rightclick = def.on_rightclick,
 		type = def.type,
 		attack_type = def.attack_type,
+		attack_range = def.attack_range or 2,
+		attack_function = def.attack_function or nil,
 		arrow = def.arrow,
 		arrow_offset = def.arrow_offset or 1,
 		shoot_interval = def.shoot_interval,
@@ -40,7 +42,7 @@ function mobs:register_mob(name, def)
 		attacks_monsters = def.attacks_monsters or false,
 		group_attack = def.group_attack or false,
 		step = def.step or 0,
-		fov = def.fov or 120,
+		fov = def.fov or 165,
 		passive = def.passive or false,
 		recovery_time = def.recovery_time or 0.5,
 		knock_back = def.knock_back or 3,
@@ -147,10 +149,23 @@ function mobs:register_mob(name, def)
 		
 		in_fov = function(self,pos)
 			-- checks if POS is in self's FOV
-			local yaw = self.object:getyaw()
+			return true
+			--[[
+			local yaw = (self.object:getyaw() * 180 / math.pi)
 			if self.drawtype == "side" then
 				yaw = yaw+(math.pi/2)
 			end
+			
+			if yaw < 0 then
+				yaw = 360 - yaw
+			end
+			
+			if yaw > 360 then
+				yaw = yaw - 360
+			end
+			
+			print("Yaw: "..tostring(yaw))
+			print("FOV: "..tostring(self.fov))
 			local vx = math.sin(yaw)
 			local vz = math.cos(yaw)
 			local ds = math.sqrt(vx^2 + vz^2)
@@ -158,15 +173,21 @@ function mobs:register_mob(name, def)
 			local d = { x = vx / ds, z = vz / ds }
 			local p = { x = pos.x / ps, z = pos.z / ps }
 			
+			print("DS "..tostring(ds))
+			print("PS "..tostring(ps))
+			print("D: x="..tostring(d.x)..", z="..tostring(d.z))
+			print("P: x="..tostring(p.x)..", z="..tostring(p.z))
+			
 			local an = ( d.x * p.x ) + ( d.z * p.z )
-			
-			a = math.deg( math.acos( an ) )
-			
+			print("AN: "..tostring(an))
+			local a = math.deg ( math.acos( an ) )
+			print("A: "..tostring(a))
 			if a > ( self.fov / 2 ) then
 				return false
 			else
 				return true
 			end
+			]]
 		end,
 		
 		set_animation = function(self, type)
@@ -233,21 +254,22 @@ function mobs:register_mob(name, def)
 				self.object:remove()
 			end
 			
-			self.lifetimer = self.lifetimer - dtime
-			if self.lifetimer <= 0 and not self.tamed and self.type ~= "npc" then
-				local player_count = 0
-				for _,obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 10)) do
-					if obj:is_player() then
-						player_count = player_count+1
+			if self.lifetimer ~= false then
+				self.lifetimer = self.lifetimer - dtime
+				if self.lifetimer <= 0 and not self.tamed and self.type ~= "npc" then
+					local player_count = 0
+					for _,obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 10)) do
+						if obj:is_player() then
+							player_count = player_count+1
+						end
+					end
+					if player_count == 0 and self.state ~= "attack" then
+						minetest.log("action","lifetimer expired, removed mob "..self.name)
+						self.object:remove()
+						return
 					end
 				end
-				if player_count == 0 and self.state ~= "attack" then
-					minetest.log("action","lifetimer expired, removed mob "..self.name)
-					self.object:remove()
-					return
-				end
 			end
-			
 			if self.object:getvelocity().y > 0.1 then
 				local yaw = self.object:getyaw()
 				if self.drawtype == "side" then
@@ -367,11 +389,15 @@ function mobs:register_mob(name, def)
 						p.y = p.y + 1
 						sp.y = sp.y + 1		-- aim higher to make looking up hills more realistic
 						local dist = ((p.x-s.x)^2 + (p.y-s.y)^2 + (p.z-s.z)^2)^0.5
+						--print("Dist "..tostring(dist) .. " < " .. tostring(self.view_range) .. " in_fov " .. tostring(self.in_fov(self,p)))
 						if dist < self.view_range and self.in_fov(self,p) then
 							if minetest.line_of_sight(sp,p,2) == true then
 								self.do_attack(self,player,dist)
 								break
+							else
+								--print("no line of site")
 							end
+							
 						end
 					end
 				end
@@ -453,6 +479,7 @@ function mobs:register_mob(name, def)
 			
 			if self.state == "stand" then
 				-- randomly turn
+				math.randomseed(os.clock())
 				if math.random(1, 100) < self.activity_level then
 					-- if there is a player nearby look at them
 					local lp = nil
@@ -471,7 +498,7 @@ function mobs:register_mob(name, def)
 					if lp ~= nil then
 						mobs:face_pos(self,lp)
 					else 
-						yaw = self.object:getyaw()+((math.random(0,360)-270)/180*math.pi)
+						local yaw = self.object:getyaw()+((math.random(0,360)-270)/180*math.pi)
 						self.object:setyaw(yaw)
 					end
 					
@@ -505,7 +532,6 @@ function mobs:register_mob(name, def)
 				end
 			elseif self.state == "attack" and self.attack_type == "dogfight" then
 				if not self.attack.player or not self.attack.player:getpos() then
-					print("stop attacking")
 					self.state = "stand"
 					self:set_animation("stand")
 					return
@@ -533,7 +559,7 @@ function mobs:register_mob(name, def)
 					yaw = yaw+math.pi
 				end
 				self.object:setyaw(yaw)
-				if self.attack.dist > 2 then
+				if self.attack.dist > self.attack_range then
 					if not self.v_start then
 						self.v_start = true
 						self.set_velocity(self, self.run_velocity)
@@ -560,10 +586,14 @@ function mobs:register_mob(name, def)
 							if self.sounds and self.sounds.attack then
 								minetest.sound_play(self.sounds.attack, {object = self.object})
 							end
-							self.attack.player:punch(self.object, 1.0,  {
-								full_punch_interval=1.0,
-								damage_groups = {fleshy=self.damage}
-							}, vec)
+							if self.attack_function ~= nil then
+								self.attack_function(self,self.attack.player)
+							else 
+								self.attack.player:punch(self.object, 1.0,  {
+									full_punch_interval=1.0,
+									damage_groups = {fleshy=self.damage}
+								}, vec)
+							end
 							if self.attack.player:get_hp() <= 0 then
 								self.state = "stand"
 								self:set_animation("stand")
@@ -643,7 +673,7 @@ function mobs:register_mob(name, def)
 			self.object:setacceleration({x=0, y=-10, z=0})
 			self.state = "stand"
 			self.object:setvelocity({x=0, y=self.object:getvelocity().y, z=0})
-			self.object:setyaw(math.random(1, 360)/180*math.pi)
+			self.object:setyaw(((math.random(0,360)-270)/180*math.pi))
 			if self.type == "monster" and minetest.setting_getbool("only_peaceful_mobs") then
 				self.object:remove()
 			end
@@ -677,14 +707,16 @@ function mobs:register_mob(name, def)
 		end,
 		
 		on_punch = function(self, hitter, tflp, tool_capabilities, dir)
-
+			if tflp == nil then
+				tflp = 1
+			end
 			process_weapon(hitter,tflp,tool_capabilities)
 			
 			local pos = self.object:getpos()
 			if self.object:get_hp() <= 0 then
 				if hitter and hitter:is_player() and hitter:get_inventory() then
 					for _,drop in ipairs(self.drops) do
-						if math.random(1, drop.chance) == 1 then
+						if math.random(1, 100) < drop.chance then
 							local d = ItemStack(drop.name.." "..math.random(drop.min, drop.max))
 							default.drop_item(pos,d)
 						end
@@ -708,7 +740,7 @@ function mobs:register_mob(name, def)
 					end
 					
 					-- see if there are any NPCs to shower you with rewards
-					if self.type ~= "npc" then
+					if self.type ~= "npc" and self.type ~= "animal" then
 						local inradius = minetest.get_objects_inside_radius(hitter:getpos(),10)
 						for _, oir in pairs(inradius) do
 							local obj = oir:get_luaentity()
@@ -742,9 +774,14 @@ function mobs:register_mob(name, def)
 			local kb = self.knock_back
 			local r = self.recovery_time
 			
-			if tflp < tool_capabilities.full_punch_interval then
-				kb = kb * ( tflp / tool_capabilities.full_punch_interval )
-				r = r * ( tflp / tool_capabilities.full_punch_interval )
+			if  tool_capabilities ~= nil then
+			 if tflp < tool_capabilities.full_punch_interval then
+				  kb = kb * ( tflp / tool_capabilities.full_punch_interval )
+				  r = r * ( tflp / tool_capabilities.full_punch_interval )
+			 end
+			else
+		    kb = kb * ( tflp / 1 )
+        r = r * ( tflp / 1 )
 			end
 			
 			local ykb=2
@@ -762,11 +799,11 @@ function mobs:register_mob(name, def)
 					self.do_attack(self,hitter,1)
 				end
 				-- alert other NPCs to the attack
-				local inradius = minetest.get_objects_inside_radius(hitter:getpos(),5)
+				local inradius = minetest.get_objects_inside_radius(hitter:getpos(),10)
 				for _, oir in pairs(inradius) do
 					local obj = oir:get_luaentity()
 					if obj then
-						if obj.group_attack == true and obj.state ~= "attack" then
+						if obj.group_attack == true and obj.state ~= "attack" and self.type == obj.type then
 							obj.do_attack(obj,hitter,1)
 						end
 					end
@@ -846,12 +883,15 @@ end
 
 function mobs:spawn_mob(pos,name)  
 	-- make sure the nodes above are walkable
-	if minetest.registered_nodes[minetest.get_node(pos).name] ~= nil then
-		if minetest.registered_nodes[minetest.get_node(pos).name].walkable == true or minetest.registered_nodes[minetest.get_node(pos).name].walkable == nil then
+	minetest.log("action","Attempting to spawn "..name)
+	local nodename = minetest.get_node(pos).name
+	if minetest.registered_nodes[nodename] ~= nil then
+		if minetest.registered_nodes[nodename].walkable == true or minetest.registered_nodes[nodename].walkable == nil or nodename == "default:water_source" then
 			return -1
 		end  
 		pos.y = pos.y + 1
-		if minetest.registered_nodes[minetest.get_node(pos).name].walkable == true or minetest.registered_nodes[minetest.get_node(pos).name].walkable == nil then
+		nodename = minetest.get_node(pos).name
+		if minetest.registered_nodes[nodename].walkable == true or minetest.registered_nodes[nodename].walkable == nil or nodename == "default:water_source" then
 			return -1
 		end
 		pos.y = pos.y - 1
@@ -860,12 +900,25 @@ function mobs:spawn_mob(pos,name)
 	local mob = minetest.add_entity(pos, name)
 	-- setup the hp, armor, drops, etc... for this specific mob
 	local distance_rating = ( ( get_distance({x=0,y=0,z=0},pos) ) / 15000 )	
-	if mob ~= nil then
+	if mob ~= nil then		
 		mob = mob:get_luaentity()
 		if mob ~= nil then
+			minetest.log("action",name.." spawned at "..minetest.pos_to_string(pos))
 			local newHP = mob.hp_min + math.floor( mob.hp_max * distance_rating )
 			mob.object:set_hp( newHP )
 			mob.state = "walk"	-- make them walk when they spawn so they walk away from their original spawn position
+			-- vary the walk and run velocity when a mob is spawned so groups of mobs don't clump up so bad
+			math.randomseed(os.clock())
+			
+			mob.walk_velocity = mob.walk_velocity - ( mob.walk_velocity * ( math.random(0,12) / 100 ) )
+			if mob.walk_velocity < 0 then
+				mob.walk_velocity = 0
+			end
+			
+			mob.run_velocity = mob.run_velocity - ( mob.run_velocity * ( math.random(0,12) / 100 ) )
+			if mob.run_velocity < 0 then
+				mob.run_velocity = 0
+			end
 			return true
 		end
 	end
@@ -935,6 +988,7 @@ function mobs:face_pos(self,pos)
 		yaw = yaw+math.pi
 	end
 	self.object:setyaw(yaw)
+	--print("Yaw "..tostring(yaw))
 	return yaw
 end
 
@@ -947,26 +1001,28 @@ function get_distance(pos1,pos2)
 	end
 end
 
-blood_particles = function(pos,offset,amount,texture)
-	if amount > 0 and pos ~= nil then
+blood_particles = function(pos,offset,amt,tex)
+	if amt > 0 and pos ~= nil then
 		local p = pos
 		p.y = p.y + offset
-		minetest.add_particlespawner(
-	        amount, --amount
-	        0.25, --time
-	        {x=p.x-0.2, y=p.y-0.2, z=p.z-0.2}, --minpos
-	        {x=p.x+0.2, y=p.y+0.2, z=p.z+0.2}, --maxpos
-	        {x=0, y=-2, z=0}, --minvel
-	        {x=2, y=2, z=2}, --maxvel
-	        {x=-4,y=-4,z=-4}, --minacc
-	        {x=4,y=-4,z=4}, --maxacc
-	        0.1, --minexptime
-	        1, --maxexptime
-	        0.5, --minsize
-	        1, --maxsize
-	        false, --collisiondetection
-	        texture --texture
-	    )
+		
+		local ps_def = { 
+			amount = amt,
+			time = 0.25,
+			minpos = {x=p.x-0.2, y=p.y-0.2, z=p.z-0.2},
+			maxpos = {x=p.x+0.2, y=p.y+0.2, z=p.z+0.2},
+			minvel = {x=0, y=-2, z=0},
+			maxvel = {x=2, y=2, z=2},
+			minacc = {x=-4,y=-4,z=-4},
+			maxacc = {x=4,y=-4,z=4},
+			minexptime = 0.1,
+			maxexptime = 1,
+			minsize = 0.5,
+			maxsize = 1,
+			collisiondetection = false,
+			texture = tex
+		}
+		minetest.add_particlespawner(ps_def)
     end
 end
 

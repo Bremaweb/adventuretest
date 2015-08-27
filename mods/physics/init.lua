@@ -16,9 +16,11 @@ function physics.adjust_physics(player,_physics)
 end
 
 function physics.apply(player)
-	local name = player:get_player_name()
-	if physics.player_frozen[name] ~= true then
-		player:set_physics_override(physics.player_physics[name])
+	if player ~= nil then
+		local name = player:get_player_name()
+		if physics.player_frozen[name] ~= true then
+			player:set_physics_override(physics.player_physics[name])
+		end
 	end
 end
 

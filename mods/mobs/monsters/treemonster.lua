@@ -16,15 +16,15 @@ mobs:register_mob("mobs:tree_monster", {
 	damage = 2,
 	drops = {
 		{name = "default:sapling",
-		chance = 3,
+		chance = 60,
 		min = 1,
 		max = 2,},
 		{name = "default:junglesapling",
-		chance = 3,
+		chance = 60,
 		min = 1,
 		max = 2,},
 		{name = "default:apple",
-			chance = 2,
+			chance = 80,
 			min = 1,
 			max=3,
 		},
@@ -56,4 +56,4 @@ mobs:register_mob("mobs:tree_monster", {
 	},
 	step = 0.5,
 })
-mobs:register_spawn("mobs:tree_monster", {"default:leaves", "default:jungleleaves"}, 3, -1, 7000, 3, 31000)
+mobs:register_spawn("mobs:tree_monster", {"default:leaves", "default:jungleleaves"}, 5, -1, 5000, 3, 31000)
