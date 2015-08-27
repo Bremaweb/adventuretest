@@ -8,7 +8,9 @@ local function adventuretest_globalstep(dtime)
   default.player_globalstep(dtime)
   default.leaf_globalstep(dtime)
   energy_globalstep(dtime)
+if minetest.setting_getbool("enable_damage") then
   hunger.global_step(dtime)
+end
   itemdrop_globalstep(dtime)
   armor_globalstep(dtime)
   wieldview_globalstep(dtime)
