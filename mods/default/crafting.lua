@@ -8,6 +8,18 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "default:stick",
+	type = "shapeless",
+	recipe = { "default:leaves","default:leaves","default:leaves","default:leaves" },
+})
+
+minetest.register_craft({
+	output = "default:wood",
+	type = "shapeless",
+	recipe = { "default:stick","default:stick","default:stick","default:stick" },
+})
+
+minetest.register_craft({
 	output = 'default:junglewood 4',
 	recipe = {
 		{'default:jungletree'},

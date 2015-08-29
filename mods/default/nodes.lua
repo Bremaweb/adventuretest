@@ -399,6 +399,10 @@ minetest.register_node("default:leaves", {
 				rarity = 20,
 			},
 			{
+				items = {'default:stick'},
+				rarity = 40,
+			},
+			{
 				-- player will get leaves only if he get no saplings,
 				-- this is because max_items is 1
 				items = {'default:leaves'},
@@ -578,7 +582,7 @@ minetest.register_node("default:water_source", {
 		-- New-style water source material (mostly unused)
 		{
 			name="default_water_source_animated.png",
-			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0},
+			animation={type="vertical_frames", aspect_w=128, aspect_h=128, length=2.0},
 			backface_culling = false,
 		}
 	},
