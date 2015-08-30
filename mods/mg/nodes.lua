@@ -13,6 +13,7 @@ minetest.register_alias("mapgen_snowblock", "default:snowblock")
 minetest.register_alias("mapgen_snow", "default:snow")
 minetest.register_alias("mapgen_ice", "default:ice")
 minetest.register_alias("mapgen_sandstone", "default:sandstone")
+minetest.register_alias("mapgen_mossycobble", "default:mossycobble")
 
 minetest.register_alias("default:acacia_tree", "mg:savannatree")
 minetest.register_alias("default:acacia_leaves", "mg:savannaleaves")
