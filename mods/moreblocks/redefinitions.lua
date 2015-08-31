@@ -41,10 +41,10 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	type = "toolrepair",
-	additional_wear = -0.10, -- Tool repair buff (10% bonus instead of 2%).
-})
+--minetest.register_craft({
+--	type = "toolrepair",
+--	additional_wear = -0.10, -- Tool repair buff (10% bonus instead of 2%).
+--})
 
 -- Redefinitions of some default nodes
 -- ===================================
