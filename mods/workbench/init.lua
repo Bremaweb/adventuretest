@@ -83,15 +83,43 @@ local function inventory_set(player, size)
 end
 
 local function on_craft(itemstack,player,old_craftgrid,craft_inv)
-  if itemstack:get_definition().skill ~= nil then
-    local probability = skills.get_probability(player:get_player_name(),SKILL_CRAFTING,itemstack:get_definition().skill)
-    local rangeLow = ( probability - 10 ) / 100
-    probability = probability / 100
-    local wear = math.floor(50000 - ( 50000 * math.random(rangeLow,probability) ))
-    itemstack:add_wear(wear)
-    return itemstack
-  end
-  return nil
+	-- No skill for craft
+	local craftItemDef = itemstack:get_definition()
+	local craftItemSkill =  craftItemDef.skill
+	if not craftItemSkill then return nil end
+	
+	-- Allow repairs
+	
+	if craftItemDef.type == "tool" then
+		local isSameItem = true
+		local itemCount = 0
+		local craftedItemName = craftItemDef.name
+		for _,recipeStack in ipairs(old_craftgrid) do
+			local recipeItemName = recipeStack:get_name()
+			if recipeItemName ~= "" then 
+				itemCount = itemCount + 1
+				if itemCount > 2 then break end
+				if recipeItemName ~= craftedItemName then
+					isSameItem = false
+					break
+				end
+			end
+		end
+		
+		if isSameItem and itemCount == 2 then
+			-- Yes we can ... repair
+			return nil
+		end
+	end
+
+	-- Add wear to the new item
+
+	local probability = skills.get_probability(player:get_player_name(), SKILL_CRAFTING, craftItemSkill)
+	local rangeLow = math.max(( probability - 10 ) / 100, 0.0)
+	probability = probability / 100
+	local wear = math.floor(50000 - ( 50000 * math.random(rangeLow,probability) ))
+	itemstack:add_wear(wear)
+	return itemstack
 end
 
 minetest.register_on_craft(on_craft)
