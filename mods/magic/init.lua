@@ -1,9 +1,5 @@
 magic = { }
-
-local magic_file = minetest.get_worldpath().."/magic"
 local magicpath = minetest.get_modpath("magic")
-magic.player_magic = default.deserialize_from_file(magic_file)
-
 hud.register("magic", {
 	hud_elem_type = "statbar",
 	position = {x = 0.5, y = 1},
@@ -23,13 +19,13 @@ dofile(magicpath.."/loop.lua")
 
 function magic.update_magic(player,name)
 	if minetest.check_player_privs(name, {immortal=true}) then
-		magic.player_magic[name] = 20
-		hud.change_item(player,"magic", {number = magic.player_magic[name]})
+		pd.set(name,"mana",20)
+		hud.change_item(player,"magic", {number = 20})
 		return
 	end
 	local s = skills.get_skill(name,SKILL_MAGIC)
 	local baseAdj = 2
-	if magic.player_magic[name] ~= nil then
+	local mana = pd.get_number(name,"mana")	
 		if default.player_get_animation(player) == "lay" then
 			baseAdj = baseAdj + 3
 		end
@@ -40,24 +36,17 @@ function magic.update_magic(player,name)
 		
 		local adj = baseAdj * ( s.level / 10 )
 	
-		magic.player_magic[name] = magic.player_magic[name] + adj
+		mana = mana + adj
 	
-		if magic.player_magic[name] > 20 then
-			magic.player_magic[name] = 20
+		if mana > 20 then
+			mana = 20
 		end
-		if magic.player_magic[name] < 0 then
-			magic.player_magic[name] = 0
-		end
-	else
-		magic.player_magic[name] = 20
-	end
-	hud.change_item(player,"magic", {number = magic.player_magic[name]})
+		if mana < 0 then
+			mana = 0
+		end	
+	pd.set(name,"mana",mana)
+	hud.change_item(player,"magic", {number = mana})
 end
-
-minetest.register_on_shutdown(function()
-	default.serialize_to_file(magic_file,magic.player_magic)
-end)
-
 
 -- load magic spells
 dofile(magicpath.."/thunder.lua")

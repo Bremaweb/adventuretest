@@ -4,13 +4,10 @@
 -- physics persist across sessions and server shutdowns
 
 physics = {}
-local physics_file = minetest.get_worldpath() .. "/physics"
-physics.player_physics = default.deserialize_from_file(physics_file)
-physics.player_frozen = {}
 function physics.adjust_physics(player,_physics)
 	local name = player:get_player_name()
 	for p,v in pairs(_physics) do
-		physics.player_physics[name][p] = physics.player_physics[name][p] + v 
+		pd.increment(name,p,v) 
 	end
 	physics.apply(player)
 end
@@ -18,22 +15,23 @@ end
 function physics.apply(player)
 	if player ~= nil then
 		local name = player:get_player_name()
-		if physics.player_frozen[name] ~= true then
-			player:set_physics_override(physics.player_physics[name])
+		if pd.get(name,"frozen") ~= true then
+			local o = physics.get_player_physics(name)
+			player:set_physics_override(o)
 		end
 	end
 end
 
 function physics.freeze_player(name)
 	local player = minetest.get_player_by_name(name)
-	physics.player_frozen[name] = true
+	pd.set(name,"frozen",true)
 	player:set_physics_override({speed=0,jump=0})
 end
 
 function physics.unfreeze_player(name)
 	local player = minetest.get_player_by_name(name)
-	physics.player_frozen[name] = false
-	physics.apply(minetest.get_player_by_name(name))
+	pd.set(name,"frozen",false)
+	physics.apply(player)
 end
 
 function physics.remove_item_physics(player,item)
@@ -49,7 +47,11 @@ function physics.remove_item_physics(player,item)
 end
 
 function physics.get_player_physics(name)
-	return physics.player_physics[name]
+	local o = {}
+	o["speed"] = pd.get_number(name,"speed")
+	o["jump"] = pd.get_number(name,"jump")
+	o["gravity"] = pd.get_number(name,"gravity")
+	return o
 end
 
 function physics.apply_item_physics(player,item)
@@ -60,29 +62,12 @@ function physics.apply_item_physics(player,item)
 	end
 end
 
-function physics.init_player(player)
-	-- reset physics to default when the player joins
-	local name = player:get_player_name()
-	if physics.player_physics[name] == nil then
-		 physics.player_physics[name] = {speed = 1, jump = 1, gravity = 1}
-	end
-	minetest.after(10,physics.apply,player)
-end
-
 function physics.apply_all()
 	-- reapply physics to everybody just in case we've missed it in a spot, or if it didn't take at the begining
 	for _,p in pairs(minetest.get_connected_players()) do
 		physics.apply(p)
 	end
-	default.serialize_to_file(physics_file,physics.player_physics)
 	minetest.after(30,physics.apply_all)
 end
-
-minetest.register_on_joinplayer(physics.init_player)
-
-minetest.register_on_shutdown(function ()
-	default.serialize_to_file(physics_file,physics.player_physics)
-end)
-
 minetest.after(30,physics.apply_all)
 

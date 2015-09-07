@@ -338,8 +338,12 @@ minetest.register_abm({
 
 function default.serialize_to_file(filename,t)
 	local f = io.open(filename, "w")
+	if f ~= nil then
 		f:write(minetest.serialize(t))
 		f:close()
+	else
+		minetest.log("error","Unable to open for writing "..tostring(filename))
+	end
 end
 
 function default.deserialize_from_file(filename)
@@ -416,4 +420,19 @@ end
 function randomChance (percent) 
 	math.randomseed( os.clock() )
 	return percent >= math.random(1, 100)                                          
+end
+
+function default.tprint (tbl, indent)
+  if not indent then indent = 0 end
+  for k, v in pairs(tbl) do
+    local formatting = string.rep("  ", indent) .. k .. ": "
+    if type(v) == "table" then
+      print(formatting)
+      default.tprint(v, indent+1)
+    elseif type(v) == 'boolean' then
+      print(formatting .. tostring(v))      
+    else
+      print(formatting .. v)
+    end
+  end
 end

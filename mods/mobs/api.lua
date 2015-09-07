@@ -307,6 +307,8 @@ function mobs:register_mob(name, def)
 			local pos = self.object:getpos()
 			if self.object:get_hp() <= 0 then
 				if hitter and hitter:is_player() and hitter:get_inventory() then
+					local name = hitter:get_player_name()
+					pd.increment(name,STAT_KILLS,1)
 					for _,drop in ipairs(self.drops) do
 						if math.random(1, 100) < drop.chance then
 							local d = ItemStack(drop.name.." "..math.random(drop.min, drop.max))

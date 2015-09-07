@@ -1,28 +1,9 @@
 skills = { }
-skill_file = minetest.get_worldpath().."/player_skills"
-level_file = minetest.get_worldpath().."/player_levels"
 
 skills.available_skills = {}
-skills.player_skills = {}
-skills.player_levels = {}
 
 function skills.register_skill(skill_id,s_table)
 	skills.available_skills[skill_id] = s_table
-end
-
-function skills.initialize()
-	minetest.log("action","Loading player skills and levels")
-	skills.player_skills = default.deserialize_from_file(skill_file)
-	skills.player_levels = default.deserialize_from_file(level_file)
-	dofile(minetest.get_modpath("skills").."/register_skills.lua")
-	minetest.after(120,skills.save)
-end
-
-function skills.save()
-	minetest.log("action","Saving levels and skills")
-	default.serialize_to_file(skill_file,skills.player_skills)
-	default.serialize_to_file(level_file,skills.player_levels)
-	minetest.after(120,skills.save)
 end
 
 function skills.get_def(skill_id)
@@ -31,23 +12,26 @@ end
 
 function skills.set_default_skills ( name )
 	minetest.log("action","Setting default skills for "..name)
-	if skills.player_skills[name] == nil then
-		skills.player_skills[name] = { }
-	end
+	local pskills = pd.get(name,"skills")
+	if pskills == nil then pskills = {} end
 	for k,v in pairs(skills.available_skills) do
-		--print(name.." checking for skill "..v.desc)
-		if skills.player_skills[name][k] == nil then
-			--print(name.." adding skill "..tostring(k))
-			skills.player_skills[name][k] = { level = 1, exp = 0 }
+		print(name.." checking for skill "..v.desc)
+		if pskills[k] == nil then
+			print("Doesn't have skill "..tostring(k))
+			pskills[k] = { level = 1, exp = 0 }
+		else
+			print("Has skill "..tostring(k))
 		end
 	end
-	default.serialize_to_file(skill_file,skills.player_skills)
+	print("Result!")
+	default.tprint(pskills,4)
+	pd.set(name,"skills",pskills)
 end 
 
 function skills.get_skill(name, skill_id)
 	-- Existing skill
 	
-	local playerSkills = skills.player_skills[name]
+	local playerSkills = pd.get(name,"skills")
 	local skill = playerSkills and playerSkills[skill_id]
 	if skill ~= nil then
 		return skill
@@ -58,7 +42,7 @@ function skills.get_skill(name, skill_id)
 	minetest.log("info", "Requesting skill (id="..tostring(skill_id)..") for player '"..name.."'. Player is new or missing the skill.")
 	skills.set_default_skills(name)
 	
-	playerSkills = skills.player_skills[name]
+	playerSkills = pd.get(name,"skills")
 	skill = playerSkills and playerSkills[skill_id]
 
 	if playerSkills == nil then
@@ -71,26 +55,24 @@ function skills.get_skill(name, skill_id)
 end
 
 function skills.get_player_level(name)
-	if skills.player_levels[name] == nil then
-		skills.player_levels[name] = {level=1,exp=0}
-	end
-	return skills.player_levels[name]
+	return pd.get(name,"level")
 end
 
 function skills.add_exp(name, exp)
 	-- this adds experience to the user and increases their level when needed
-	local l = skills.get_player_level(name)
-	skills.player_levels[name].exp = l.exp + exp	
+	local l = pd.get(name,"level")
+	l.exp = l.exp + exp	
 	local next_level = ((l.level^2) * 50)
 	
-	if skills.player_levels[name].exp >= next_level then
-		skills.player_levels[name].level = skills.player_levels[name].level + 1
-		skills.player_levels[name].exp = skills.player_levels[name].exp - next_level
-		minetest.chat_send_player(name,"You have gained a level! You are now level "..tostring(skills.player_levels[name].level))
+	if l.exp >= next_level then
+		l.level = l.level + 1
+		l.exp = l.exp - next_level
+		minetest.chat_send_player(name,"You have gained a level! You are now level "..tostring(l.level))
 		minetest.sound_play("levelup", {
 			to_player = name,
 			gain = 10.0,
 		})
+		pd.set(name,"level",l)
 	end	
 end
 
@@ -137,15 +119,17 @@ minetest.register_on_joinplayer(function (player)
 				local sk = skills.get_skill(name,skill_id)
 				local skill = skills.available_skills[skill_id]
 				local next_level = math.floor(((sk.level^1.75) * skill.level_exp))
+				local pskills = pd.get(name,"skills")
 				
-				skills.player_skills[name][skill_id].exp = skills.player_skills[name][skill_id].exp + exp_dropped
+				pskills[skill_id].exp = pskills[skill_id].exp + exp_dropped
 
-				if skills.player_skills[name][skill_id].exp >= next_level then
-					if skills.player_skills[name][skill_id].level ~= skill.max_level then
-						skills.player_skills[name][skill_id].level = skills.player_skills[name][skill_id].level + 1
-						skills.player_skills[name][skill_id].exp = skills.player_skills[name][skill_id].exp - next_level
-					end
+				while pskills[skill_id].exp >= next_level and pskills[skill_id].level < skill.max_level do
+						pskills[skill_id].level = pskills[skill_id].level + 1
+						pskills[skill_id].exp = pskills[skill_id].exp - next_level
+						next_level = math.floor(((pskills[skill_id].level^1.75) * skill.level_exp))
 				end
+				
+				pd.set(name,"skills",pskills)
 				
 				stack:clear()
 				inv:set_stack(listname,index,stack)
@@ -164,24 +148,6 @@ minetest.register_on_joinplayer(function (player)
 		skill_inv:set_size(list, 1)
 		skill_inv:set_stack(list, 1, player_inv:get_stack(list, 1))
 	end
-	if skills.player_levels[name] == nil then
-	 skills.player_levels[name] = {level=1,exp=1}
-	end
-end)
-
-minetest.register_on_shutdown(function()
-	default.serialize_to_file(skill_file,skills.player_skills)
-	default.serialize_to_file(level_file,skills.player_levels)
-end)
-
-minetest.register_on_newplayer(function(player)
-	skills.set_default_skills(player:get_player_name())
-	skills.player_levels[player:get_player_name()] = {level=1,exp=1}
-end)
-
-minetest.register_on_leaveplayer(function(player)
-	default.serialize_to_file(skill_file,skills.player_skills)
-	default.serialize_to_file(level_file,skills.player_levels)
 end)
 
 minetest.register_chatcommand("skills", {
@@ -204,4 +170,4 @@ function skills_on_dieplayer (player)
     skills.add_exp(name,decrease)
 end
 
-skills.initialize()
+dofile(minetest.get_modpath("skills").."/register_skills.lua")

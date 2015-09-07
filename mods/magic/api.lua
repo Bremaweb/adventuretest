@@ -62,10 +62,12 @@ function magic.cast(id,name,target)
 			local skb = skills.get_def(SKILL_MAGIC)
 			local mana = spell.max_mana - ( ( (sk.level - spell.level) / skb.max_level ) * 10 )
 			if sk.level >= magic._spells[id].level then
-				if magic.player_magic[name] >= mana then
-					magic.player_magic[name] = magic.player_magic[name] - mana
+				local p_mana = pd.get_number(name,"mana")
+				if p_mana >= mana then
+					p_mana = p_mana - mana
 					minetest.chat_send_player(name,"You cast "..spell.desc)
 					spell.on_cast(spell,name,target)
+					pd.set(name,"mana",p_mana)
 				else
 					minetest.chat_send_player(name,"You don't have enough magic!")
 				end

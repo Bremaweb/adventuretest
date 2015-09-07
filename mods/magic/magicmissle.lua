@@ -129,8 +129,10 @@ local magicmissle_spell = {
 		
 		if sk.level >= 4 then		
 			local mana = 10 - ( ( (sk.level - 2) / skb.max_level ) * 10 )
-			if magic.player_magic[name] >= mana then
-				magic.player_magic[name] = magic.player_magic[name] - mana
+			local p_mana = pd.get_number(name,"mana")
+			if p_mana >= mana then
+				p_mana = p_mana - mana
+				pd.set(name,"mana",p_mana)
 				minetest.sound_play("magic_magicmissle_cast",{object=user})
 				local playerpos = user:getpos()
 				local obj = minetest.env:add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, "magic:magicmissle")

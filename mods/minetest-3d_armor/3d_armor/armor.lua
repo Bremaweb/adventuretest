@@ -5,8 +5,6 @@ if not update_time then
 	minetest.setting_set("3d_armor_update_time", tostring(update_time))
 end
 
-local player_physics_applied = {}
-
 armor = {
 	player_hp = {},
 	elements = {"head", "torso", "legs", "feet"},
@@ -196,7 +194,6 @@ minetest.register_on_joinplayer(function(player)
 	inventory_plus.register_button(player,"armor", "Armor")
 	local player_inv = player:get_inventory()
 	local name = player:get_player_name()
-	player_physics_applied[name] = false
 	local armor_inv = minetest.create_detached_inventory(name.."_armor",{
 		on_put = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, stack)

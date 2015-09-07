@@ -25,16 +25,10 @@ dofile(modpath .. "/legacy.lua")
 
 
 -- Callbacks
-if minetest.setting_getbool("enable_damage") then
-    minetest.register_on_joinplayer(function(player)
-	local inv = player:get_inventory()
-	inv:set_size("hunger", 1)
 
-	local name = player:get_player_name()
-	hunger[name] = {}
-	hunger[name].lvl = hunger.read(player)
-	hunger[name].exhaus = 0
-	local lvl = hunger[name].lvl
+function hunger_join_player(player)
+	local name = player:get_player_name()		
+	local lvl = pd.get_number(name,"hunger_lvl")
 	if lvl > 20 then
 		lvl = 20
 	end
@@ -42,7 +36,7 @@ if minetest.setting_getbool("enable_damage") then
 		hud.change_item(player, "hunger", {offset = "item", item_name = "hunger"})
 		hud.change_item(player, "hunger", {number = lvl, max = 20})
 	end)
-    end)
-
-    minetest.register_on_item_eat(hunger.eat)
 end
+
+minetest.register_on_item_eat(hunger.eat)
+

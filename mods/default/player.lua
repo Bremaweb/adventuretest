@@ -165,7 +165,7 @@ function default.player_globalstep(dtime)
 			local animation_speed_mod = model.animation_speed or 30
 
 			-- Determine if the player is walking
-			if ( controls.up or controls.down or controls.left or controls.right ) and physics.player_frozen[name] ~= true then
+			if ( controls.up or controls.down or controls.left or controls.right ) and pd.get(name,"frozen") ~= true then
 				walking = true
 			end
 
@@ -180,9 +180,10 @@ function default.player_globalstep(dtime)
 			elseif walking then
 				if player_anim[name] == "lay" or player_anim[name] == "sit" then
 					player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
-					if player_sleephuds[name] ~= nil then
-						player:hud_remove(player_sleephuds[name])
-						player_sleephuds[name] = nil
+					local sleep_hud = pd.get(name,"sleep_hud")
+					if sleep_hud ~= nil then
+						player:hud_remove(sleep_hud)
+						pd.unset(name,"sleep_hud")
 					end
 				end
 				if player_sneak[name] ~= controls.sneak then
@@ -197,9 +198,10 @@ function default.player_globalstep(dtime)
 			elseif controls.LMB then
 				if player_anim[name] == "lay" or player_anim[name] == "sit" and physics.player_frozen[name] ~= true then
 					player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
-					if player_sleephuds[name] ~= nil then
-						player:hud_remove(player_sleephuds[name])
-						player_sleephuds[name] = nil
+					local sleep_hud = pd.get(name,"sleep_hud")
+					if sleep_hud ~= nil then
+						player:hud_remove(sleep_hud)
+						pd.unset(name,"sleep_hud")
 					end
 				end
 				player_set_animation(player, "mine")
@@ -214,15 +216,17 @@ end
 
 if minetest.register_on_punchplayer ~= nil then
 	minetest.register_on_punchplayer( function(player, hitter, time_from_last_punch, tool_capabilities, dir)
+		local name = player:get_player_name()
 		process_weapon(player,time_from_last_punch,tool_capabilities)
 		blood_particles(player:getpos(),0.5,27,"mobs_blood.png")
 		if player_anim[name] == "lay" or player_anim[name] == "sit" then
 			player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
-			if player_sleephuds[name] ~= nil then
-				player:hud_remove(player_sleephuds[name])
-				player_sleephuds[name] = nil
-			end
-			physics.unfreeze_player(name)
+			local sleep_hud = pd.get(name,"sleep_hud")
+			if sleep_hud ~= nil then
+				player:hud_remove(sleep_hud)
+				pd.unset(name,"sleep_hud")
+				physics.unfreeze_player(name)
+			end			
 		end
 		if math.random(0,3) == 3 then
 			local snum = math.random(1,4)

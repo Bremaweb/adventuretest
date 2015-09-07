@@ -1,61 +1,24 @@
--- read/write
-function hunger.read(player)
-	local inv = player:get_inventory()
-	if not inv then
-		return nil
-	end
-	local hgp = inv:get_stack("hunger", 1):get_count()
-	if hgp == 0 then
-		hgp = 21
-		inv:set_stack("hunger", 1, ItemStack({name = ":", count = hgp}))
-	else
-		hgp = hgp
-	end
-	if tonumber(hgp) > HUNGER_MAX + 1 then
-		hgp = HUNGER_MAX + 1
-	end
-	return hgp - 1
-end
-
-function hunger.save(player)
-	local inv = player:get_inventory()
-	local name = player:get_player_name()
-	local value = hunger[name].lvl
-	if not inv or not value then
-		return nil
-	end
-	if value > HUNGER_MAX then
-		value = HUNGER_MAX
-	end
-	if value < 0 then
-		value = 0
-	end
-	inv:set_stack("hunger", 1, ItemStack({name = ":", count = value + 1}))
-	return true
-end
-
 function hunger.update_hunger(player, new_lvl)
 	local name = player:get_player_name() or nil
 	if not name then
 		return false
 	end
 	if minetest.setting_getbool("enable_damage") == false then
-		hunger[name] = 20
+		pd.set(name,"hunger_lvl",20)
 		return
 	end
-	local lvl = hunger[name].lvl
+	local lvl = pd.get(name,"hunger_lvl")
 	if new_lvl then
 		 lvl = new_lvl
 	end
 	if lvl > HUNGER_MAX then
 		lvl = HUNGER_MAX
 	end
-	hunger[name].lvl = lvl
+	pd.set(name,"hunger_lvl",lvl)
 	if lvl > 20 then
 		lvl = 20
 	end
 	hud.change_item(player, "hunger", {number = lvl})
-	hunger.save(player)
 end
 local update_hunger = hunger.update_hunger
 
@@ -65,9 +28,10 @@ function hunger.handle_node_actions(pos, oldnode, player, ext)
 		return
 	end
 	local name = player:get_player_name()
-	local exhaus = hunger[name].exhaus
-	if not exhaus then
-		hunger[name].exhaus = 0
+	local exhaus = pd.get_number(name,"hunger_exhaus")
+	local lvl = pd.get_number(name,"hunger_lvl")
+	if not exhaus then		
+		exhaus = 0
 		--return
 	end
 
@@ -87,13 +51,13 @@ function hunger.handle_node_actions(pos, oldnode, player, ext)
 
 	if exhaus > HUNGER_EXHAUST_LVL then
 		exhaus = 0
-		local h = tonumber(hunger[name].lvl)
+		local h = lvl
 		if h > 0 then
 			update_hunger(player, h - 1)
 		end
 	end
 
-	hunger[name].exhaus = exhaus
+	pd.set(name,"hunger_exhaus",exhaus)
 end
 
 -- Time based hunger functions
@@ -120,18 +84,16 @@ if minetest.setting_getbool("enable_damage") then
 	-- lower saturation by 1 point after <HUNGER_TICK> second(s)
 	if hunger_timer > HUNGER_TICK then
 		for _,player in ipairs(minetest.get_connected_players()) do
-			local name = player:get_player_name()
-			local tab = hunger[name]
+			local name = player:get_player_name()			
 			if minetest.check_player_privs(name, {immortal=true}) then
 				update_hunger(player,20)
 				return
 			end
-			if tab then
-				local hunger = tab.lvl
-				if hunger > 0 then
-					update_hunger(player, hunger - 1)
-				end
-			end
+			
+			local hunger = pd.get_number(name,"hunger_lvl")
+			if hunger > 0 then
+				update_hunger(player, hunger - 1)
+			end			
 		end
 		hunger_timer = 0
 	end
@@ -140,23 +102,22 @@ if minetest.setting_getbool("enable_damage") then
 	if health_timer > HUNGER_HEALTH_TICK then
 		for _,player in ipairs(minetest.get_connected_players()) do
 			local name = player:get_player_name()
-			local tab = hunger[name]
-			if tab then
+			local lvl = pd.get(name,"hunger_lvl")
+			
 				local air = player:get_breath() or 0
 				local hp = player:get_hp()
 
 				-- heal player by 1 hp if not dead and saturation is > 15 (of 30)
-				if tonumber(tab.lvl) > HUNGER_HEAL_LVL and air > 0 then
+				if lvl > HUNGER_HEAL_LVL and air > 0 then
 					player:set_hp(hp + HUNGER_HEAL)
 				end
 
 				-- or damage player by 1 hp if saturation is < 2 (of 30)
-				if tonumber(tab.lvl) < HUNGER_STARVE_LVL then
+				if lvl < HUNGER_STARVE_LVL then
 					player:set_hp(hp - HUNGER_STARVE)
 				end
-			end
+			
 		end
-
 		health_timer = 0
 	end
  end
@@ -205,7 +166,7 @@ function hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sound)
     return function(itemstack, user, pointed_thing)
 	if itemstack:take_item() ~= nil and user ~= nil then
 		local name = user:get_player_name()
-		local sat = tonumber(hunger[name].lvl)
+		local sat = pd.get_number(name,"hunger_lvl")
 		local hp = user:get_hp()
 		-- Saturation
 		if sat < HUNGER_MAX and hunger_change then

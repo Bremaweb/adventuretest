@@ -35,14 +35,12 @@ function mg_villages.spawnplayer(player)
 	end
 	player:setpos(min_pos)
 	local name = player:get_player_name()
-	if homepos[name] == nil then
-		homepos[name]=min_pos
-	end
+	pd.set(name,"homepos",min_pos)
 end
 
-minetest.register_on_newplayer(function(player)
+mg_villages.on_newplayer = function(player)
 	mg_villages.spawnplayer(player)
-end)
+end
 
 --minetest.register_on_respawnplayer(function(player)
 	--spawnplayer(player)
