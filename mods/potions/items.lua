@@ -159,9 +159,7 @@ for _, data in pairs(ground_items) do
 		output=gitem,
 		recipe = {data[1]}
 	})
-	minetest.override_item(data[1], {
-		ground = gitem 
-	})
+	cottages.handmill_product[ data[1] ] = gitem .. ' 4';
 end
 
 minetest.register_craft({
