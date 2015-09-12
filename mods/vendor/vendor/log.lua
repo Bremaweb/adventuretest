@@ -23,9 +23,9 @@ minetest.log("action","Writing vendor log queue to file")
 	vlog_queue = {}
 	
 	if ( again == true ) then
-		minetest.after(60,write_vendor_log,true)
+		minetest.after(300,write_vendor_log,true)
 	end
 end
 
 minetest.register_on_shutdown(write_vendor_log)
-minetest.after(60,write_vendor_log,true)
+minetest.after(300,write_vendor_log,true)
