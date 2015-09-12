@@ -61,7 +61,6 @@ function hunger.handle_node_actions(pos, oldnode, player, ext)
 end
 
 -- Time based hunger functions
-if minetest.setting_getbool("enable_damage") then
     local hunger_timer = 0
     local health_timer = 0
     local action_timer = 0
@@ -92,6 +91,7 @@ if minetest.setting_getbool("enable_damage") then
 			
 			local hunger = pd.get_number(name,"hunger_lvl")
 			if hunger > 0 then
+				pd.increment(name,"hunger_lvl",-1)
 				update_hunger(player, hunger - 1)
 			end			
 		end
@@ -102,7 +102,7 @@ if minetest.setting_getbool("enable_damage") then
 	if health_timer > HUNGER_HEALTH_TICK then
 		for _,player in ipairs(minetest.get_connected_players()) do
 			local name = player:get_player_name()
-			local lvl = pd.get(name,"hunger_lvl")
+			local lvl = pd.get_number(name,"hunger_lvl")
 			
 				local air = player:get_breath() or 0
 				local hp = player:get_hp()
@@ -121,8 +121,6 @@ if minetest.setting_getbool("enable_damage") then
 		health_timer = 0
 	end
  end
-end
-
 
 -- food functions
 local food = hunger.food
