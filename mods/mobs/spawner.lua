@@ -138,7 +138,7 @@ local numNPCs = math.random(0,1)
 					minetest.log("action","Spawning "..barbarian.." at "..minetest.pos_to_string(npos))
 					local mob = minetest.add_entity(npos, barbarian)
 					if mob then
-						local distance_rating = ( ( get_distance({x=0,y=0,z=0},npos) ) / 15000 )
+						local distance_rating = ( ( get_distance(game_origin,npos) ) / 15000 )
 						mob = mob:get_luaentity()
 						local newHP = mob.hp_min + math.floor( mob.hp_max * distance_rating )
 						mob.object:set_hp( newHP )

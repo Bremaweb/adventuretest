@@ -213,7 +213,7 @@ quests.treasure.place_treasure = function (pos,minp,maxp)
 end
 
 quests.treasure.set_inventory = function (pos)
-	local distance = default.get_distance({x=0,y=0,z=0},{x=pos.x,y=0,z=pos.z})
+	local distance = default.get_distance(game_origin,{x=pos.x,y=0,z=pos.z})
 	local treasure_level = math.floor( distance / 5000 )
 	if treasure_level == 0 then treasure_level = 1 end
 	local meta = minetest.get_meta(pos)

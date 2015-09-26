@@ -1462,6 +1462,27 @@ minetest.register_node("default:dry_shrub", {
 	},
 })
 
+minetest.register_node("default:dry_shrub2", {
+	description = "Dry Shrub",
+	drawtype = "plantlike",
+	visual_scale = 1.0,
+	tiles = {"default_dry_shrub2.png"},
+	inventory_image = "default_dry_shrub2.png",
+	wield_image = "default_dry_shrub2.png",
+	paramtype = "light",
+	waving = 1,
+	walkable = false,
+	is_ground_content = true,
+	buildable_to = true,
+	groups = {snappy=3,flammable=3,attached_node=1},
+	sounds = default.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -5/16, 0.5},
+	},
+})
+
+
 minetest.register_node("default:grass_1", {
 	description = "Grass",
 	drawtype = "plantlike",

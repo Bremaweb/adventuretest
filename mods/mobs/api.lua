@@ -257,7 +257,7 @@ function mobs:register_mob(name, def)
 		on_activate = function(self, staticdata, dtime_s)
 			-- reset HP
 			local pos = self.object:getpos()
-			local distance_rating = ( ( get_distance({x=0,y=0,z=0},pos) ) / 20000 )	
+			local distance_rating = ( ( get_distance(game_origin,pos) ) / 20000 )	
 			local newHP = self.hp_min + math.floor( self.hp_max * distance_rating )
 			self.object:set_hp( newHP )
 
@@ -323,7 +323,7 @@ function mobs:register_mob(name, def)
 					end
 					if minetest.get_modpath("skills") and minetest.get_modpath("experience") then
 						-- DROP experience
-						local distance_rating = ( ( get_distance({x=0,y=0,z=0},pos) ) / ( skills.get_player_level(hitter:get_player_name()).level * 1000 ) )
+						local distance_rating = ( ( get_distance(game_origin,pos) ) / ( skills.get_player_level(hitter:get_player_name()).level * 1000 ) )
 						local emax = math.floor( self.exp_min + ( distance_rating * self.exp_max ) )
 						local expGained = math.random(self.exp_min, emax)
 						skills.add_exp(hitter:get_player_name(),expGained)
@@ -496,7 +496,7 @@ function mobs:spawn_mob(pos,name)
 	local mob = minetest.add_entity(pos, name)
 	
 	-- setup the hp, armor, drops, etc... for this specific mob
-	local distance_rating = ( ( get_distance({x=0,y=0,z=0},pos) ) / 15000 )	
+	local distance_rating = ( ( get_distance(game_origin,pos) ) / 15000 )	
 	if mob ~= nil then		
 		mob = mob:get_luaentity()
 		if mob ~= nil then
