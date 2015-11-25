@@ -98,10 +98,10 @@ local spider_poison = {
 							ny = ny * 0.3
 						end
 						player:set_look_yaw(ny)
-						local h = hunger[name].lvl
+						local h = pd.get_number(name,"hunger_lvl")
 						h = h - 2
 						hunger.update_hunger(player,h)
-						player_energy[name] = player_energy[name] - 2
+						pd.increment(name,"energy",-2)
 						minetest.chat_send_player(name,"You feel a very dizzy")
 					end
 					},
@@ -117,10 +117,10 @@ local spider_poison = {
 							ny = ny * 0.5
 						end
 						player:set_look_yaw(ny)
-						local h = hunger[name].lvl
+						local h = pd.get_number(name,"hunger_lvl")
 						h = h - 4
 						hunger.update_hunger(player,h)
-						player_energy[name] = player_energy[name] - 4
+						pd.increment(name,"energy",-4)
 						player:set_breath(-2)
 						if randomChance(40) then
 							pass_out(name,player)
