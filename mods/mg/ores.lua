@@ -28,8 +28,8 @@ minetest.register_ore({
 	clust_scarcity = 8*8*8,
 	clust_num_ores = 8,
 	clust_size     = 3,
-	height_min     = -31000,
-	height_max     = 64,
+	y_min     = -31000,
+	y_max     = 64,
 })
 
 minetest.register_ore({
@@ -39,8 +39,8 @@ minetest.register_ore({
 	clust_scarcity = 24*24*24,
 	clust_num_ores = 27,
 	clust_size     = 6,
-	height_min     = -31000,
-	height_max     = 0,
+	y_min     = -31000,
+	y_max     = 0,
 	flags          = "absheight",
 })
 
@@ -51,8 +51,8 @@ minetest.register_ore({
 	clust_scarcity = 12*12*12,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	height_min     = -15,
-	height_max     = 2,
+	y_min     = -15,
+	y_max     = 2,
 })
 
 minetest.register_ore({
@@ -62,8 +62,8 @@ minetest.register_ore({
 	clust_scarcity = 9*9*9,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	height_min     = -63,
-	height_max     = -16,
+	y_min     = -63,
+	y_max     = -16,
 })
 
 minetest.register_ore({
@@ -73,8 +73,8 @@ minetest.register_ore({
 	clust_scarcity = 7*7*7,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	height_min     = -31000,
-	height_max     = -64,
+	y_min     = -31000,
+	y_max     = -64,
 	flags          = "absheight",
 })
 
@@ -85,8 +85,8 @@ minetest.register_ore({
 	clust_scarcity = 24*24*24,
 	clust_num_ores = 27,
 	clust_size     = 6,
-	height_min     = -31000,
-	height_max     = -64,
+	y_min     = -31000,
+	y_max     = -64,
 	flags          = "absheight",
 })
 
@@ -97,8 +97,8 @@ minetest.register_ore({
 	clust_scarcity = 18*18*18,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	height_min     = -255,
-	height_max     = -64,
+	y_min     = -255,
+	y_max     = -64,
 	flags          = "absheight",
 })
 
@@ -109,8 +109,8 @@ minetest.register_ore({
 	clust_scarcity = 14*14*14,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	height_min     = -31000,
-	height_max     = -256,
+	y_min     = -31000,
+	y_max     = -256,
 	flags          = "absheight",
 })
 
@@ -121,8 +121,8 @@ minetest.register_ore({
 	clust_scarcity = 36*36*36,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	height_min     = -31000,
-	height_max     = -1024,
+	y_min     = -31000,
+	y_max     = -1024,
 	flags          = "absheight",
 })
 
@@ -133,8 +133,8 @@ minetest.register_ore({
 	clust_scarcity = 15*15*15,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	height_min     = -255,
-	height_max     = -64,
+	y_min     = -255,
+	y_max     = -64,
 	flags          = "absheight",
 })
 
@@ -145,8 +145,8 @@ minetest.register_ore({
 	clust_scarcity = 13*13*13,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	height_min     = -31000,
-	height_max     = -256,
+	y_min     = -31000,
+	y_max     = -256,
 	flags          = "absheight",
 })
 
@@ -157,8 +157,8 @@ minetest.register_ore({
 	clust_scarcity = 17*17*17,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	height_min     = -255,
-	height_max     = -128,
+	y_min     = -255,
+	y_max     = -128,
 	flags          = "absheight",
 })
 
@@ -169,8 +169,8 @@ minetest.register_ore({
 	clust_scarcity = 15*15*15,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	height_min     = -31000,
-	height_max     = -256,
+	y_min     = -31000,
+	y_max     = -256,
 	flags          = "absheight",
 })
 
@@ -181,8 +181,8 @@ minetest.register_ore({
 	clust_scarcity = 12*12*12,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	height_min     = -63,
-	height_max     = -16,
+	y_min     = -63,
+	y_max     = -16,
 })
 
 minetest.register_ore({
@@ -192,7 +192,7 @@ minetest.register_ore({
 	clust_scarcity = 9*9*9,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	height_min     = -31000,
-	height_max     = -64,
+	y_min     = -31000,
+	y_max     = -64,
 	flags          = "absheight",
 })
