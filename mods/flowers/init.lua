@@ -148,6 +148,7 @@ minetest.register_abm({
 		if pos.y < 300 then
 			return
 		end
+		if abm_limiter() then return end
 		local light = minetest.get_node_light(pos)
 		if not light or light < 10 then
 			return
@@ -166,6 +167,7 @@ minetest.register_abm({
 	interval = 50,
 	chance = 25,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		pos.y = pos.y - 1
 		local under = minetest.get_node(pos)
 		pos.y = pos.y + 1

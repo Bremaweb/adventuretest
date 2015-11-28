@@ -25,6 +25,7 @@ minetest.register_abm({
 	interval = 50,
 	chance = 10,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		if minetest.find_node_near(pos, 4, {"farming:scarecrow", "farming:scarecrow_light"}) ~= nil then
 			return
 		end

@@ -29,6 +29,7 @@ minetest.register_abm({
 	interval = 15,
 	chance = 4,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		pos.y = pos.y+1
 		local nn = minetest.get_node(pos).name
 		pos.y = pos.y-1
@@ -389,6 +390,7 @@ minetest.register_abm({
 	interval = 90,
 	chance = 2,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		-- return if already full grown
 		if minetest.get_item_group(node.name, "wheat") == 8 then
 			return
@@ -475,6 +477,7 @@ minetest.register_abm({
 	interval = 80,
 	chance = 2,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		-- return if already full grown
 		if minetest.get_item_group(node.name, "cotton") == 8 then
 			return

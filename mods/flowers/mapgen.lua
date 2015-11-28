@@ -1,4 +1,4 @@
-minetest.register_on_generated(function(minp, maxp, seed)
+--[[minetest.register_on_generated(function(minp, maxp, seed)
 	if maxp.y >= 2 and minp.y <= 0 then
 		-- Generate flowers
 		local perlin1 = minetest.get_perlin(436, 3, 0.6, 100)
@@ -59,4 +59,4 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		end
 		end
 	end
-end)
+end)]]

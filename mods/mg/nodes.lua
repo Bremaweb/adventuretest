@@ -108,6 +108,7 @@ minetest.register_abm({
 	interval = 10,
 	chance = 50,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		local vm = minetest.get_voxel_manip()
 		local minp, maxp = vm:read_from_map({x=pos.x-10, y=pos.y, z=pos.z-10}, {x=pos.x+10, y=pos.y+20, z=pos.z+10})
 		local a = VoxelArea:new{MinEdge=minp, MaxEdge=maxp}
@@ -136,6 +137,7 @@ minetest.register_abm({
 	interval = 2,
 	chance = 200,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local name = minetest.get_node(above).name
 		local nodedef = minetest.registered_nodes[name]
@@ -156,6 +158,7 @@ minetest.register_abm({
 	interval = 2,
 	chance = 20,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local name = minetest.get_node(above).name
 		local nodedef = minetest.registered_nodes[name]
@@ -236,6 +239,7 @@ minetest.register_abm({
 	interval = 10,
 	chance = 50,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		local vm = minetest.get_voxel_manip()
 		local minp, maxp = vm:read_from_map({x=pos.x-10, y=pos.y, z=pos.z-10}, {x=pos.x+10, y=pos.y+30, z=pos.z+10})
 		local a = VoxelArea:new{MinEdge=minp, MaxEdge=maxp}

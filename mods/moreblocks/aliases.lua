@@ -63,6 +63,7 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		if node.name == "moreblocks:horizontal_tree" then
 			node.name = "default:tree"
 		else

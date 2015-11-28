@@ -14,6 +14,7 @@ function farming:add_plant(full_grown, names, interval, chance)
 		interval = interval,
 		chance = chance,
 		action = function(pos, node)
+			if abm_limiter() then return end
 			pos.y = pos.y-1
 			if minetest.get_node(pos).name ~= "farming:soil_wet" then
 				return
@@ -157,7 +158,7 @@ farming.seeds = {
 
 
 -- ========= GENERATE PLANTS IN THE MAP =========
-minetest.register_on_generated(function(minp, maxp, seed)
+--[[minetest.register_on_generated(function(minp, maxp, seed)
         if maxp.y >= 2 and minp.y <= 0 then
                 -- Generate plants (code from flowers)
                 local perlin1 = minetest.get_perlin(974, 3, 0.6, 100)
@@ -208,7 +209,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
                 end
                 end
         end
-end)
+end)]]
 
 function farming:place_seed(itemstack, placer, pointed_thing, plantname)
 
@@ -289,6 +290,7 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos)
+		if abm_limiter() then return end
 		minetest.set_node(pos, {name="farming:wheat_8"})
 	end,
 })

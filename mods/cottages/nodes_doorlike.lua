@@ -108,7 +108,7 @@ minetest.register_abm({
    interval = 20, -- change this to 600 if your machine is too slow
    chance = 3, -- not all people wake up at the same time!
    action = function(pos)
-
+		if abm_limiter() then return end
         -- at this time, sleeping in a bed is not possible
         if( not(minetest.get_timeofday() < 0.2 or minetest.get_timeofday() > 0.805)) then
            local old_node = minetest.get_node( pos );
@@ -125,7 +125,7 @@ minetest.register_abm({
    interval = 20, -- change this to 600 if your machine is too slow
    chance = 2,
    action = function(pos)
-
+		if abm_limiter() then return end
         -- same time at which sleeping is allowed in beds
         if( minetest.get_timeofday() < 0.2 or minetest.get_timeofday() > 0.805) then
            local old_node = minetest.get_node( pos );

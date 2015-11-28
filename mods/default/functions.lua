@@ -107,6 +107,7 @@ minetest.register_abm({
 	interval = 10,
 	chance = 50,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		local nu =  minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
 		local is_soil = minetest.get_item_group(nu, "soil")
 		if is_soil == 0 then
@@ -168,6 +169,7 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
+		if abm_limiter() then return end
 		default.cool_lava_flowing(pos, node, active_object_count, active_object_count_wider)
 	end,
 })
@@ -178,6 +180,7 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
+		if abm_limiter() then return end
 		default.cool_lava_source(pos, node, active_object_count, active_object_count_wider)
 	end,
 })
@@ -192,6 +195,7 @@ minetest.register_abm({
 	interval = 50,
 	chance = 20,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		pos.y = pos.y-1
 		local name = minetest.get_node(pos).name
 		if minetest.get_item_group(name, "sand") ~= 0 then
@@ -216,6 +220,7 @@ minetest.register_abm({
 	interval = 50,
 	chance = 20,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		pos.y = pos.y-1
 		local name = minetest.get_node(pos).name
 		if name == "default:dirt" or name == "default:dirt_with_grass" then
@@ -271,6 +276,7 @@ minetest.register_abm({
 	chance = 5,
 
 	action = function(p0, node, _, _)
+		if abm_limiter() then return end
 		--print("leafdecay ABM at "..p0.x..", "..p0.y..", "..p0.z..")")
 		local do_preserve = false
 		local d = minetest.registered_nodes[node.name].groups.leafdecay

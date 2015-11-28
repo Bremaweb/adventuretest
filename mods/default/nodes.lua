@@ -46,6 +46,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		-- change to a fused iron node
+		if abm_limiter() then return end
 		minetest.set_node(pos, {name = "default:cobble"})
 	end,
 })
@@ -150,6 +151,7 @@ minetest.register_abm({
 	interval = 2,
 	chance = 200,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local name = minetest.get_node(above).name
 		local nodedef = minetest.registered_nodes[name]
@@ -171,6 +173,7 @@ minetest.register_abm({
 	interval = 6,
 	chance = 200,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local name = minetest.get_node(above).name
 		local nodedef = minetest.registered_nodes[name]
@@ -189,6 +192,7 @@ minetest.register_abm({
 	interval = 2,
 	chance = 20,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local name = minetest.get_node(above).name
 		local nodedef = minetest.registered_nodes[name]
@@ -271,6 +275,7 @@ minetest.register_abm({
 	interval = 2,
 	chance = 600,
 	action = function(pos, node)
+		if abm_limiter() then return end
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local name = minetest.get_node(above).name
 			if name == "default:water_source" then
@@ -835,6 +840,7 @@ minetest.register_abm({
 	interval = 10,
 	chance = 600,
 	action = function(pos, node, active_object_count, active_object_count_wider)
+		if abm_limiter() then return end
 		local item_count = math.random(0,5)
 		local items_available = { [0] = "default:apple", [1] = "mobs:meat_raw", [2]="farming:bread",[3]="bushes:berry_pie_cooked",[4]="bushes:basket_empty",[5]="farming:wheat",[6]="throwing:arrow",[7]="default:torch",[8]="farming:string"}
 		local meta = minetest.get_meta(pos)

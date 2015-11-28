@@ -36,7 +36,7 @@ for i, bush_name in ipairs(BUSHES) do
 	}
     })
 
-    plantslib:spawn_on_surfaces(
+    --[[plantslib:spawn_on_surfaces(
 	3600,
 	"bushes:"..bush_name.."_bush",
 	15,
@@ -44,7 +44,7 @@ for i, bush_name in ipairs(BUSHES) do
 	"default:dirt_with_grass",
 	"group:bush"
     )
-
+	]]
 end
 
 dofile(minetest.get_modpath('bushes') .. '/cooking.lua')

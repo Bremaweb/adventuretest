@@ -7,5 +7,6 @@ else
 	game_origin = {x=0,y=0,z=0}
 end
 
+dofile(minetest.get_modpath("adventuretest").."/functions.lua");
 dofile(minetest.get_modpath("adventuretest").."/register_functions.lua");
 dofile(minetest.get_modpath("adventuretest").."/privs.lua")

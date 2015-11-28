@@ -79,6 +79,7 @@ function stairsplus:register_6dfacedir_conversion(modname, material)
 			interval = 1,
 			chance = 1,
 			action = function(pos, node, active_object_count, active_object_count_wider)
+				if abm_limiter() then return end
 				local fdir = node.param2 or 0
 
 				if flip_upside_down and not flip_to_wall then 
@@ -122,6 +123,7 @@ function stairsplus:register_6dfacedir_conversion(modname, material)
 			interval = 1,
 			chance = 1,
 			action = function(pos, node, active_object_count, active_object_count_wider)
+				if abm_limiter() then return end
 				local fdir = node.param2
 				local nfdir = 20
 
