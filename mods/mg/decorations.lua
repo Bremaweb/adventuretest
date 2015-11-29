@@ -62,17 +62,6 @@ minetest.register_decoration({
 })
 
 minetest.register_decoration({
-	deco_type = "simple",
-	place_on = {"default:dirt_with_snow","default:snowblock"},
-	sidelen = 40,
-	fill_ratio = 0.001,
-	biomes = {"mtn_top"},
-	y_min = 300,
-	y_max = 32000,
-	decoration = "flowers:magic",
-})
-
-minetest.register_decoration({
 	deco_type = "schematic",
 	place_on = {"mg:dirt_with_dry_grass"},
 	sidelen = 40,
@@ -208,6 +197,66 @@ minetest.register_decoration({
 	},
 	biomes = {
 		"plains","forest","hot_plains",
+	},
+	y_min = 3,
+	y_max = 155,
+	decoration = "default:grass_5",
+})
+
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = {"default:dirt_with_grass"},
+	sidelen = 16,
+	noise_params = {
+		offset = -0.02,
+		scale = 0.09,
+		spread = {x=200, y=200, z=200},
+		seed = 329,
+		octaves = 4,
+		persist = 0.8
+	},
+	biomes = {
+		"forest",
+	},
+	y_min = 3,
+	y_max = 155,
+	decoration = "default:grass_5",
+})
+
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = {"default:dirt_with_grass"},
+	sidelen = 16,
+	noise_params = {
+		offset = -0.03,
+		scale = 0.1,
+		spread = {x=200, y=200, z=200},
+		seed = 329,
+		octaves = 3,
+		persist = 0.8
+	},
+	biomes = {
+		"forest",
+	},
+	y_min = 3,
+	y_max = 155,
+	decoration = "default:grass_5",
+})
+
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = {"default:dirt_with_grass"},
+	sidelen = 16,
+	noise_params = {
+		offset = -0.03,
+		scale = 0.1,
+		spread = {x=200, y=200, z=200},
+		seed = 322,
+		octaves = 3,
+		persist = 0.8
+	},
+	biomes = {
+		"forest",
 	},
 	y_min = 3,
 	y_max = 155,
