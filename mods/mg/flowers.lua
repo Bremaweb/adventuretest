@@ -69,11 +69,37 @@ minetest.register_decoration({
 	deco_type = "simple",
 	place_on = {"default:dirt_with_grass"},
 	sidelen = 16,
-	fill_raiot = 0.003,
+	fill_ratio = 0.003,
 	biomes = {
 		"plains",
 	},
 	y_min = 0,
 	y_max = 155,
 	decoration = "flowers:viola",
+})
+
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = {"default:dirt_with_grass"},
+	sidelen = 16,
+	fill_ratio = 0.0006,
+	biomes = {
+		"plains",
+	},
+	y_min = 0,
+	y_max = 155,
+	decoration = "bushes:strawberry_bush",
+})
+
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = {"default:dirt_with_grass"},
+	sidelen = 16,
+	fill_ratio = 0.003,
+	biomes = {
+		"forest",
+	},
+	y_min = 0,
+	y_max = 155,
+	decoration = "bushes:strawberry_bush",
 })
