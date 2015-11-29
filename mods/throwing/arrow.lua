@@ -48,6 +48,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	local pos = self.object:getpos()
 	local node = minetest.env:get_node(pos)
 	local hitter
+	local damage = 0
 	
 	if self.timer>0.2 then
 		if self.player ~= nil then
@@ -59,22 +60,32 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 		for k, obj in pairs(objs) do
 			if obj:get_luaentity() ~= nil then
 				if obj:get_luaentity().name ~= "throwing:arrow_entity" and obj:get_luaentity().name ~= "__builtin:item" then
-					local skill = skills.get_skill(hitter:get_player_name(),SKILL_ARROW)
-					local damage = self.max_damage * ( skill.level / skills.get_def(SKILL_ARROW)['max_level'] )
+					if hitter:is_player() then
+						local skill = skills.get_skill(hitter:get_player_name(),SKILL_ARROW)
+						damage = self.max_damage * ( skill.level / skills.get_def(SKILL_ARROW)['max_level'] )						
+					else
+						damage = self.max_damage * 0.25						
+					end
 					obj:punch(hitter, 1.0, {
+							full_punch_interval=1.0,
+							damage_groups={fleshy=damage},
+						}, nil)
+						self.object:remove()
+						break
+				end
+			else
+				if hitter:is_player() then
+					local skill = skills.get_skill(hitter:get_player_name(),SKILL_ARROW)
+					damage = self.max_damage * ( skill.level / skills.get_def(SKILL_ARROW)['max_level'] )
+				else
+					damage = self.max_damage * 0.25
+				end
+				obj:punch(hitter, 1.0, {
 						full_punch_interval=1.0,
 						damage_groups={fleshy=damage},
 					}, nil)
-					self.object:remove()
-				end
-			else
-				local skill = skills.get_skill(hitter:get_player_name(),SKILL_ARROW)
-				local damage = self.max_damage * ( skill.level / skills.get_def(SKILL_ARROW)['max_level'] )
-				obj:punch(hitter, 1.0, {
-					full_punch_interval=1.0,
-					damage_groups={fleshy=damage},
-				}, nil)
-				self.object:remove()
+					self.object:remove()				
+					break
 			end
 		end
 	end

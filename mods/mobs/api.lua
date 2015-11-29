@@ -8,7 +8,7 @@ mobs.api_icount = 0
 mobs.api_timer = 0
 
 mobs.spawn_counter = 0
-mobs.spawn_limit = 10
+mobs.spawn_limit = 25
 mobs.spawn_timer = 0
 function mobs:register_mob(name, def)
   table.insert(mobs.mob_list[def.type],name)
