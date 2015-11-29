@@ -48,7 +48,7 @@ mg_villages.villages_at_point = function(minp, noise1)
 	local height = pr:next(1, 5)
 	-- villages of a size >= 40 are always placed at a height of 1
 	if(     size >= 40 ) then
-		height = 5;
+		height = 1;
 	-- slightly smaller but still relatively large villages have a deterministic height now as well
 	elseif( size >= 30 ) then
 		height = 40-height;
@@ -813,7 +813,7 @@ mg_villages.house_in_one_mapchunk = function( minp, mapchunk_size, vnoise )
 
 	if( mg_villages.all_villages  and mg_villages.all_villages[ village_id ] and mg_villages.all_villages[ village_id ].optimal_height) then
 		village.optimal_height  = mg_villages.all_villages[ village_id ].optimal_height;
-		--village.vh              = mg_villages.all_villages[ village_id ].optimal_height;
+		village.vh              = mg_villages.all_villages[ village_id ].optimal_height;
 		village.artificial_snow = mg_villages.all_villages[ village_id ].artificial_snow;
 	end
 

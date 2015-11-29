@@ -1,6 +1,6 @@
 abm_counter = 0
 abm_timer = 0
-abm_limit = 5
+abm_limit = 999
 abm_time_limit = 1
 
 function abm_limiter()

@@ -48,7 +48,7 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 			for k,v in ipairs(notify.dungeon) do
 				--print(minetest.pos_to_string(v))
 				-- find the size of this room
-				if v.y < 0 then
+				--if v.y < 0 then
 					local center = {x=v.x,y=v.y,z=v.z}
 					
 					local ycheck = {x=center.x,y=center.y,z=center.z}
@@ -137,7 +137,7 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 						local d = { mob = "mobs:dungeon_master", pos={x=center.x,y=(center.y+1),z=center.z} }
 						table.insert(spawn,d)
 					end
-				end
+				--end
 			end
 			vm:set_data(data)
 			vm:calc_lighting(emin,emax)
