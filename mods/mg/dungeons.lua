@@ -40,11 +40,8 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 		if notify.dungeon ~= nil then
 			minetest.log("action","Dungeon generated")
 			local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-			print("Got vanip")
 			local area = VoxelArea:new{MinEdge=emin, MaxEdge=emax}
-			print("got voxelarea")
 			local data = vm:get_data()
-			print("got data")	
 			local spawn = {}
 			local chests = {}
 			local c = 0
@@ -154,30 +151,21 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 					end
 				--end
 			end
-			for k,d in ipairs(data) do
-				if d == nil or k == nil then
-					print(tostring(k)..": "..tostring(d))
-				end
-			end
+			
 			vm:set_data(data)			
-			print("data set")
 			vm:calc_lighting(emin,emax)
-			print("calc lighting")
 			vm:write_to_map(data)
-			print("write_to_map")
 			for _,v in ipairs(spawn) do
 				mobs:spawn_mob(v.pos,v.mob)
 			end
-			print("mobs spawned")
+			
 			for _,cpos in ipairs(chests) do
 				minetest.place_node(cpos,{name="default:chest"})
-				print("placed chest")
 				local meta = minetest.get_meta( cpos );
 				local inv  = meta:get_inventory();
 				inv:add_item("main","quests:dungeon_token")
 				for _,item in ipairs(dungeon_chest) do
 					if randomChance(item[2]) then
-						print("adding item "..item[3])
 						local qty = math.random(1,item[3])
 						inv:add_item("main", item[1].." "..tostring(qty))
 					end
