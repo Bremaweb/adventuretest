@@ -40,8 +40,11 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 		if notify.dungeon ~= nil then
 			minetest.log("action","Dungeon generated")
 			local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+			print("Got vanip")
 			local area = VoxelArea:new{MinEdge=emin, MaxEdge=emax}
-			local data = vm:get_data()	
+			print("got voxelarea")
+			local data = vm:get_data()
+			print("got data")	
 			local spawn = {}
 			local chests = {}
 			local c = 0
@@ -86,21 +89,33 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 					local zsize = ( zcheck.z - center.z )
 					
 					if randomChance(75) then
-						i = area:indexp({x=zcheck.x,y=(zcheck.y+1),z=(zcheck.z+1)})
-						if data[i] ~= d_air then
-							data[i] = d_glowblock
+						local gp = {x=zcheck.x,y=(zcheck.y+1),z=(zcheck.z+1)}
+						if gp.y < emax.y and gp.y > emin.y and gp.x < emax.x and gp.x > emin.x and gp.z < emax.z and gp.z > emin.z then
+							i = area:indexp(gp)
+							if data[i] ~= d_air then
+								data[i] = d_glowblock
+							end
 						end
-						i = area:indexp({x=(xcheck.x+1),y=(xcheck.y+1),z=xcheck.z})
-						if data[i] ~= d_air then
-							data[i] = d_glowblock
+						local gp = {x=(xcheck.x+1),y=(xcheck.y+1),z=xcheck.z}
+						if gp.y < emax.y and gp.y > emin.y and gp.x < emax.x and gp.x > emin.x and gp.z < emax.z and gp.z > emin.z then
+							i = area:indexp(gp)
+							if data[i] ~= d_air then
+								data[i] = d_glowblock
+							end
 						end
-						i = area:indexp({x=(center.x - (xsize+1)),y=(center.y+1),z=zcheck.z})
-						if data[i] ~= d_air then
-							data[i] = d_glowblock
+						local gp = {x=(center.x - (xsize+1)),y=(center.y+1),z=zcheck.z}
+						if gp.y < emax.y and gp.y > emin.y and gp.x < emax.x and gp.x > emin.x and gp.z < emax.z and gp.z > emin.z then
+							i = area:indexp(gp)
+							if data[i] ~= d_air then
+								data[i] = d_glowblock
+							end
 						end
-						i = area:indexp({x=center.x,y=(center.y+1),z=(zcheck.z - (zsize+1))})
-						if data[i] ~= d_air then
-							data[i] = d_glowblock
+						local gp = {x=center.x,y=(center.y+1),z=(zcheck.z - (zsize+1))}
+						if gp.y < emax.y and gp.y > emin.y and gp.x < emax.x and gp.x > emin.x and gp.z < emax.z and gp.z > emin.z then
+							i = area:indexp(gp)
+							if data[i] ~= d_air then
+								data[i] = d_glowblock
+							end
 						end
 					end
 					
@@ -139,19 +154,30 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 					end
 				--end
 			end
-			vm:set_data(data)
+			for k,d in ipairs(data) do
+				if d == nil or k == nil then
+					print(tostring(k)..": "..tostring(d))
+				end
+			end
+			vm:set_data(data)			
+			print("data set")
 			vm:calc_lighting(emin,emax)
+			print("calc lighting")
 			vm:write_to_map(data)
+			print("write_to_map")
 			for _,v in ipairs(spawn) do
 				mobs:spawn_mob(v.pos,v.mob)
 			end
+			print("mobs spawned")
 			for _,cpos in ipairs(chests) do
 				minetest.place_node(cpos,{name="default:chest"})
+				print("placed chest")
 				local meta = minetest.get_meta( cpos );
 				local inv  = meta:get_inventory();
 				inv:add_item("main","quests:dungeon_token")
 				for _,item in ipairs(dungeon_chest) do
 					if randomChance(item[2]) then
+						print("adding item "..item[3])
 						local qty = math.random(1,item[3])
 						inv:add_item("main", item[1].." "..tostring(qty))
 					end
