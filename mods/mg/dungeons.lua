@@ -153,7 +153,7 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 			end
 			
 			vm:set_data(data)			
-			vm:calc_lighting(emin,emax)
+			vm:calc_lighting()
 			vm:write_to_map(data)
 			for _,v in ipairs(spawn) do
 				mobs:spawn_mob(v.pos,v.mob)

@@ -1073,7 +1073,7 @@ mg_villages.place_villages_via_voxelmanip = function( villages, minp, maxp, vm, 
 	t1 = time_elapsed( t1, 'vm data set' );
 
 	-- only update lighting where we actually placed the nodes
-	vm:calc_lighting( e1, e2 ); --minp, maxp ); --tmin, tmax)
+	vm:calc_lighting(); --minp, maxp ); --tmin, tmax)
 	t1 = time_elapsed( t1, 'vm calc lighting' );
 
 	vm:write_to_map(data)

@@ -24,25 +24,31 @@ function energy.update_energy(p,name)
 					p:set_hp(p:get_hp()+1)
 				end
 				
-				-- adjust their energy
-				local vdiff = pos.y - lastpos.y
-				if vdiff > 0 then
-					adj = adj - ( vdiff * 0.2 )
+					-- adjust their energy
+					local vdiff = pos.y - lastpos.y
+					if vdiff > 0 then
+						adj = adj - ( vdiff * 0.2 )
+					end
+					
+					local hdiff = math.sqrt(math.pow(pos.x-lastpos.x, 2) + math.pow(pos.z-lastpos.z, 2))
+					
+					pd.increment(name,STAT_TRAVEL,math.floor(hdiff))
+					
+					adj = adj - ( hdiff * 0.03 )
+					
+				if default.player_attached_to[name] == "boats:boat" and adj < 0 then
+					adj = adj * 0.75
 				end
-				
-				local hdiff = math.sqrt(math.pow(pos.x-lastpos.x, 2) + math.pow(pos.z-lastpos.z, 2))
-				
-				pd.increment(name,STAT_TRAVEL,math.floor(hdiff))
-				
-				adj = adj - ( hdiff * 0.03 )
-				--print("Energy Adjustments")
-				--print(tostring(adj))
-				--print("After stamina adjustment")
+				print("hdiff "..tostring(hdiff))
+				print("Energy Adjustments")
+				print(tostring(adj))
+				print("After stamina adjustment")
 				adj = adj + p_stamina
-				--print(tostring(adj))
+				print(tostring(adj))
 				
 				pd.increment(name,"energy",adj)
 				local p_energy = pd.get_number(name,"energy")
+				print("Energy "..tostring(p_energy))
 				if p_energy < 0 then
 					p_energy = 0
 					p:set_hp(p:get_hp()-1)
@@ -61,6 +67,7 @@ function energy.update_energy(p,name)
 						minetest.chat_send_player(name,"You feel fully energized!")
 						physics.unfreeze_player(name)
 					end
+					pd.set(name,"energy",p_energy)
 				end
 				if p_energy < 8 and pd.get(name,"can_boost_stamina") == true then
 				  pd.set(name,"can_boost_stamina",false)

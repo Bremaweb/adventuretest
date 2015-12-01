@@ -84,6 +84,8 @@ local player_model = {}
 local player_textures = {}
 local player_anim = {}
 local player_sneak = {}
+default.player_attached = {}
+default.player_attached_to = {}
 
 function default.player_get_animation(player)
 	local name = player:get_player_name()
@@ -177,7 +179,7 @@ function default.player_globalstep(dtime)
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
 				player_set_animation(player, "lay")
-			elseif walking then
+			elseif walking and default.player_attached[name] ~= true then
 				if player_anim[name] == "lay" or player_anim[name] == "sit" then
 					player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
 					local sleep_hud = pd.get(name,"sleep_hud")
@@ -190,13 +192,13 @@ function default.player_globalstep(dtime)
 					player_anim[name] = nil
 					player_sneak[name] = controls.sneak
 				end
-				if controls.LMB then
+				if controls.LMB then					
 					player_set_animation(player, "walk_mine", animation_speed_mod)
 				else
 					player_set_animation(player, "walk", animation_speed_mod)
 				end
 			elseif controls.LMB then
-				if player_anim[name] == "lay" or player_anim[name] == "sit" and physics.player_frozen[name] ~= true then
+				if player_anim[name] == "lay" or player_anim[name] == "sit" and pd.get(name,"frozen") ~= true then
 					player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
 					local sleep_hud = pd.get(name,"sleep_hud")
 					if sleep_hud ~= nil then
