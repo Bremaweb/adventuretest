@@ -154,7 +154,7 @@ minetest.register_chatcommand("skills", {
 	params = "",
 	description = "List player's level and skills",
 	func = function(name, param)
-		minetest.chat_send_player(name,"Level: "..tostring(skills.player_levels[name].level))
+		minetest.chat_send_player(name,"Level: "..tostring(skills.get_player_level(name).level))
 		for id,skill in pairs(skills.available_skills) do
 			sk = skills.get_skill(name,id)
 			minetest.chat_send_player(name,skill.desc.." "..tostring(sk.level))
