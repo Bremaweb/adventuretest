@@ -62,13 +62,10 @@ minetest.register_on_joinplayer(function(player)
 	end, player)
 end)
 
-function wieldview_globalstep(dtime)
-	time = time + dtime
-	if time > update_time then
-		for _,player in ipairs(minetest.get_connected_players()) do
-			wieldview:update_wielded_item(player)
-		end
-		time = 0
-	end
+local function wieldview_globalstep(player,name,dtime)	
+	wieldview:update_wielded_item(player)
 end
+adventuretest.register_pl_hook(wieldview_globalstep,update_time)
+
+
 

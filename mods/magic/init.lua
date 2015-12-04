@@ -15,7 +15,6 @@ hud.register("magic", {
 
 
 dofile(magicpath.."/api.lua")
-dofile(magicpath.."/loop.lua")
 
 function magic.update_magic(player,name)
 	if minetest.check_player_privs(name, {immortal=true}) then
@@ -52,3 +51,5 @@ end
 dofile(magicpath.."/thunder.lua")
 dofile(magicpath.."/magicmissle.lua")
 dofile(magicpath.."/heal.lua")
+
+adventuretest.register_pl_hook(magic.update_magic,4)

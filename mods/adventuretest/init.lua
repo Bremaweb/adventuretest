@@ -1,5 +1,7 @@
 -- VARIOUS MISC ADVENTURETEST RELATED STUFF
 
+adventuretest = {}
+
 game_origin = nil
 if minetest.setting_get("game_origin") ~= nil then
 	game_origin = minetest.string_to_pos(minetest.setting_get("game_origin"))

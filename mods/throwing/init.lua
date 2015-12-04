@@ -100,16 +100,17 @@ minetest.register_craft({
 	}
 })
 
-function throwing_globalstep(dtime)
-	for _,player in ipairs(minetest.get_connected_players()) do
-		local name = player:get_player_name()
-		if shoot_timer[name] ~= nil then
-			shoot_timer[name] = shoot_timer[name] - dtime
-		else
-			shoot_timer[name] = 0
-		end
+
+local function do_shoot_timer(player,name,dtime)
+	local name = player:get_player_name()
+	if shoot_timer[name] ~= nil then
+		shoot_timer[name] = shoot_timer[name] - dtime
+	else
+		shoot_timer[name] = 0
 	end
 end
+adventuretest.register_pl_hook(do_shoot_timer,0)
+
 
 dofile(minetest.get_modpath("throwing").."/arrow.lua")
 dofile(minetest.get_modpath("throwing").."/fire_arrow.lua")

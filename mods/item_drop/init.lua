@@ -1,5 +1,4 @@
-function itemdrop_globalstep(dtime)
-	for _,player in ipairs(minetest.get_connected_players()) do
+function itemdrop_globalstep(player,name,dtime)
 		if player:get_hp() > 0 or not minetest.setting_getbool("enable_damage") then
 			local pos = player:getpos()
 			pos.y = pos.y+0.5
@@ -67,8 +66,8 @@ function itemdrop_globalstep(dtime)
 				end
 			end
 		end
-	end
 end
+adventuretest.register_pl_hook(itemdrop_globalstep,0.25)
 
 if minetest.setting_get("log_mods") then
 	minetest.log("action", "item_drop loaded")

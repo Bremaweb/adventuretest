@@ -3,7 +3,7 @@ mobs = {}
 dofile(minetest.get_modpath("mobs").."/step.lua")
 
 mobs.mob_list = { npc={}, barbarian={}, monster={}, animal={}}
-mobs.api_throttle = 5	-- limits the amount of intense operations that can happen per second
+mobs.api_throttle = 20	-- limits the amount of intense operations that can happen per second
 mobs.api_icount = 0
 mobs.api_timer = 0
 

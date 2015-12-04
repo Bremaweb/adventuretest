@@ -60,68 +60,50 @@ function hunger.handle_node_actions(pos, oldnode, player, ext)
 	pd.set(name,"hunger_exhaus",exhaus)
 end
 
--- Time based hunger functions
-    local hunger_timer = 0
-    local health_timer = 0
-    local action_timer = 0
- function hunger.global_step(dtime)
-	hunger_timer = hunger_timer + dtime
-	health_timer = health_timer + dtime
-	action_timer = action_timer + dtime
 
-	if action_timer > HUNGER_MOVE_TICK then
-		for _,player in ipairs(minetest.get_connected_players()) do
-			local controls = player:get_player_control()
-			-- Determine if the player is walking
-			if controls.up or controls.down or controls.left or controls.right then
-				hunger.handle_node_actions(nil, nil, player)
-			end
-		end
-		action_timer = 0
+function hunger_move(player,name,dtime)
+	local controls = player:get_player_control()
+	-- Determine if the player is walking
+	if controls.up or controls.down or controls.left or controls.right then
+		hunger.handle_node_actions(nil, nil, player)
+	end
+end
+adventuretest.register_pl_hook(hunger_move,HUNGER_MOVE_TICK)
+
+function do_hunger_tick(player,name,dtime)
+	local name = player:get_player_name()			
+	if minetest.check_player_privs(name, {immortal=true}) then
+		update_hunger(player,20)
+		return
+	end
+	
+	local hunger = pd.get_number(name,"hunger_lvl")
+	if hunger > 0 then
+		pd.increment(name,"hunger_lvl",-1)
+		update_hunger(player, hunger - 1)
+	end
+end
+adventuretest.register_pl_hook(do_hunger_tick,HUNGER_TICK)
+
+function do_health_tick(player,name,dtime)
+	local name = player:get_player_name()
+	local lvl = pd.get_number(name,"hunger_lvl")
+	
+	local air = player:get_breath() or 0
+	local hp = player:get_hp()
+
+	-- heal player by 1 hp if not dead and saturation is > 15 (of 30)
+	if lvl > HUNGER_HEAL_LVL and air > 0 then
+		player:set_hp(hp + HUNGER_HEAL)
 	end
 
-	-- lower saturation by 1 point after <HUNGER_TICK> second(s)
-	if hunger_timer > HUNGER_TICK then
-		for _,player in ipairs(minetest.get_connected_players()) do
-			local name = player:get_player_name()			
-			if minetest.check_player_privs(name, {immortal=true}) then
-				update_hunger(player,20)
-				return
-			end
-			
-			local hunger = pd.get_number(name,"hunger_lvl")
-			if hunger > 0 then
-				pd.increment(name,"hunger_lvl",-1)
-				update_hunger(player, hunger - 1)
-			end			
-		end
-		hunger_timer = 0
+	-- or damage player by 1 hp if saturation is < 2 (of 30)
+	if lvl < HUNGER_STARVE_LVL then
+		player:set_hp(hp - HUNGER_STARVE)
 	end
-
-	-- heal or damage player, depending on saturation
-	if health_timer > HUNGER_HEALTH_TICK then
-		for _,player in ipairs(minetest.get_connected_players()) do
-			local name = player:get_player_name()
-			local lvl = pd.get_number(name,"hunger_lvl")
-			
-				local air = player:get_breath() or 0
-				local hp = player:get_hp()
-
-				-- heal player by 1 hp if not dead and saturation is > 15 (of 30)
-				if lvl > HUNGER_HEAL_LVL and air > 0 then
-					player:set_hp(hp + HUNGER_HEAL)
-				end
-
-				-- or damage player by 1 hp if saturation is < 2 (of 30)
-				if lvl < HUNGER_STARVE_LVL then
-					player:set_hp(hp - HUNGER_STARVE)
-				end
-			
-		end
-		health_timer = 0
-	end
- end
-
+end
+adventuretest.register_pl_hook(do_health_tick,HUNGER_HEALTH_TICK)
+	
 -- food functions
 local food = hunger.food
 

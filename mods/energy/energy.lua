@@ -1,4 +1,4 @@
-function energy.update_energy(p,name)
+function energy.update_energy(p,name,dtime)
 	-- loop through all online players and check their movement and update their energy
 		local pos = p:getpos()
 		local lastpos = pd.get(name,"lastpos")
@@ -39,16 +39,16 @@ function energy.update_energy(p,name)
 				if default.player_attached_to[name] == "boats:boat" and adj < 0 then
 					adj = adj * 0.75
 				end
-				print("hdiff "..tostring(hdiff))
-				print("Energy Adjustments")
-				print(tostring(adj))
-				print("After stamina adjustment")
+				--print("hdiff "..tostring(hdiff))
+				--print("Energy Adjustments")
+				--print(tostring(adj))
+				--print("After stamina adjustment")
 				adj = adj + p_stamina
-				print(tostring(adj))
+				--print(tostring(adj))
 				
 				pd.increment(name,"energy",adj)
 				local p_energy = pd.get_number(name,"energy")
-				print("Energy "..tostring(p_energy))
+				--print("Energy "..tostring(p_energy))
 				if p_energy < 0 then
 					p_energy = 0
 					p:set_hp(p:get_hp()-1)
@@ -160,17 +160,4 @@ function energy.respawnplayer(player)
 	pd.set(name,"energy",20)
 	pd.set(name,"lastpos",player:getpos())	
 	energy.update_energy(player,name)	
-end
-
-local energy_timer = 0
-local energy_tick = 5
-
-function energy_globalstep(dtime)
-	energy_timer = energy_timer + dtime
-	if energy_timer >= energy_tick then
-		for _,player in ipairs(minetest.get_connected_players()) do
-			energy.update_energy(player,player:get_player_name())
-		end
-		energy_timer = 0
-	end
 end

@@ -9,12 +9,11 @@ function physics.adjust_physics(player,_physics)
 	for p,v in pairs(_physics) do
 		pd.increment(name,p,v) 
 	end
-	physics.apply(player)
+	physics.apply(player,name)
 end
 
-function physics.apply(player)
+function physics.apply(player,name,dtime)
 	if player ~= nil then
-		local name = player:get_player_name()
 		if pd.get(name,"frozen") ~= true then
 			local o = physics.get_player_physics(name)
 			player:set_physics_override(o)
@@ -31,7 +30,7 @@ end
 function physics.unfreeze_player(name)
 	local player = minetest.get_player_by_name(name)
 	pd.set(name,"frozen",false)
-	physics.apply(player)
+	physics.apply(player,name)
 end
 
 function physics.remove_item_physics(player,item)
@@ -62,12 +61,5 @@ function physics.apply_item_physics(player,item)
 	end
 end
 
-function physics.apply_all()
-	-- reapply physics to everybody just in case we've missed it in a spot, or if it didn't take at the begining
-	for _,p in pairs(minetest.get_connected_players()) do
-		physics.apply(p)
-	end
-	minetest.after(30,physics.apply_all)
-end
-minetest.after(30,physics.apply_all)
+adventuretest.register_pl_hook(physics.apply,30)
 

@@ -182,14 +182,4 @@ end
 minetest.register_on_placenode(update_wrapper)
 minetest.register_on_dignode(update_wrapper)
 
-
-local timer = 0
-minetest.register_globalstep(function(dtime)
-	timer = timer + dtime
-	if timer >= HUD_IW_TICK then
-		timer = 0
-		for _, player in ipairs(minetest.get_connected_players()) do
-			update_wheel(player)
-		end
-	end--timer
-end)
+adventuretest.register_pl_hook(update_wheel,HUD_IW_TICK)

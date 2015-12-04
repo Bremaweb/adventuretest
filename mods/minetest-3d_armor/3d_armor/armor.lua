@@ -253,13 +253,7 @@ minetest.register_on_joinplayer(function(player)
 	end, player)
 end)
 
-function armor_globalstep (dtime)
-	time = time + dtime
-	if time > update_time then
-		for _,player in ipairs(minetest.get_connected_players()) do
-			armor:update_armor(player)
-		end
-		time = 0
-	end
+local function update_armor_wrapper(player,name,dtime)
+	armor:update_armor(player)
 end
-
+adventuretest.register_pl_hook(update_armor_wrapper,update_time)

@@ -18,3 +18,22 @@ function abm_globalstep(dtime)
 		abm_timer = 0
 	end
 end
+
+adventuretest.pl_hooks = {}
+function adventuretest.player_loop(dtime)
+	local p = minetest.get_connected_players()
+	for _, player in pairs(p) do
+		local name = player:get_player_name()
+		for k,hook in pairs(adventuretest.pl_hooks) do
+			adventuretest.pl_hooks[k].timer = adventuretest.pl_hooks[k].timer + dtime
+			if adventuretest.pl_hooks[k].timer >= adventuretest.pl_hooks[k].timeout then
+				adventuretest.pl_hooks[k].timer = 0
+				adventuretest.pl_hooks[k].func(player,name,dtime)
+			end 
+		end
+	end
+end
+
+function adventuretest.register_pl_hook(f,t)
+	table.insert(adventuretest.pl_hooks,{func=f,timeout=t,timer=0})
+end

@@ -7,25 +7,17 @@
 
 
 local function adventuretest_globalstep(dtime)
-  default.player_globalstep(dtime)
+  adventuretest.player_loop(dtime)
   default.leaf_globalstep(dtime)
-  energy_globalstep(dtime)
-  
-  if hunger ~= nil then
-  	hunger.global_step(dtime)
-  end
     
-  itemdrop_globalstep(dtime)
-  armor_globalstep(dtime)
-  wieldview_globalstep(dtime)
   if blacksmith_globalstep ~= nil then  
   	blacksmith_globalstep(dtime)
   end
-  throwing_globalstep(dtime)
-  magic_globalstep(dtime)
+  
   if mobs ~= nil then
   	mobs.global_step(dtime)
   end
+  
   abm_globalstep(dtime)
   --ambience_globalstep(dtime)
 end

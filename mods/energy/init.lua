@@ -14,3 +14,6 @@ hud.register("energy", {
 	--autohide_bg = true,
 	max = 20,
 })
+
+local energy_tick = 5
+adventuretest.register_pl_hook(energy.update_energy,energy_tick)

@@ -1,14 +1,14 @@
-local function runAffects()	
-	for _,player in ipairs( minetest.get_connected_players() ) do
-		local name = player:get_player_name()
-		if ( affects._affectedPlayers[name] ) ~= nil then	
-			for affectid,a in pairs(affects._affectedPlayers[name]) do
-				applyAffect(name,affectid)
-			end
+local function runAffects(player,name,dtime)	
+	if ( affects._affectedPlayers[name] ) ~= nil then	
+		for affectid,a in pairs(affects._affectedPlayers[name]) do
+			applyAffect(name,affectid)
 		end
 	end
-	affects.saveAffects()
-	minetest.after(affects.affectTime, runAffects)
 end
+adventuretest.register_pl_hook(runAffects,15)
 
-minetest.after(affects.affectTime, runAffects)
+local function doSave()
+	affects.saveAffects()
+	minetest.after(affects.affectTime, doSave)
+end
+minetest.after(affects.affectTime, doSave)
