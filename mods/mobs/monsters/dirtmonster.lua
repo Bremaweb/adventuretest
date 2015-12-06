@@ -43,6 +43,8 @@ mobs:register_mob("mobs:dirt_monster", {
 	blood_amount=30,
 	blood_offset=.25,
 	blood_texture = "default_dirt.png",
+	avoid_nodes = {"default:water_source","default:water_flowing"},
+	avoid_range = 15,
 })
 
 mobs:register_mob("mobs:dirt_monster2", {
@@ -95,6 +97,8 @@ mobs:register_mob("mobs:dirt_monster2", {
 	blood_amount=30,
 	blood_offset=.25,
 	blood_texture = "default_dirt.png",
+	avoid_nodes = {"default:water_source","default:water_flowing"},
+	avoid_range = 15,
 })
 
 mobs:register_spawn("mobs:dirt_monster", {"default:dirt_with_grass"}, 3, -1, 5000, 3, 31000)

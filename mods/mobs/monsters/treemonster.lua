@@ -55,5 +55,7 @@ mobs:register_mob("mobs:tree_monster", {
 		death = "mob_death1",
 	},
 	step = 0.5,
+	avoid_nodes = {"campfire:campfire_burning","fire:basic_flame","fire:permanent_flame","default:lava_source","default:lava_flowing"},
+	avoid_range = 15,
 })
 mobs:register_spawn("mobs:tree_monster", {"default:leaves", "default:jungleleaves"}, 5, -1, 5000, 3, 31000)

@@ -53,6 +53,8 @@ type = "npc",
 		{chance=60, item="potions:magic_replenish1"},
 	},
 	lifetimer = false,
+	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_range = 4,
 })
 
 mobs:register_mob("mobs:female2_npc", {
@@ -111,6 +113,8 @@ type = "npc",
 	},
 	walk_chance = 3,
 	lifetimer = false,
+	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_range = 4,
 })
 
 mobs:register_mob("mobs:female3_npc", {
@@ -170,4 +174,6 @@ type = "npc",
 	},
 	walk_chance = 4,
 	lifetimer = false,
+	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_range = 4,
 })

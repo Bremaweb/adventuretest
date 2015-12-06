@@ -45,6 +45,8 @@ mobs:register_mob("mobs:spider",{
 	step = 1,
 	blood_amount = 22,
 	blood_offset = 0.1,
+	avoid_nodes = {"default:water_source","default:water_flowing","campfire:campfire_burning","fire:basic_flame","fire:permanent_flame"},
+	avoid_range = 14,
 })
 mobs:register_spawn("mobs:spider", {"default:leaves", "mg:savannaleaves"}, 22, -1, 7000, 4, 31000)
 mobs:register_spawn("mobs:spider", {"default:leaves", "mg:savannaleaves"}, 7, -1, 3000, 6, 31000)

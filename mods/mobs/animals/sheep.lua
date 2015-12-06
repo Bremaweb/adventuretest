@@ -74,6 +74,8 @@ mobs:register_mob("mobs:sheep", {
 	passive = true,
 	blood_offset = 0.25,
 	blood_amount = 20,
+	avoid_nodes = {"default:water_source","default:water_flowing","campfire:campfire_burning","fire:basic_flame","fire:permanent_flame"},
+	avoid_range = 15,
 })
 mobs:register_spawn("mobs:sheep", {"default:dirt_with_grass"}, 20, 8, 9000, 2, 31000)
 

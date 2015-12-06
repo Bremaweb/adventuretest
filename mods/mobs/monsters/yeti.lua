@@ -41,5 +41,7 @@ mobs:register_mob("mobs:snow_monster", {
 		attack = "mobs_slash_attack",
 	},
 	step = 0.5,
+	avoid_nodes = {"default:water_source","default:water_flowing","campfire:campfire_burning","fire:basic_flame","fire:permanent_flame"},
+	avoid_range = 15,
 })
 mobs:register_spawn("mobs:snow_monster", {"default:snow","default:snow_with_grass","default:snowblock"}, 10, -1, 7000, 2, 31000)

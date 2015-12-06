@@ -51,6 +51,8 @@ mobs:register_mob("mobs:jungle_spider",{
 	step = 1,
 	blood_amount = 14,
 	blood_offset = 0.1,
+	avoid_nodes = {"default:water_source","default:water_flowing","campfire:campfire_burning","fire:basic_flame","fire:permanent_flame"},
+	avoid_range = 15,
 	attack_function = function(self, target)
 		self.attack.player:punch(self.object, 1.0,  {
 			full_punch_interval=1.0,

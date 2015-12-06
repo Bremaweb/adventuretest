@@ -114,6 +114,8 @@ function mobs.on_step(self,dtime)
 		do_env_damage(self)
 	end
 	
+	self:do_avoidance()
+	
 	-- if they are attacking that should take priority over everything else so move it up here
 	if self.state == "attack" and self.attack_type == "dogfight" then
 		if not self.attack.player or not self.attack.player:getpos() then

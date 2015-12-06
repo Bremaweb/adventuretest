@@ -57,6 +57,8 @@ mobs:register_mob("mobs:male1_npc",{
 	},
 	walk_chance = 5,
 	lifetimer = false,
+	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_range = 4,
 })
 
 mobs:register_mob("mobs:male2_npc",{
@@ -118,6 +120,8 @@ mobs:register_mob("mobs:male2_npc",{
 	},
 	walk_chance = 5,
 	lifetimer = false,
+	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_range = 4,
 })
 
 mobs:register_mob("mobs:male3_npc",{
@@ -179,4 +183,6 @@ mobs:register_mob("mobs:male3_npc",{
 	},
 	walk_chance = 2,
 	lifetimer = false,
+	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_range = 4,
 })

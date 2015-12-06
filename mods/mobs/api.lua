@@ -62,6 +62,8 @@ function mobs:register_mob(name, def)
 		rewards = def.rewards or nil,
 		stationary = def.stationary or false,
 		activity_level = def.activity_level or 10,
+		avoid_nodes = def.avoid_nodes or nil,
+		avoid_range = def.avoid_range or nil,
 		
 		stimer = 0,
 		timer = 0,
@@ -139,6 +141,31 @@ function mobs:register_mob(name, def)
 				self.state = "attack"
 				self.attack.player = player
 				self.attack.dist = dist
+			end
+		end,
+		
+		do_avoidance = function(self)
+			if self.avoid_nodes ~= nil then
+				local avoid_range = self.avoid_range
+				local avoid_nodes = self.avoid_nodes
+				
+				local pos = self.object:getpos()
+				
+				local minx = pos.x - math.ceil( avoid_range / 2 )
+				local maxx = pos.x + math.ceil( avoid_range / 2 )
+				
+				local minz = pos.z - math.ceil( avoid_range / 2 )
+				local maxz = pos.z + math.ceil( avoid_range / 2 )
+
+				local npos = minetest.find_nodes_in_area({x=minx,y=(pos.y-1),z=minz},{x=maxx,y=(pos.y+1),z=maxz}, avoid_nodes)
+				
+				if #npos > 0 then
+					local fpos = { x=(npos[1].x * -1),y=npos[1].y,z=(npos[1].z*-1) } 
+					mobs:face_pos(self,fpos)
+					self.state="walk"
+					self:set_animation("walk")
+					self:set_velocity(4)
+				end
 			end
 		end,
 		

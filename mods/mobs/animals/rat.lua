@@ -26,6 +26,8 @@ mobs:register_mob("mobs:rat", {
 	passive = true,
 	blood_amount = 5,
 	blood_offset = 0,
+	avoid_nodes = {"default:water_source","default:water_flowing","campfire:campfire_burning","fire:basic_flame","fire:permanent_flame"},
+	avoid_range = 15,
 })
 mobs:register_spawn("mobs:rat", {"default:dirt_with_grass", "default:stone"}, 20, -1, 10000, 1, 31000)
 
