@@ -41,8 +41,8 @@ mobs:register_mob("mobs:sand_monster", {
 		death = "mob_death2",
 	},
 	step = 0.5,
-	avoid_nodes = {"default:water_source","default:water_flowing"},
-	avoid_range = 15,
+	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing","campfire:campfire_burning","fire:basic_flame"},
+	avoid_range = 12,
 })
 mobs:register_spawn("mobs:sand_monster", {"default:sand"}, 20, -1, 8000, 4, 31000)
 mobs:register_spawn("mobs:sand_monster", {"default:desert_sand"}, 20, -1, 4000, 4, 31000)
