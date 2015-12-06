@@ -213,6 +213,26 @@ minetest.register_abm({
 				end
 				meta:set_string("src_time", 0)
 			end
+			if randomChance(25) then
+				local ps_def = { 
+					amount = 12,
+					time = 0.25,
+					minpos = {x=pos.x-0.2, y=pos.y-0.2, z=pos.z-0.2},
+					maxpos = {x=pos.x+0.2, y=pos.y+0.2, z=pos.z+0.2},
+					minvel = {x=0, y=1, z=0},
+					maxvel = {x=1, y=2, z=1},
+					minacc = {x=-0.5,y=-1,z=-0.5},
+					maxacc = {x=0.5,y=1,z=0.5},
+					minexptime = 0.1,
+					maxexptime = 1,
+					minsize = 0.25,
+					maxsize = 0.5,
+					collisiondetection = false,
+					texture = "fire_basic_flame.png"
+				}
+				minetest.add_particlespawner(ps_def)			
+			end
+			
 		end
 		
 		if meta:get_float("fuel_time") < meta:get_float("fuel_totaltime") then
