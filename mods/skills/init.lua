@@ -76,6 +76,25 @@ function skills.add_exp(name, exp)
 	end	
 end
 
+function skills.add_skill_exp(name, skill_id, exp)
+	local sk = skills.get_skill(name,skill_id)
+	local skill = skills.available_skills[skill_id]
+	local next_level = math.floor(((sk.level^1.75) * skill.level_exp))
+	local pskills = pd.get(name,"skills")
+	
+	pskills[skill_id].exp = pskills[skill_id].exp + exp
+	local increased = false
+	while pskills[skill_id].exp >= next_level and pskills[skill_id].level < skill.max_level do
+		increased = true
+		pskills[skill_id].level = pskills[skill_id].level + 1
+		pskills[skill_id].exp = pskills[skill_id].exp - next_level
+		next_level = math.floor(((pskills[skill_id].level^1.75) * skill.level_exp))
+	end
+	
+	pd.set(name,"skills",pskills)
+	return increased
+end
+
 function skills.get_probability(name, skill1, skill2)
 	--print("get_probablilty("..name..","..tostring(skill1)..","..tostring(skill2)..")")
 	if ( name == nil or name == "" ) then
@@ -116,20 +135,8 @@ minetest.register_on_joinplayer(function (player)
 				local name = player:get_player_name()
 				local skill_id = tonumber(listname)
 				local exp_dropped = stack:get_definition().exp_value * stack:get_count()
-				local sk = skills.get_skill(name,skill_id)
-				local skill = skills.available_skills[skill_id]
-				local next_level = math.floor(((sk.level^1.75) * skill.level_exp))
-				local pskills = pd.get(name,"skills")
 				
-				pskills[skill_id].exp = pskills[skill_id].exp + exp_dropped
-
-				while pskills[skill_id].exp >= next_level and pskills[skill_id].level < skill.max_level do
-						pskills[skill_id].level = pskills[skill_id].level + 1
-						pskills[skill_id].exp = pskills[skill_id].exp - next_level
-						next_level = math.floor(((pskills[skill_id].level^1.75) * skill.level_exp))
-				end
-				
-				pd.set(name,"skills",pskills)
+				skills.add_skill_exp(name,skill_id,exp_dropped)
 				
 				stack:clear()
 				inv:set_stack(listname,index,stack)

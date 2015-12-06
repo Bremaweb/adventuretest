@@ -84,11 +84,17 @@ end
 
 local function on_craft(itemstack,player,old_craftgrid,craft_inv)
   if itemstack:get_definition().skill ~= nil then
-    local probability = skills.get_probability(player:get_player_name(),SKILL_CRAFTING,itemstack:get_definition().skill)
+  	local name = player:get_player_name()
+    local probability = skills.get_probability(name,SKILL_CRAFTING,itemstack:get_definition().skill)
     local rangeLow = ( probability - 10 ) / 100
     probability = probability / 100
     local wear = math.floor(50000 - ( 50000 * math.random(rangeLow,probability) ))
     itemstack:add_wear(wear)
+    local i = skills.add_skill_exp(name,SKILL_CRAFTING,1)
+    local ii = skills.add_skill_exp(name,itemstack:get_definition().skill,1)
+    if  i or ii  then
+    	minetest.chat_send_player(name,"Your skills are increasing!")
+    end
     return itemstack
   end
   return nil
