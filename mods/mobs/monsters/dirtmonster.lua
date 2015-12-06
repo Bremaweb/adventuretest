@@ -101,5 +101,5 @@ mobs:register_mob("mobs:dirt_monster2", {
 	avoid_range = 15,
 })
 
-mobs:register_spawn("mobs:dirt_monster", {"default:dirt_with_grass"}, 3, -1, 5000, 3, 31000)
-mobs:register_spawn("mobs:dirt_monster2", {"mg:dirt_with_dry_grass"}, 20, -1, 3000, 4, 31000)
+mobs:register_spawn("mobs:dirt_monster", {"default:dirt_with_grass"}, 10, -1, 3000, 3, 31000)
+mobs:register_spawn("mobs:dirt_monster2", {"mg:dirt_with_dry_grass"}, 20, -1, 1000, 4, 31000)

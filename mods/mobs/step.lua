@@ -153,7 +153,7 @@ function mobs.on_step(self,dtime)
 			else
 				if self.jump == true and self.get_velocity(self) <= 0.5 and self.object:getvelocity().y == 0 then
 					local v = self.object:getvelocity()
-					v.y = 5
+					v.y = 7
 					self.object:setvelocity(v)
 				end
 				self.set_velocity(self, self.run_velocity)

@@ -36,7 +36,7 @@ mobs:register_mob("mobs:rabbit", {
 	blood_amount = 5,
 	blood_offset = 0,
 	avoid_nodes = {"default:water_source","default:water_flowing","campfire:campfire_burning","fire:basic_flame","fire:permanent_flame"},
-	avoid_range = 15,
+	avoid_range = 12,
 })
 
 mobs:register_mob("mobs:rabbit_brown", {
@@ -77,7 +77,7 @@ mobs:register_mob("mobs:rabbit_brown", {
 	blood_amount = 5,
 	blood_offset = 0,
 	avoid_nodes = {"default:water_source","default:water_flowing","campfire:campfire_burning","fire:basic_flame","fire:permanent_flame"},
-	avoid_range = 15,
+	avoid_range = 12,
 })
 
 mobs:register_mob("mobs:rabbit_grey", {
@@ -118,7 +118,7 @@ mobs:register_mob("mobs:rabbit_grey", {
 	blood_amount = 5,
 	blood_offset = 0,
 	avoid_nodes = {"default:water_source","default:water_flowing","campfire:campfire_burning","fire:basic_flame","fire:permanent_flame"},
-	avoid_range = 15,
+	avoid_range = 12,
 })
 
 
