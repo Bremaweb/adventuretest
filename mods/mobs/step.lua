@@ -66,7 +66,7 @@ function mobs.on_step(self,dtime)
 		self.timer = 0
 	end
 	
-	if self.sounds and self.sounds.random then
+	if self.sounds and self.sounds.random and self.state ~= "attack" then
 		if randomChance(self.random_freq) then
 			if ( self.type == "npc" and randomChance(65) ) or self.type ~= "npc" then
 				local maxhear = 50
