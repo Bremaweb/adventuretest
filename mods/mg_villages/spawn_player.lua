@@ -12,7 +12,7 @@ function mg_villages.spawnplayer(player)
 
 	local noise1 = minetest.get_perlin(12345, 6, 0.5, 256)
 	local min_dist = math.huge
-	local min_pos = {x = 0, y = 3, z = 0}
+	local min_pos = game_origin
 	for bx = -20, 20 do
 	for bz = -20, 20 do
 		local minp = {x = -32 + 80 * bx, y = -32, z = -32 + 80 * bz}
