@@ -64,6 +64,7 @@ function mobs:register_mob(name, def)
 		activity_level = def.activity_level or 10,
 		avoid_nodes = def.avoid_nodes or nil,
 		avoid_range = def.avoid_range or nil,
+		random_freq = def.random_freq or 1,
 		
 		stimer = 0,
 		timer = 0,

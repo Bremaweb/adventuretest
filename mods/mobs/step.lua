@@ -66,8 +66,18 @@ function mobs.on_step(self,dtime)
 		self.timer = 0
 	end
 	
-	if self.sounds and self.sounds.random and math.random(1, 100) <= 1 then
-		minetest.sound_play(self.sounds.random, {object = self.object})
+	if self.sounds and self.sounds.random then
+		if randomChance(self.random_freq) then
+			if ( self.type == "npc" and randomChance(65) ) or self.type ~= "npc" then
+				local maxhear = 50
+				local g = 1
+				if self.type == "npc" then
+					maxhear = 20
+					g = 0.7
+				end 			
+				minetest.sound_play(self.sounds.random, {object = self.object, max_hear_distance=maxhear, gain=g})
+			end
+		end
 	end
 	
 	local do_env_damage = function(self)
