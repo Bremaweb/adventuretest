@@ -41,15 +41,15 @@ dofile(handle_schematics.modpath.."/replacements_get_table.lua")
 
 -- uses build_chest.* namespace
 -- a chest for spawning buildings manually
-dofile(handle_schematics.modpath.."/build_chest.lua")
+--dofile(handle_schematics.modpath.."/build_chest.lua")
 -- makes the replacements from replacements_group.* available to the build chest
-dofile(handle_schematics.modpath.."/build_chest_handle_replacements.lua");
+--dofile(handle_schematics.modpath.."/build_chest_handle_replacements.lua");
 -- creates 2d previews of the schematic from left/right/back/front/top
-dofile(handle_schematics.modpath.."/build_chest_preview_image.lua");
+--dofile(handle_schematics.modpath.."/build_chest_preview_image.lua");
 -- reads a file and adds the files listed there as menu entries
-dofile(handle_schematics.modpath.."/build_chest_add_schems_from_file.lua");
+--dofile(handle_schematics.modpath.."/build_chest_add_schems_from_file.lua");
 -- locate schematics through directories
-dofile(handle_schematics.modpath.."/build_chest_add_schems_by_directory.lua");
+--dofile(handle_schematics.modpath.."/build_chest_add_schems_by_directory.lua");
 
 -- the main functionality of the mod;
 -- provides the function handle_schematics.place_building_from_file
@@ -58,4 +58,4 @@ dofile(handle_schematics.modpath.."/place_buildings.lua")
 
 -- dofile(handle_schematics.modpath.."/fill_chest.lua")
 
-dofile(handle_schematics.modpath.."/nodes.lua")
+--dofile(handle_schematics.modpath.."/nodes.lua")
