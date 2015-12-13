@@ -7,24 +7,27 @@ local INVENTORY_CRAFT = 2
 -- Internal workbench functions:
 --
 
-local function move_items(s_inv, s_listname, d_inv, d_listname)
-	local s_size = s_inv:get_size(s_listname)
-	for i = 1, s_size do
-		local stack = s_inv:get_stack(s_listname, i)
-		if stack and not stack:is_empty() then
-			d_inv:add_item(d_listname, stack)
+local function move_items(s_inv, s_listname, d_inv, d_listname,player)
+	local list = s_inv:get_list(s_listname)
+	for i in pairs(list) do
+		local stack = s_inv:get_stack(s_listname,i)
+		if stack:is_empty() ~= true then
+			if d_inv:room_for_item(d_listname,stack) then
+				d_inv:add_item(d_listname, stack)				
+			else
+				default.drop_item(player:getpos(),stack)
+			end
+			s_inv:set_stack(s_listname,i,nil)
 		end
 	end
-	s_inv:set_list(s_listname, {})
 end
 
 local inventory_persistence = {}
 
 local function inventory_set_size(player, size)
 	size = math.min(6, math.max(1, size))
-	local inv = player:get_inventory()
-	if inv:get_size("craft") ~= size*size then
-		move_items(inv, "craft", inv, "main")
+	local inv = player:get_inventory()	
+	if inv:get_size("craft") ~= size*size then	
 		inv:set_size("craft", size*size)
 		inv:set_width("craft", size)
 	end
@@ -64,6 +67,7 @@ local function inventory_set(player, size)
 	local name = player:get_player_name()
 	local inv = player:get_inventory()
 
+	move_items(inv, "craft", inv, "main",player)
 	-- When size is a number, we want to presist inventory settings and activate the workbench settings
 	-- When size is nil, we want to re-activate the persisted inventory settings
 	if not size then
