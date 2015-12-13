@@ -3,6 +3,7 @@ handle_schematics
 doors
 farming
 wool
+mg?
 stairs?
 cottages?
 moretrees?

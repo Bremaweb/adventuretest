@@ -15,7 +15,7 @@ function mg_villages.spawnplayer(player)
 	local min_pos = game_origin
 	for bx = -20, 20 do
 	for bz = -20, 20 do
-		local minp = {x = game_origin.x + 80 * bx, y = -32, z = game_origin.z + 80 * bz}
+		local minp = {x = min_pos.x + bx, y = -32, z = min_pos.z + bz}
 		for _, village in ipairs(mg_villages.villages_at_point(minp, noise1)) do
 			if math.abs(village.vx) + math.abs(village.vz) < min_dist then
 				min_pos = {x = village.vx, y = village.vh + 2, z = village.vz}

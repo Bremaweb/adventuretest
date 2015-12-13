@@ -12,7 +12,7 @@ Details: Adds several items for lighting, made out of glowing crystals - a bette
 
 minetest.register_node( "glowcrystals:glowcrystal_ore", {
 	description = "Glowing Crystal Ore",
-	tile_images = { "default_stone.png^glowcrystals_ore_glowcrystal.png" },
+	tiles = { "default_stone.png^glowcrystals_ore_glowcrystal.png" },
 	is_ground_content = true,
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -24,7 +24,7 @@ minetest.register_node( "glowcrystals:glowcrystal_ore", {
 
 minetest.register_node( "glowcrystals:glowcrystal_block", {
 	description = "Glowing Crystal Block",
-	tile_images = { "glowcrystals_block_glowcrystal.png" },
+	tiles = { "glowcrystals_block_glowcrystal.png" },
 	is_ground_content = true,
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -104,6 +104,6 @@ minetest.register_ore({
     clust_scarcity = 9*9*9,
     clust_num_ores = 4,
     clust_size     = 3,
-    height_min     = -20000,
-    height_max     = -15,
+    y_min     = -20000,
+    y_max     = -15,
 })

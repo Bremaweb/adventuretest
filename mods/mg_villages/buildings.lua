@@ -262,18 +262,18 @@ mg_villages.add_building = function( building_data )
 		end
 		-- add the building to the menu list for the build chest ("single" would be too many houses)
 		-- the empty plots are added to each village and of no intrest here
-		if( build_chest and build_chest.add_entry and typ and typ ~= 'single' and (not( building_data.typ ) or building_data.typ ~= 'empty')) then
-			build_chest.add_entry( {'main','mg_villages', typ, building_data.scm, file_name });
-		end
+		--if( build_chest and build_chest.add_entry and typ and typ ~= 'single' and (not( building_data.typ ) or building_data.typ ~= 'empty')) then
+		--	build_chest.add_entry( {'main','mg_villages', typ, building_data.scm, file_name });
+		--end
 	end
 	-- buildings as such may have a type as well
-	if( build_chest and build_chest.add_entry and building_data.typ ) then
-		build_chest.add_entry( {'main','mg_villages', building_data.typ, building_data.scm, file_name });
-	end
+	--if( build_chest and build_chest.add_entry and building_data.typ ) then
+		--build_chest.add_entry( {'main','mg_villages', building_data.typ, building_data.scm, file_name });
+	--end
 	-- store information about all buildings - no matter weather they can be used or not - for later presentation in the build_chest's menu
-	if( build_chest and build_chest.add_building ) then
-		build_chest.add_building( file_name, building_data );
-	end
+	--if( build_chest and build_chest.add_building ) then
+		--build_chest.add_building( file_name, building_data );
+	--end
 
 
 	if( not( is_used )) then

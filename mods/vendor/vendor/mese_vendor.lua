@@ -188,7 +188,7 @@ end
 
 minetest.register_node( 'vendor:signal_vendor_off', {
 	description = 'Signal Vendor',
-	tile_images = {'vendor_side.png', 'vendor_side.png', 'vendor_side.png',
+	tiles = {'vendor_side.png', 'vendor_side.png', 'vendor_side.png',
 				'vendor_side.png', 'vendor_side.png', 'vendor_vendor_front.png'},
 	paramtype = 'light',
 	paramtype2 = 'facedir',
@@ -214,7 +214,7 @@ minetest.register_node( 'vendor:signal_vendor_off', {
 
 minetest.register_node( 'vendor:signal_vendor_on', {
 	description = 'Signal Vendor',
-	tile_images = {'vendor_side.png', 'vendor_side.png', 'vendor_side.png',
+	tiles = {'vendor_side.png', 'vendor_side.png', 'vendor_side.png',
 				'vendor_side.png', 'vendor_side.png', 'vendor_vendor_front.png'},
 	paramtype = 'light',
 	paramtype2 = 'facedir',
