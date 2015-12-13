@@ -100,9 +100,6 @@ minetest.register_biome({
 	node_dust = "default:snow",
 	y_min = 230,
 	y_max = 32000,
-	node_shore_filler = "default:snowblock",
-	--heat_point = 45,
-	--humidity_point = 45,
 })
 
 minetest.register_biome({
@@ -166,7 +163,6 @@ minetest.register_biome({
 	node_stone = "default:stone",
 	node_water_top = "default:ice",
 	depth_water_top = 2,
-	--node_water = "",
 	y_min = 1,
 	y_max = 230,
 	heat_point = 10,
@@ -184,7 +180,7 @@ minetest.register_biome({
 	node_water_top = "default:ice",
 	depth_water_top = 10,
 	--node_water = "",
-	y_min = -15,
+	y_min = 1,
 	y_max = 230,
 	heat_point = -10,
 	humidity_point = 20,
