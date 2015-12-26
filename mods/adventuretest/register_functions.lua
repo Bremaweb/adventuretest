@@ -24,6 +24,15 @@ end
 minetest.register_globalstep(adventuretest_globalstep)
 
 local function adventuretest_die_player(player)
+	local name = player:get_player_name()
+	if default.attached_to_player[name] ~= nil then
+		local a = default.attached_to_player[name]
+		a.object:set_detach()
+		default.attached_to_player[name] = nil
+		if a.name == "npc:kid_lost" then
+			a.random_freq = 15
+		end
+	end
 	bones_on_dieplayer(player)
 	skills_on_dieplayer(player)	
   	hunger.update_hunger(player, 20)
@@ -33,7 +42,7 @@ local function adventuretest_die_player(player)
   		mg_villages.spawnplayer(player)
   	end
   	energy.respawnplayer(player)
-  	pd.increment(player:get_player_name(),STAT_DIED,1)
+  	pd.increment(name,STAT_DIED,1)
   	return true
 end
 
@@ -107,6 +116,7 @@ minetest.register_on_placenode(adventuretest_placenode)
 
 
 local function on_generated(minp,maxp,seed)
+	mg_villages.on_generated(minp,maxp,seed)
 	quests.treasure.on_generated(minp,maxp)
 end
 minetest.register_on_generated(on_generated)
