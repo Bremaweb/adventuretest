@@ -86,6 +86,7 @@ local player_anim = {}
 local player_sneak = {}
 default.player_attached = {}
 default.player_attached_to = {}
+default.attached_to_player = {}
 
 function default.player_get_animation(player)
 	local name = player:get_player_name()
