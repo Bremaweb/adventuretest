@@ -172,7 +172,7 @@ minetest.register_node("glowcrystals:wall", {
 	paramtype2 = "wallmounted",
 	sunlight_propagates = true,
 	walkable = false,
-	light_source = 13,
+	light_source = 14,
 	groups = {choppy=2, dig_immediate=3, flammable=1, not_in_creative_inventory=1, attached_node=1, torch=1},
 	drop = "glowcrystals:torch",
 	selection_box = {
