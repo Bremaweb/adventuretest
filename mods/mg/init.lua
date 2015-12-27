@@ -1,5 +1,7 @@
 local mgpath = minetest.get_modpath("mg")
 
+minetest.set_gen_notify("dungeon,temple")
+
 dofile(mgpath.."/nodes.lua")
 
 c_air  = minetest.get_content_id("air")

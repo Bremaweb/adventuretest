@@ -60,7 +60,7 @@ function mobs.on_step(self,dtime)
 	
 	self.timer = self.timer+dtime
 	if self.state ~= "attack" then
-		if self.timer < 1 then
+		if self.timer < self.step then
 			return
 		end
 		self.timer = 0

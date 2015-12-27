@@ -2,7 +2,7 @@ mobs = {}
 
 dofile(minetest.get_modpath("mobs").."/step.lua")
 
-mobs.mob_list = { npc={}, barbarian={}, monster={}, animal={}}
+mobs.mob_list = { npc={}, barbarian={}, monster={}, animal={}, npc_special={}}
 mobs.api_throttle = 20	-- limits the amount of intense operations that can happen per second
 mobs.api_icount = 0
 mobs.api_timer = 0
@@ -286,7 +286,7 @@ function mobs:register_mob(name, def)
 			end
 		end,
 		
-		on_step = mobs.on_step,
+		on_step = def.on_step or mobs.on_step,
 		
 		on_activate = function(self, staticdata, dtime_s)
 			-- reset HP
@@ -332,7 +332,7 @@ function mobs:register_mob(name, def)
 			return minetest.serialize(tmp)
 		end,
 		
-		on_punch = function(self, hitter, tflp, tool_capabilities, dir)
+		on_punch = def.on_punch or function(self, hitter, tflp, tool_capabilities, dir)
 			if tflp == nil then
 				tflp = 1
 			end

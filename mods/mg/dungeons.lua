@@ -1,5 +1,3 @@
-minetest.set_gen_notify("dungeon,temple")
-
 dungeon_chest = {}
 table.insert(dungeon_chest, { "default:gold_ingot", 60, 25 })
 table.insert(dungeon_chest, { "default:steel_ingot", 68, 35 })
@@ -174,11 +172,11 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 		end
 		
 		if notify.temple ~= nil then
-			--print("Temple generated")
-			--for k,v in ipairs(notify.temple) do
---				print(minetest.pos_to_string(v))
-	--		end
-		end		
+			print("Temple generated")
+			for k,v in ipairs(notify.temple) do
+				print(minetest.pos_to_string(v))
+			end
+		end
 	end
 end)
 
