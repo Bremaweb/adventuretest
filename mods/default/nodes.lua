@@ -1185,6 +1185,11 @@ minetest.register_abm({
 		end
 
 		local owner = meta:get_string("owner")
+		if owner ~= nil then
+			if pd.is_online(owner) == false then
+				return
+			end
+		end
 		local inv = meta:get_inventory()
 
 		local srclist = inv:get_list("src")

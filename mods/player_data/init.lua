@@ -10,6 +10,14 @@ local player_dir = minetest.get_worldpath() .. "/"
 
 pd = {}
 
+pd.is_online = function(name)
+	if player_data[name] ~= nil then
+		return true
+	else	
+		return false
+	end
+end
+
 pd.load_player = function(name)	
 	if player_data[name] == nil then	-- prevent loading the player twice... specifically when a new player joins 
 		player_data[name] = default.deserialize_from_file(player_dir..name..".data")
