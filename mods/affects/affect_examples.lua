@@ -17,7 +17,7 @@ local antig = {
 							}
 				},
 				onremove = function(name, player, affectid)
-					minetest.chat_send_player(name,"You no longer have anti gravity!",false)
+					cmsg.push_message_player(player,"You no longer have anti gravity!")
 				end
 }
 
@@ -54,7 +54,7 @@ local fly = {
 				local pPrivs = minetest.get_player_privs(name)					
 				pPrivs["fly"] = nil
 				minetest.set_player_privs(name,pPrivs)
-				minetest.chat_send_player(name,"You can no longer fly!",false)
+				cmsg.push_message_player(player,"You can no longer fly!")
 			end
 }
 

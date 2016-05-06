@@ -64,7 +64,7 @@ function energy.update_energy(p,name,dtime)
 							p:hud_remove(sleep_hud)
 							sleep_hud = nil
 						end
-						minetest.chat_send_player(name,"You feel fully energized!")
+						cmsg.push_message_player(p,"You feel fully energized!")
 						physics.unfreeze_player(name)
 					end
 					pd.set(name,"energy",p_energy)
@@ -95,13 +95,13 @@ local affect_tired = {
 					time = 120,
 					physics = { speed = -0.2 },
 					custom = { chance=100, func = function(name, player, affectid)
-						minetest.chat_send_player(name,"You are exhausted")
+						cmsg.push_message_player(player,"You are exhausted")
 					end,runonce=true},
 				},
 			},
 	onremove = function(name, player, affectid)
 		physics.adjust_physics(player,{speed=0.2})
-		minetest.chat_send_player(name,"You don't feel as tired anymore",false)
+		cmsg.push_message_player(player,"You don't feel as tired anymore")
 	end,
 	removeOnDeath = true,
 }
