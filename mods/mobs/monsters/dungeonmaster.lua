@@ -56,7 +56,6 @@ mobs:register_arrow("mobs:fireball", {
 	textures = {"mobs_fireball.png"},
 	velocity = 5,
 	hit_player = function(self, player)
-		print("hit player")
 		local s = self.object:getpos()
 		local p = player:getpos()
 		local vec = {x=s.x-p.x, y=s.y-p.y, z=s.z-p.z}
@@ -81,7 +80,6 @@ mobs:register_arrow("mobs:fireball", {
 		end
 	end,
 	hit_node = function(self, pos, node)
-		print("hit node")
 		for dx=-1,1 do
 			for dy=-2,1 do
 				for dz=-1,1 do

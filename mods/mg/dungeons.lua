@@ -172,9 +172,9 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 		end
 		
 		if notify.temple ~= nil then
-			print("Temple generated")
+			minetest.log("info","Temple generated")
 			for k,v in ipairs(notify.temple) do
-				print(minetest.pos_to_string(v))
+				minetest.log("info",minetest.pos_to_string(v))
 			end
 		end
 	end

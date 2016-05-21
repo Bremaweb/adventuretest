@@ -248,7 +248,7 @@ local function generate_building_translate_nodenames( nodenames, replacements, c
 			if( mg_villages and mg_villages.print ) then
 				mg_villages.print( mg_villages.DEBUG_LEVEL_WARNING, msg );
 			else
-				print( msg );
+				minetest.log('info', msg );
 			end
 			msg = nil;
 			new_nodes[ i ].ignore = 1; -- keep the old content
@@ -307,7 +307,7 @@ local function generate_building(pos, minp, maxp, data, param2_data, a, extranod
 			mg_villages.print( mg_villages.DEBUG_LEVEL_WARNING,
 				'ERROR: This village was created using diffrent buildings than those known know. Cannot place unknown building.');
 		else
-			print( 'ERROR: Size information about this building differs. Cannot place building.');
+			minetest.log('error', 'ERROR: Size information about this building differs. Cannot place building.');
 		end
 		return;
 	end

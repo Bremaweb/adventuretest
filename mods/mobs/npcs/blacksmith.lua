@@ -188,7 +188,7 @@ function blacksmith_globalstep(dtime)
 				if inv:is_empty("src") then
 					-- empty the fuel
 					inv:set_stack("fuel",1,nil)
-					print("smelting done")
+					--print("smelting done")
 					-- they are done smelting
 					local dlist = inv:get_list("dst")
 					-- TODO return smelted items to the player

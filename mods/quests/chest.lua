@@ -17,9 +17,9 @@ quests.chest.go = function(npc,player)
       default.drop_item(pos,"default:chest_locked",vec,acc)
     end
     if npc.rewards ~= nil then
-      print("Get rewards")
+      --print("Get rewards")
       for _, r in pairs(npc.rewards) do
-        print(r.item)
+        --print(r.item)
         if math.random(0,100) < r.chance then
           default.drop_item(pos,r.item, vec, acc)
         end

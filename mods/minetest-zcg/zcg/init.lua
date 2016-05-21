@@ -85,7 +85,7 @@ end
 zcg.need_load_all = true
 
 zcg.load_all = function()
-	print("Loading all crafts, this may take some time...")
+	minetest.log("action","Loading all crafts, this may take some time...")
 	local i = 0
 	for name, item in pairs(minetest.registered_items) do
 		if (name and name ~= "") then
@@ -95,7 +95,7 @@ zcg.load_all = function()
 	end
 	table.sort(zcg.itemlist)
 	zcg.need_load_all = false
-	print("All crafts loaded !")
+	minetest.log("action","All crafts loaded !")
 end
 
 zcg.formspec = function(pn)

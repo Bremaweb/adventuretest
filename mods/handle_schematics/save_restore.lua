@@ -15,7 +15,7 @@ save_restore.save_data = function( filename, data )
 		file:write( minetest.serialize( data ));
 		file:close();
 	else
-		print("[save_restore] Error: Savefile '"..tostring( path ).."' could not be written.");
+		minetest.log("error","[save_restore] Error: Savefile '"..tostring( path ).."' could not be written.");
 	end
 end
 
@@ -28,7 +28,7 @@ save_restore.restore_data = function( filename )
 		file:close();
 		return minetest.deserialize( data );
 	else
-		print("[save_restore] Error: Savefile '"..tostring( path ).."' not found.");
+		minetest.log("error","[save_restore] Error: Savefile '"..tostring( path ).."' not found.");		
 		return {}; -- return empty table
 	end
 end

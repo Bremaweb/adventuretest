@@ -31,7 +31,6 @@ end,
     return minetest.check_player_privs(player:get_player_name(),{ immortal=true })
   end,
 	on_punch = function (pos, node, puncher, pointed_thing)
-		print("punched")
 		if minetest.check_player_privs(puncher:get_player_name(),{ immortal=true }) then
 			local meta = minetest.get_meta(pos)
 			local entity = meta:get_string("entity")
@@ -45,7 +44,7 @@ end,
 				end
 				local spawnpos = pos
 				spawnpos.y = spawnpos.y + 4
-				minetest.log("action","Spawn block spawning "..tostring(entity).." at "..minetest.pos_to_string(spawnpos))
+				minetest.log("info","Spawn block spawning "..tostring(entity).." at "..minetest.pos_to_string(spawnpos))
 				mobs:spawn_mob(spawnpos,entity)
 			else
 				minetest.log("action","No entity set in spawner block at "..minetest.pos_to_string(pos))
@@ -86,7 +85,7 @@ minetest.register_abm({
 		
 		local spawnpos = { x=pos.x, y=pos.y, z=pos.z }
 		spawnpos.y = spawnpos.y + 6
-		minetest.log("action","Spawn block spawning "..tostring(entity).." at "..minetest.pos_to_string(spawnpos))
+		minetest.log("info","Spawn block spawning "..tostring(entity).." at "..minetest.pos_to_string(spawnpos))
 		local r = mobs:spawn_mob(spawnpos,entity)
 		if r == -1 then
 			-- they are spawning in a block, remove this spawner
@@ -136,7 +135,7 @@ local numNPCs = math.random(0,1)
 				
 				if barbarian_village == true then
 					local barbarian = mobs:get_random('barbarian')
-					minetest.log("action","Spawning "..barbarian.." at "..minetest.pos_to_string(npos))
+					minetest.log("info","Spawning "..barbarian.." at "..minetest.pos_to_string(npos))
 					local mob = minetest.add_entity(npos, barbarian)
 					if mob then
 						local distance_rating = ( ( get_distance(game_origin,npos) ) / 15000 )
@@ -155,7 +154,7 @@ local numNPCs = math.random(0,1)
 				else
 					
 					local npc = mobs:get_random('npc')
-					minetest.log("action","Spawning "..npc.." at "..minetest.pos_to_string(npos))
+					minetest.log("info","Spawning "..npc.." at "..minetest.pos_to_string(npos))
 					local mob = minetest.add_entity(npos, npc)
 					if mob then
 						mob = mob:get_luaentity()

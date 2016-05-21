@@ -17,7 +17,7 @@ mg_villages.DEBUG_LEVEL_TIMING  =  3 -- 3: detailled performance information
 
 mg_villages.print = function( level, msg )
 	if( level <= mg_villages.DEBUG_LEVEL ) then
-		print( "[mg_villages] "..msg );
+		--print( "[mg_villages] "..msg );
 	end
 end
 

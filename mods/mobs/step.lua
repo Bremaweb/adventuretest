@@ -14,7 +14,7 @@ function mobs.on_step(self,dtime)
 				end
 			end
 			if player_count == 0 and self.state ~= "attack" then
-				minetest.log("action","lifetimer expired, removed mob "..self.name)
+				minetest.log("info","lifetimer expired, removed mob "..self.name)
 				self.object:remove()
 				return
 			end

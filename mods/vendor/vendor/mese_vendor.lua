@@ -194,7 +194,7 @@ minetest.register_node( 'vendor:signal_vendor_off', {
 	paramtype2 = 'facedir',
 	groups = {snappy=2,choppy=2,oddly_breakable_by_hand=2},
 	after_place_node = function( pos, placer )
-		print( 'Placed a new signal vendor')
+		--print( 'Placed a new signal vendor')
 		local meta = minetest.env:get_meta(pos)
 		meta:set_int("cost", 0)
 		meta:set_int("limit", 0)

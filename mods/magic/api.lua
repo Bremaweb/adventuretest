@@ -87,7 +87,6 @@ minetest.register_chatcommand("cast",{
 	desc = "Casts a spell at an optional target",
 	privs = {},
 	func = function(name, param)
-		print(param)
 		local id, target = string.match(param, "([^ ]+) (.+)")
 		if id == nil and target == nil then
 			id = param

@@ -144,7 +144,7 @@ handle_schematics.analyze_mc_schematic_file = function( path )
 	local compressed_data = file:read( "*all" );
 	--local data_string = minetest.decompress(compressed_data, "deflate" );
 local data_string = compressed_data; -- TODO
-print('FILE SIZE: '..tostring( string.len( data_string ))); -- TODO
+--print('FILE SIZE: '..tostring( string.len( data_string ))); -- TODO
 	file.close(file)
 
 
@@ -161,7 +161,7 @@ print('FILE SIZE: '..tostring( string.len( data_string ))); -- TODO
 	  or not( mc_schematic_data.Length )
 	  or not( mc_schematic_data.Blocks )
 	  or not( mc_schematic_data.Data )) then
-		print('[analyze_mc_schematic_file] ERROR: Failed to analyze '..tostring( path..'.schematic'));
+		minetest.log('error','[analyze_mc_schematic_file] ERROR: Failed to analyze '..tostring( path..'.schematic'));
 		return nil;
 	end
 

@@ -54,7 +54,7 @@ local handle_schematics_get_meta_table = function( pos, all_meta, start_pos )
 	  and m.fields.infotext == "\"\"") then
 		-- also consider signs empty if their text has been set once and deleted afterwards
 		if( not( m.fields.text ) or m.fields.text == "" ) then
-print('SKIPPING empty sign AT '..minetest.pos_to_string( pos)..' while saving metadata.');
+--print('SKIPPING empty sign AT '..minetest.pos_to_string( pos)..' while saving metadata.');
 			empty_meta = true;
 		end
 
@@ -66,7 +66,7 @@ print('SKIPPING empty sign AT '..minetest.pos_to_string( pos)..' while saving me
 		  and (n.name=='default:chest' or n.name=='default:chest_locked' or n.name=='default:bookshelf'
 		    or n.name=='default:furnace' or n.name=='default:furnace_active'
 		    or n.name=='cottages:shelf' or n.name=='cottages:anvil' or n.name=='cottages:threshing_floor' )) then
-print('SKIPPING empty '..tostring(n.name)..' AT '..minetest.pos_to_string( pos )..' while saving metadata.');
+--print('SKIPPING empty '..tostring(n.name)..' AT '..minetest.pos_to_string( pos )..' while saving metadata.');
 			empty_meta = true;
 		end
 	end

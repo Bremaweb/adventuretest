@@ -45,8 +45,8 @@
        if (not empty_book) and (not book_written) then
           return
        end
-	    print("fields1:"..dump(fields))
-		print("data1:"..dump(data))
+	    --print("fields1:"..dump(fields))
+		--print("data1:"..dump(data))
        local data = minetest.deserialize(stack:get_metadata())
        if not data then data = {} end
        data.title, data.text, data.owner =
@@ -71,8 +71,8 @@
 			end
 
 		else
-			print("fields:"..dump(fields))
-			print("data:"..dump(data))
+			--print("fields:"..dump(fields))
+			--print("data:"..dump(data))
 			
 		if fields.title=="" and fields.text=="" then
 			if minetest.get_item_group(stack:get_name(), "locked_book") == 1 then

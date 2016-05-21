@@ -15,15 +15,14 @@ function skills.set_default_skills ( name )
 	local pskills = pd.get(name,"skills")
 	if pskills == nil then pskills = {} end
 	for k,v in pairs(skills.available_skills) do
-		print(name.." checking for skill "..v.desc)
+		minetest.log("info",name.." checking for skill "..v.desc)
 		if pskills[k] == nil then
-			print("Doesn't have skill "..tostring(k))
+			minetest.log("info","Doesn't have skill "..tostring(k))
 			pskills[k] = { level = 1, exp = 0 }
 		else
-			print("Has skill "..tostring(k))
+			minetest.log("info","Has skill "..tostring(k))
 		end
 	end
-	print("Result!")
 	default.tprint(pskills,4)
 	pd.set(name,"skills",pskills)
 end 
@@ -173,7 +172,6 @@ function skills_on_dieplayer (player)
     local name = player:get_player_name()
     local level  = skills.get_player_level(name)
     local decrease = level.exp * -0.1
-    print(tostring(decrease))
     skills.add_exp(name,decrease)
 end
 

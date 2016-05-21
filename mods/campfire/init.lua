@@ -62,7 +62,7 @@ minetest.register_node("campfire:campfire", {
 				return 0
 			end
 		elseif listname == "src" then
-			print(player:get_player_name().." put item into campfire")
+			--print(player:get_player_name().." put item into campfire")
 			meta:set_string("owner",player:get_player_name())
 			return stack:get_count()
 		elseif listname == "dst" then
@@ -132,7 +132,7 @@ minetest.register_node("campfire:campfire_burning", {
 					return 0
 				end
 			elseif listname == "src" then
-				print(player:get_player_name().." put item into campfire")
+				--print(player:get_player_name().." put item into campfire")
 				meta:set_string("owner",player:get_player_name())
 				return stack:get_count()
 			elseif listname == "dst" then

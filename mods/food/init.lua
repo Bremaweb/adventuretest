@@ -7,7 +7,7 @@
 -- basic foods
 -- =====================================
 
-print("Food Mod - Version 2.2")
+minetest.log("action","Food Mod - Version 2.2")
 
 -- Boilerplate to support localized strings if intllib mod is installed.
 local S
@@ -31,14 +31,14 @@ function food.support(group,mod,item)
 	food.atsup[group] = true
 	if not minetest.get_modpath(mod) then
 		if food.debug then
-			print("[FOOD MOD DEBUG] mod '"..mod.."' is not installed")
+			minetest.log("info","[FOOD MOD DEBUG] mod '"..mod.."' is not installed")
 		end
 		return
 	end
 
 	local data = minetest.registered_items[item]
 	if not data then
-		print("[FOOD MOD WARNING] item '"..item.."' not found")
+		minetest.log("info","[FOOD MOD WARNING] item '"..item.."' not found")
 		return
 	end
 
@@ -71,7 +71,7 @@ function food.asupport(group,add)
 	end
 	
 	if food.debug then
-		print("registering "..group.." inbuilt definition")
+		minetest.log("info","registering "..group.." inbuilt definition")
 	end
  
 	add()
@@ -126,14 +126,14 @@ if food.debug then
 minetest.after(0, function()
 	for name, val in pairs(food.atsup) do
 		if not food.df[name] then
-			print("[FOOD MOD DEBUG] Ingredient "..name.." has no built in equiv")
+			minetest.log("info","[FOOD MOD DEBUG] Ingredient "..name.." has no built in equiv")
 		
 		end
 	end
 	
 	for name, val in pairs(food.df) do
 		if not food.atsup[name] then
-			print("[FOOD MOD DEBUG] Inbuilt ingredient "..name.." has no supported external equiv")
+			minetest.log("info","[FOOD MOD DEBUG] Inbuilt ingredient "..name.." has no supported external equiv")
 		end
 	end
 end)

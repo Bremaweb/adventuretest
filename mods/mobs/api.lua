@@ -202,8 +202,8 @@ function mobs:register_mob(name, def)
 				yaw = yaw - 360
 			end
 			
-			print("Yaw: "..tostring(yaw))
-			print("FOV: "..tostring(self.fov))
+			--print("Yaw: "..tostring(yaw))
+			--print("FOV: "..tostring(self.fov))
 			local vx = math.sin(yaw)
 			local vz = math.cos(yaw)
 			local ds = math.sqrt(vx^2 + vz^2)
@@ -211,15 +211,15 @@ function mobs:register_mob(name, def)
 			local d = { x = vx / ds, z = vz / ds }
 			local p = { x = pos.x / ps, z = pos.z / ps }
 			
-			print("DS "..tostring(ds))
-			print("PS "..tostring(ps))
-			print("D: x="..tostring(d.x)..", z="..tostring(d.z))
-			print("P: x="..tostring(p.x)..", z="..tostring(p.z))
+			--print("DS "..tostring(ds))
+			--print("PS "..tostring(ps))
+			--print("D: x="..tostring(d.x)..", z="..tostring(d.z))
+			--print("P: x="..tostring(p.x)..", z="..tostring(p.z))
 			
 			local an = ( d.x * p.x ) + ( d.z * p.z )
-			print("AN: "..tostring(an))
+			--print("AN: "..tostring(an))
 			local a = math.deg ( math.acos( an ) )
-			print("A: "..tostring(a))
+			--print("A: "..tostring(a))
 			if a > ( self.fov / 2 ) then
 				return false
 			else
@@ -527,7 +527,7 @@ end
 function mobs:spawn_mob(pos,name)  
 	-- make sure the nodes above are walkable
 		
-	minetest.log("action","Attempting to spawn "..name)
+	minetest.log("info","Attempting to spawn "..name)
 	local nodename = minetest.get_node(pos).name
 	if minetest.registered_nodes[nodename] ~= nil then
 		if minetest.registered_nodes[nodename].walkable == true or minetest.registered_nodes[nodename].walkable == nil or nodename == "default:water_source" then
@@ -547,7 +547,7 @@ function mobs:spawn_mob(pos,name)
 	if mob ~= nil then		
 		mob = mob:get_luaentity()
 		if mob ~= nil then
-			minetest.log("action",name.." spawned at "..minetest.pos_to_string(pos))
+			minetest.log("info",name.." spawned at "..minetest.pos_to_string(pos))
 			local newHP = mob.hp_min + math.floor( mob.hp_max * distance_rating )
 			mob.object:set_hp( newHP )
 			mob.state = "walk"	-- make them walk when they spawn so they walk away from their original spawn position

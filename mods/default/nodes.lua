@@ -967,7 +967,7 @@ end
 
 function default.furnace_available(pos)
 	local meta = minetest.get_meta(pos)
-	print("Furnace in_use: "..tostring(meta:get_int("in_use")))
+	--print("Furnace in_use: "..tostring(meta:get_int("in_use")))
 	if meta:get_int("in_use") == 1 then
 		return false
 	else
@@ -1022,7 +1022,7 @@ minetest.register_node("default:furnace", {
 				return 0
 			end
 		elseif listname == "src" then
-			print(player:get_player_name().." put item into furnace")
+			--print(player:get_player_name().." put item into furnace")
 			meta:set_string("owner",player:get_player_name())
 			return stack:get_count()
 		elseif listname == "dst" then
@@ -1115,7 +1115,7 @@ minetest.register_node("default:furnace_active", {
 					return 0
 				end
 			elseif listname == "src" then
-				print(player:get_player_name().." put item into furnace")
+				--print(player:get_player_name().." put item into furnace")
 				meta:set_string("owner",player:get_player_name())
 				return stack:get_count()
 			elseif listname == "dst" then
