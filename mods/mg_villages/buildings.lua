@@ -367,7 +367,7 @@ mg_villages.add_building = function( building_data )
 	local building_id = building_data.sizex..'x'..building_data.sizez..'_'..building_data.scm;
 	-- if the building is new, it will get the next free id
 	local building_nr = #mg_villages.all_buildings_list + 1;
-	for i,v in ipairs( mg_villages.all_buildings_list ) do
+	for i,v in pairs( mg_villages.all_buildings_list ) do
 		if( v==building_id ) then
 			-- we found the building
 			building_nr = i;
@@ -420,7 +420,7 @@ mg_villages.all_buildings_list =  save_restore.restore_data( 'mg_villages_all_bu
 mg_villages.BUILDINGS = {};
 local mts_path = mg_villages.modpath.."/schems/";
 -- determine the size of the given houses and other necessary values
-for i,v in ipairs( buildings ) do
+for i,v in pairs( buildings ) do
 	v.mts_path = mts_path;
 	mg_villages.add_building( v, i );
 end

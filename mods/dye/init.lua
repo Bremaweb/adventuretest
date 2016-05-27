@@ -81,7 +81,7 @@ dyelocal.dyes = {
 }
 
 -- Define items
-for _, row in ipairs(dyelocal.dyes) do
+for _, row in pairs(dyelocal.dyes) do
 	local name = row[1]
 	local description = row[2]
 	local groups = row[3]
@@ -123,7 +123,7 @@ dyelocal.mixes = {
 }
 
 for one,results in pairs(dyelocal.mixes) do
-	for i,result in ipairs(results) do
+	for i,result in pairs(results) do
 		local another = dyelocal.mixbases[i]
 		minetest.register_craft({
 			type = "shapeless",

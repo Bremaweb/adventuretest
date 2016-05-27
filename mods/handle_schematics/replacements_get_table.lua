@@ -10,7 +10,7 @@ handle_schematics.get_replacement_table = function( housetype, pr, replacements 
 	if( minetest.registered_nodes[ 'mg_villages:torch']) then
 		table.insert( replacements, {'default:torch', 'mg_villages:torch'});
 	end
-	for i,v in ipairs( replacements ) do
+	for i,v in pairs( replacements ) do
 		if( v and #v == 2 ) then
 			rtable[ v[1] ] = v[2];
 			ids[ minetest.get_content_id( v[1] )] = minetest.get_content_id( v[2] );

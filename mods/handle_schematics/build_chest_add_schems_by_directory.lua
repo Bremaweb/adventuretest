@@ -41,12 +41,12 @@ end
 -- search for mods and modpacks containing schematics in any form
 local build_chest_check_all_directories_mods_and_modpacks = function( path, menu_title, gamename )
 	local d2 = minetest.get_dir_list( path..'/mods', true );
-	for _,modname in ipairs( d2 ) do
+	for _,modname in pairs( d2 ) do
 		local d3 = minetest.get_dir_list( path..'/mods/'..modname, true );
-		for _,subdir in ipairs( d3 ) do
+		for _,subdir in pairs( d3 ) do
 			if( subdir ~= 'textures' and subdir ~= 'sounds' and subdir ~= 'models' and subdir ~= '.git' and subdir ~= 'locale') then
 				local d4 = minetest.get_dir_list( path..'/mods/'..modname..'/'..subdir, false );
-				for _,filename in ipairs( d4 ) do
+				for _,filename in pairs( d4 ) do
 					build_chest_add_files_to_menu_from_directory(
 						filename,
 						path..'/mods/'..modname..'/'..subdir..'/',
@@ -56,10 +56,10 @@ local build_chest_check_all_directories_mods_and_modpacks = function( path, menu
 				end
 				-- it might be a modpack
 				d4 = minetest.get_dir_list( path..'/mods/'..modname..'/'..subdir, true );
-				for _,subsubdir in ipairs( d4 ) do
+				for _,subsubdir in pairs( d4 ) do
 					if( subsubdir ~= 'textures' and subsubdir ~= 'sounds' and subsubdir ~= 'models' and subsubdir ~= '.git' and subsubdir ~= 'locale') then
 						local d5 = minetest.get_dir_list( path..'/mods/'..modname..'/'..subdir..'/'..subsubdir, false );
-						for _,filename in ipairs( d5 ) do
+						for _,filename in pairs( d5 ) do
 							build_chest_add_files_to_menu_from_directory(
 								filename,
 								path..'/mods/'..modname..'/'..subdir..'/'..subsubdir..'/',
@@ -111,13 +111,13 @@ local build_chest_check_all_directories = function()
 
 	-- locate .mts, .wem and .we files in the worlds/WORLDNAME/schems/* folders
 	local d1 = minetest.get_dir_list( worldpath, true );
-	for _,worldname in ipairs( d1 ) do
+	for _,worldname in pairs( d1 ) do
 		-- get list of subdirectories
 		local d2 = minetest.get_dir_list( worldpath..'/'..worldname, true );
-		for _,subdir in ipairs( d2 ) do
+		for _,subdir in pairs( d2 ) do
 			if( subdir=='schems' ) then
 				local d3 = minetest.get_dir_list( worldpath..'/'..worldname..'/schems', false );
-				for _,filename in ipairs( d3 ) do
+				for _,filename in pairs( d3 ) do
 					build_chest_add_files_to_menu_from_directory(
 						filename,
 						worldpath..'/'..worldname..'/schems/',
@@ -137,7 +137,7 @@ local build_chest_check_all_directories = function()
 	-- search in all GAMES/* folders for mods containing schematics
 	local game_path = main_path..'/games';
 	d1 = minetest.get_dir_list( game_path, true );
-	for _,gamename in ipairs( d1 ) do
+	for _,gamename in pairs( d1 ) do
 		build_chest_check_all_directories_mods_and_modpacks( game_path..'/'..gamename, 'import from game', gamename );
 	end
 end
@@ -149,7 +149,7 @@ if( minetest.setting_getbool( 'secure.enable_security' )) then
 	local worldpath = minetest.get_worldpath();
 	local d3 = minetest.get_dir_list( worldpath..'/schems', false );
 	if( d3 ) then
-		for _,filename in ipairs( d3 ) do
+		for _,filename in pairs( d3 ) do
 			build_chest_add_files_to_menu_from_directory(
 						filename,
 						worldpath..'/schems/',

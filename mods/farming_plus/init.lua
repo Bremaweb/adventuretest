@@ -27,7 +27,7 @@ function farming:add_plant(full_grown, names, interval, chance)
 				return
 			end
 			local step = nil
-			for i,name in ipairs(names) do
+			for i,name in pairs(names) do
 				if name == node.name then
 					step = i
 					break
@@ -56,7 +56,7 @@ function farming:generate_tree(pos, trunk, leaves, underground, replacements)
 	pos.y = pos.y-1
 	local nodename = minetest.get_node(pos).name
 	local ret = true
-	for _,name in ipairs(underground) do
+	for _,name in pairs(underground) do
 		if nodename == name then
 			ret = false
 			break

@@ -11,7 +11,7 @@ local thunder = {
 		local rad = 15 * ( sk.level / 10 )
 		local damage = ( 25 * ( sk.level / skb.max_level ) )
 		minetest.sound_play("magic_thunder",{object=p})
-		for _,obj in ipairs(minetest.get_objects_inside_radius(p:getpos(), rad)) do
+		for _,obj in pairs(minetest.get_objects_inside_radius(p:getpos(), rad)) do
 			if p ~= obj then
 				obj:punch(p, 1.0, {
 					full_punch_interval=1.0,

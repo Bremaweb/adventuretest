@@ -176,7 +176,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local meta = minetest.get_meta(pos)
-		for i, name in ipairs({
+		for i, name in pairs({
 				"fuel_totaltime",
 				"fuel_time",
 				"src_totaltime",

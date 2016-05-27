@@ -53,7 +53,7 @@ armor.set_player_armor = function(self, player)
 	local textures = {}
 	local elements = {}	
 	local physics_o = {}
-	for i, v in ipairs(self.elements) do
+	for i, v in pairs(self.elements) do
 		local stack = player_inv:get_stack("armor_"..v, 1)
 		local level = stack:get_definition().groups["armor_"..v]
 		local item = stack:get_name()
@@ -118,7 +118,7 @@ armor.update_armor = function(self, player)
 		local heal_max = 0
 		local state = 0
 		local items = 0
-		for _,v in ipairs(self.elements) do
+		for _,v in pairs(self.elements) do
 			local stack = armor_inv:get_stack("armor_"..v, 1)
 			if stack:get_count() > 0 then
 				local use = stack:get_definition().groups["armor_use"] or 0
@@ -218,7 +218,7 @@ minetest.register_on_joinplayer(function(player)
 			return 0
 		end,
 	})
-	for _,v in ipairs(armor.elements) do
+	for _,v in pairs(armor.elements) do
 		local list = "armor_"..v
 		player_inv:set_size(list, 1)
 		armor_inv:set_size(list, 1)

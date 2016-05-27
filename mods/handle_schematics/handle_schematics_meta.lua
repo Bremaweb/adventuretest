@@ -30,7 +30,7 @@ local handle_schematics_get_meta_table = function( pos, all_meta, start_pos )
 	for name, list in pairs( m.inventory ) do
 		invlist[ name ] = {};
 		count_inv = count_inv + 1;
-		for i, stack in ipairs(list) do
+		for i, stack in pairs(list) do
 			if( not( stack:is_empty())) then
 				invlist[ name ][ i ] = stack:to_string();
 				empty_meta = false;	
@@ -90,7 +90,7 @@ handle_schematics.save_meta = function( start_pos, end_pos, filename )
 	local p = handle_schematics.sort_pos_get_size( start_pos, end_pos );
 
 	if( minetest.find_nodes_with_meta ) then
-		for _,pos in ipairs( minetest.find_nodes_with_meta( start_pos, end_pos )) do
+		for _,pos in pairs( minetest.find_nodes_with_meta( start_pos, end_pos )) do
 			handle_schematics_get_meta_table( pos, all_meta, p );
 		end
 	else
@@ -114,7 +114,7 @@ handle_schematics.clear_meta = function( start_pos, end_pos )
 	local empty_meta = { inventory = {}, fields = {} };
 
 	if( minetest.find_nodes_with_meta ) then
-		for _,pos in ipairs( minetest.find_nodes_with_meta( start_pos, end_pos )) do
+		for _,pos in pairs( minetest.find_nodes_with_meta( start_pos, end_pos )) do
 			local meta = minetest.get_meta( pos );
 			meta:from_table( empty_meta );
 		end	
@@ -130,7 +130,7 @@ handle_schematics.restore_meta = function( filename, all_meta, start_pos, end_po
 	if( not( all_meta ) and filename ) then
 		all_meta = save_restore.restore_data( 'schems/'..filename..'.meta' );	
 	end
-	for _,pos in ipairs( all_meta ) do
+	for _,pos in pairs( all_meta ) do
 		local p = {};
 		if(     rotate == 0 ) then
 			p = {x=start_pos.x+pos.x-1, y=start_pos.y+pos.y-1, z=start_pos.z+pos.z-1};

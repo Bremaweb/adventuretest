@@ -26,7 +26,7 @@ wool.dyes = {
 	{"dark_green", "Dark Green", "unicolor_dark_green"},
 }
 
-for _, row in ipairs(wool.dyes) do
+for _, row in pairs(wool.dyes) do
 	local name = row[1]
 	local desc = row[2]
 	local craft_color_group = row[3]

@@ -6,13 +6,13 @@
 build_chest.replacements_get_extra_buttons = function( group, name, types_found_list, button_name, extra_buttons )
 	-- find out if there are any nodes that may need a group replacement
 	local found_type = "";
-	for k,w in ipairs( replacements_group[ group ].all ) do
+	for k,w in pairs( replacements_group[ group ].all ) do
 		-- we have found the full block of that group type
 		if( name == w ) then
 			found_type = w;
 		-- no primary node found; there may still be subordinate types
 		else
-			for nr,t in ipairs( replacements_group[ group ].data[ w ] ) do
+			for nr,t in pairs( replacements_group[ group ].data[ w ] ) do
 				if( name==t and not( types_found_list[ w ])) then
 					found_type = w;
 				end
@@ -85,14 +85,14 @@ build_chest.replacements_get_list_formspec = function( pos, selected_row )
 	local types_found_list_roof    = {};
 
 	local not_the_first_entry = false;
-	for i,v in ipairs( build_chest.building[ building_name ].statistic ) do
+	for i,v in pairs( build_chest.building[ building_name ].statistic ) do
 		local name = build_chest.building[ building_name ].nodenames[ v[1]];	
 		-- nodes that are to be ignored do not need to be replaced
 		if( name ~= 'air' and name ~= 'ignore' and name ~= 'mg:ignore' and v[2] and v[2]>0) then
 			local anz  = v[2];
 			-- find out if this node name gets replaced
 			local repl = name;
-			for j,r in ipairs( replacements ) do
+			for j,r in pairs( replacements ) do
 				if( r and r[1]==name ) then
 					repl = r[2];
 				end
@@ -172,13 +172,13 @@ build_chest.replacements_replace_rest_with_air = function( pos, meta )
 		return;
 	end
 	local replacements_orig  = minetest.deserialize( meta:get_string( 'replacements' ));
-	for i,v in ipairs( build_chest.building[ building_name ].statistic ) do
+	for i,v in pairs( build_chest.building[ building_name ].statistic ) do
 		local name = build_chest.building[ building_name ].nodenames[ v[1]];	
 		-- nodes that are to be ignored do not need to be replaced
 		if( name ~= 'air' and name ~= 'ignore' and name ~= 'mg:ignore' and v[2] and v[2]>0) then
 			-- find out if this node name gets replaced
 			local repl = name;
-			for j,r in ipairs( replacements_orig ) do
+			for j,r in pairs( replacements_orig ) do
 				if( r and r[1]==name ) then
 					repl = r[2];
 					-- set replacements for inexisting nodes to air
@@ -207,7 +207,7 @@ build_chest.replacements_apply = function( pos, meta, old_material, new_material
 	-- only accept replacements which can actually be placed
 	if( new_material=='air' or minetest.registered_nodes[ new_material ] ) then
 		local replacements_orig  = minetest.deserialize( meta:get_string( 'replacements' ));
-		for i,v in ipairs(replacements_orig) do
+		for i,v in pairs(replacements_orig) do
 			if( v and v[1]==old_material ) then
 				v[2] = new_material;
 				found = true;
@@ -224,7 +224,7 @@ end
 
 build_chest.replacements_get_group_list_formspec = function( pos, group, button_name )
 	local formspec = "";
-	for i,v in ipairs( replacements_group[ group ].found ) do
+	for i,v in pairs( replacements_group[ group ].found ) do
 		formspec = formspec.."item_image_button["..tostring(((i-1)%8)+1)..","..
 			tostring(3+math.floor((i-1)/8))..";1,1;"..
 			tostring( v )..";"..tostring( button_name )..";"..tostring(i).."]";

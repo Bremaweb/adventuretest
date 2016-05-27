@@ -262,15 +262,15 @@ local box2 = {
 	{-5, -2, -5, 5, 8, 5}
 }
 
-for j,list in ipairs(box1) do
-	for i,int in ipairs(list) do
+for j,list in pairs(box1) do
+	for i,int in pairs(list) do
 		list[i] = int/16
 	end
 	box1[j] = list
 end
 
-for j,list in ipairs(box2) do
-	for i,int in ipairs(list) do
+for j,list in pairs(box2) do
+	for i,int in pairs(list) do
 		list[i] = int/16
 	end
 	box2[j] = list

@@ -42,12 +42,12 @@ minetest.is_protected = function(pos, name)
 	local village_id = mg_villages.get_town_id_at_pos( pos );
 	if( village_id ) then
 		local is_houseowner = false;
-		for nr, p in ipairs( mg_villages.all_villages[ village_id ].to_add_data.bpos ) do
+		for nr, p in pairs( mg_villages.all_villages[ village_id ].to_add_data.bpos ) do
 
 			trustedusers = p.can_edit
 			trustedUser = false
 			if trustedusers ~= nil then
-				for _,trusted in ipairs(trustedusers) do
+				for _,trusted in pairs(trustedusers) do
 					if trusted == name then
 						trustedUser = true
 					end
@@ -251,7 +251,7 @@ mg_villages.plotmarker_formspec = function( pos, formname, fields, player )
 			if previousTrustees == nil then
 				previousTrustees = {}
 			else
-				for _, player in ipairs(previousTrustees) do
+				for _, player in pairs(previousTrustees) do
 					output = output..player.."\n"
 				end
 			end
@@ -271,7 +271,7 @@ mg_villages.plotmarker_formspec = function( pos, formname, fields, player )
 			end
 
 			local x = 1;
-			for _, player in ipairs(fields.ownerplayers:split("\n")) do
+			for _, player in pairs(fields.ownerplayers:split("\n")) do
 				mg_villages.all_villages[ village_id ].to_add_data.bpos[ plot_nr ].can_edit[x] = player
 				x = x + 1
 			end

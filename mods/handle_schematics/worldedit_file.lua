@@ -82,7 +82,7 @@ function worldedit_file.load_schematic(value, we_origin)
 		nodes = tables[1]
 
 		if version == 1 then --original flat table format
-			for i, entry in ipairs(nodes) do
+			for i, entry in pairs(nodes) do
 				local pos = entry[1]
 				entry.x, entry.y, entry.z = pos.x, pos.y, pos.z
 				entry[1] = nil

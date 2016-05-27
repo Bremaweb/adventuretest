@@ -324,7 +324,7 @@ minetest.register_abm({
 		if not do_preserve then
 			-- Drop stuff other than the node itself
 			local itemstacks = minetest.get_node_drops(n0.name)
-			for _, itemname in ipairs(itemstacks) do
+			for _, itemname in pairs(itemstacks) do
 				if minetest.get_item_group(n0.name, "leafdecay_drop") ~= 0 or
 						itemname ~= n0.name then
 					local p_drop = {
@@ -373,7 +373,7 @@ function default.dump_inv(pos,listname,inv)
 		inv = meta:get_inventory()
 	end
 	if inv:get_list(listname) ~= nil then
-		for i,stack in ipairs(inv:get_list(listname)) do
+		for i,stack in pairs(inv:get_list(listname)) do
 			default.drop_item(pos,stack)
 			stack:clear()
 			inv:set_stack(listname, i, stack)

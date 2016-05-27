@@ -44,7 +44,7 @@ minetest.after(0, function()
 	end
 	table.sort(creative_list)
 	inv:set_size("main", #creative_list)
-	for _,itemstring in ipairs(creative_list) do
+	for _,itemstring in pairs(creative_list) do
 		inv:add_item("main", ItemStack(itemstring))
 	end
 	creative_inventory.creative_inventory_size = #creative_list
@@ -153,7 +153,7 @@ if minetest.setting_getbool("creative_mode") then
 		end
 		local inv = digger:get_inventory()
 		if inv then
-			for _,item in ipairs(drops) do
+			for _,item in pairs(drops) do
 				item = ItemStack(item):get_name()
 				if not inv:contains_item("main", item) then
 					inv:add_item("main", item)

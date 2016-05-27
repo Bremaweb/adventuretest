@@ -26,7 +26,7 @@ if(	    minetest.get_modpath( 'trees' )
 	-- realtest is very special as far as stairs are concerned
 	mg_villages.realtest_stairs = {'default:stone','default:stone_flat','default:stone_bricks',
 	                               'default:desert_stone_flat','default:desert_stone_bricks'};
-	for i,v in ipairs(metals.list) do
+	for i,v in pairs(metals.list) do
 		table.insert( mg_villages.realtest_stairs, 'metals:'..v..'_block' );
 	end
 	-- the list of minteral names is local; so we can't add "decorations:"..mineral[1].."_block"
@@ -55,7 +55,7 @@ mg_villages.replace_materials = function( replacements, pr, original_materials, 
 	
 		return;
 	else
-		for i,v in ipairs( prefixes ) do
+		for i,v in pairs( prefixes ) do
 			postfixes[i] = '';
 		end
 	end
@@ -63,9 +63,9 @@ mg_villages.replace_materials = function( replacements, pr, original_materials, 
 	local known_materials = {};
 	local wood_found = false;
 	-- for all alternate materials
-	for i,m in ipairs( materials ) do
+	for i,m in pairs( materials ) do
 		-- check if that material exists for each supplied prefix
-		for j,p in ipairs( prefixes ) do
+		for j,p in pairs( prefixes ) do
 			-- if wood is present, later on try moretrees wood as well
 			if( 'default:wood' == m ) then
 				wood_found = true;
@@ -78,7 +78,7 @@ mg_villages.replace_materials = function( replacements, pr, original_materials, 
 	
 	-- support wooden planks from moretrees
 	if( wood_found and mg_villages.moretrees_treelist ) then
-		for _,v in ipairs( mg_villages.moretrees_treelist ) do
+		for _,v in pairs( mg_villages.moretrees_treelist ) do
 			if( minetest.registered_nodes[ "moretrees:"..v[1].."_planks"] ) then
 				table.insert( known_materials, "moretrees:"..v[1].."_planks" );
 			end	
@@ -89,7 +89,7 @@ mg_villages.replace_materials = function( replacements, pr, original_materials, 
 	-- deco is used by BigFreakingDig; as that one lacks default nodes, it doesn't work out here
 	if( wood_found and minetest.get_modpath('deco')) then
 		local bfd_treelist = {'birch', 'cherry', 'evergreen', 'oak' };
-		for _,v in ipairs( bfd_treelist ) do
+		for _,v in pairs( bfd_treelist ) do
 			if( minetest.registered_nodes[ "deco:"..v.."_plank"] ) then
 				table.insert( known_materials, "deco:"..v.."_plank" );
 			end	
@@ -98,7 +98,7 @@ mg_villages.replace_materials = function( replacements, pr, original_materials, 
 --]]
 		
 	if( wood_found and mg_villages.ethereal_trees ) then
-		for _,v in ipairs( mg_villages.ethereal_trees ) do
+		for _,v in pairs( mg_villages.ethereal_trees ) do
 			-- mushroom in ethereal is a pretty decorative material; increase its probability
 			if( v == 'mushroom' ) then
 				table.insert( known_materials, "ethereal:mushroom_pore" );
@@ -114,7 +114,7 @@ mg_villages.replace_materials = function( replacements, pr, original_materials, 
 	end
 
 	if( wood_found and mg_villages.forest_trees ) then
-		for _,v in ipairs( mg_villages.forest_trees ) do
+		for _,v in pairs( mg_villages.forest_trees ) do
 			if( minetest.registered_nodes[ 'forest:'..v..'_wood'] ) then
 				table.insert( known_materials, 'forest:'..v..'_wood' );
 			end	
@@ -122,7 +122,7 @@ mg_villages.replace_materials = function( replacements, pr, original_materials, 
 	end
 
 	if( wood_found and mg_villages.tinytrees_trees ) then
-		for _,v in ipairs( mg_villages.tinytrees_trees ) do
+		for _,v in pairs( mg_villages.tinytrees_trees ) do
 			if( minetest.registered_nodes[ 'trees:wood_'..v] ) then
 				table.insert( known_materials, 'trees:wood_'..v );
 			end	
@@ -130,7 +130,7 @@ mg_villages.replace_materials = function( replacements, pr, original_materials, 
 	end
 
 	if( wood_found and mg_villages.realtest_trees ) then
-		for _,v in ipairs( mg_villages.realtest_trees ) do
+		for _,v in pairs( mg_villages.realtest_trees ) do
 			if( minetest.registered_nodes[ 'trees:'..v..'_planks'] ) then
 				table.insert( known_materials, 'trees:'..v..'_planks' );
 			end	
@@ -158,7 +158,7 @@ mg_villages.replace_materials = function( replacements, pr, original_materials, 
 		return old_material;
 	end
 
-	for i,v in ipairs( prefixes ) do
+	for i,v in pairs( prefixes ) do
 		table.insert( replacements, { original_materials[ i ], v..new_material } );
 	end
 	return new_material;
@@ -178,7 +178,7 @@ mg_villages.replace_tree_trunk = function( replacements, wood_type )
 		table.insert( replacements, {'default:tree',  'mg:pinetree'});
 
  	elseif( mg_villages.moretrees_treelist ) then
-		for _,v in ipairs( mg_villages.moretrees_treelist ) do
+		for _,v in pairs( mg_villages.moretrees_treelist ) do
 			if( wood_type == "moretrees:"..v[1].."_planks" ) then
 				table.insert( replacements, {'default:tree',   "moretrees:"..v[1].."_trunk"});
 				table.insert( replacements, {'default:leaves', "moretrees:"..v[1].."_leaves"});
@@ -201,28 +201,28 @@ mg_villages.replace_tree_trunk = function( replacements, wood_type )
 		table.insert( replacements, {'default:tree', "ethereal:mushroom_trunk"});
 
 	elseif( mg_villages.ethereal_trees ) then
-		for _,v in ipairs( mg_villages.ethereal_trees ) do
+		for _,v in pairs( mg_villages.ethereal_trees ) do
 			if( wood_type == "ethereal:"..v.."_wood" ) then
 				table.insert( replacements, {'default:tree', "ethereal:"..v.."_trunk"});
 			end
 		end
 
 	elseif( mg_villages.forest_trees ) then
-		for _,v in ipairs( mg_villages.forest_trees ) do
+		for _,v in pairs( mg_villages.forest_trees ) do
 			if( wood_type == "forest:"..v.."_wood" ) then
 				table.insert( replacements, {'default:tree', "forest:"..v.."_tree"});
 			end
 		end
 
 	elseif( mg_villages.tinytrees_trees ) then
-		for _,v in ipairs( mg_villages.tinytrees_trees ) do
+		for _,v in pairs( mg_villages.tinytrees_trees ) do
 			if( wood_type == "trees:wood_"..v ) then
 				table.insert( replacements, {'default:tree', "trees:tree_"..v});
 			end
 		end
 
 	elseif( mg_villages.realtest_trees ) then
-		for _,v in ipairs( mg_villages.realtest_trees ) do
+		for _,v in pairs( mg_villages.realtest_trees ) do
 			if( wood_type == 'trees:'..v..'_planks' ) then
 				table.insert( replacements, {'default:tree', "trees:"..v..'_log'});
 				-- realtest does not have most of the nodes from default, so we need to replace them as well
@@ -277,34 +277,34 @@ mg_villages.replace_saplings = function( replacements, wood_type )
 	elseif( wood_type == 'mg:pinewood' ) then
 		table.insert( replacements, {'default:sapling',  'mg:pinesapling'});
  	elseif( mg_villages.moretrees_treelist ) then
-		for _,v in ipairs( mg_villages.moretrees_treelist ) do
+		for _,v in pairs( mg_villages.moretrees_treelist ) do
 			if( wood_type == "moretrees:"..v[1].."_planks" ) then
 				table.insert( replacements, {'default:sapling', "moretrees:"..v[1].."_sapling_ongen"});
 			end
 		end
  	elseif( mg_villages.ethereal_trees ) then
-		for _,v in ipairs( mg_villages.ethereal_trees ) do
+		for _,v in pairs( mg_villages.ethereal_trees ) do
 			if( wood_type == "ethereal:"..v.."_wood" ) then
 				table.insert( replacements, {'default:sapling', "ethereal:"..v.."_sapling"});
 			end
 		end
 
  	elseif( mg_villages.forest_trees ) then
-		for _,v in ipairs( mg_villages.forest_trees ) do
+		for _,v in pairs( mg_villages.forest_trees ) do
 			if( wood_type == "forest:"..v.."_wood" ) then
 				table.insert( replacements, {'default:sapling', "forest:"..v.."_sapling"});
 			end
 		end
 
  	elseif( mg_villages.tinytrees_trees ) then
-		for _,v in ipairs( mg_villages.tinytrees_trees ) do
+		for _,v in pairs( mg_villages.tinytrees_trees ) do
 			if( wood_type == "trees:wood_"..v ) then
 				table.insert( replacements, {'default:sapling', "trees:sapling_"..v});
 			end
 
 		end
  	elseif( mg_villages.realtest_trees ) then
-		for _,v in ipairs( mg_villages.realtest_trees ) do
+		for _,v in pairs( mg_villages.realtest_trees ) do
 			if( wood_type == 'trees:'..v..'_planks' ) then
 				table.insert( replacements, {'default:sapling', "trees:"..v.."_sapling"});
 				table.insert( replacements, {'default:junglesapling', "trees:"..v.."_sapling"});
@@ -872,7 +872,7 @@ mg_villages.get_replacement_ids = function( housetype, pr )
 
 	local replace = {};
 	local replacements = mg_villages.get_replacement_list( housetype, pr );
-	for i,v in ipairs( replacements ) do
+	for i,v in pairs( replacements ) do
 		if( v and #v == 2 ) then
 			replace[ minetest.get_content_id( v[1] )] = minetest.get_content_id( v[2] );
 		end
@@ -899,7 +899,7 @@ mg_villages.get_replacement_table = function( housetype, pr, replacements )
 		table.insert( replacements, {'default:lava_flowing', 'mg_villages:lava_flowing_tamed'});
 	end
 
-	for i,v in ipairs( replacements ) do
+	for i,v in pairs( replacements ) do
 		if( v and #v == 2 ) then
 			rtable[ v[1] ] = v[2];
 			ids[ minetest.get_content_id( v[1] )] = minetest.get_content_id( v[2] );

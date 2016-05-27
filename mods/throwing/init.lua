@@ -8,7 +8,7 @@ local shoot_timer = {}
 
 local throwing_shoot_arrow = function(itemstack, player)
 	if shoot_timer[player:get_player_name()] <= 0 or shoot_timer[player:get_player_name()] == nil then
-		for _,arrow in ipairs(arrows) do
+		for _,arrow in pairs(arrows) do
 			if player:get_inventory():get_stack("main", player:get_wield_index()+1):get_name() == arrow[1] then
 				if not minetest.setting_getbool("creative_mode") then
 					player:get_inventory():remove_item("main", arrow[1])

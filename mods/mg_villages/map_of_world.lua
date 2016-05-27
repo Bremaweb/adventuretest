@@ -79,7 +79,7 @@ mg_villages.map_of_world = function( pname )
 				if( type( surface_types )=='table' and false) then -- TODO: disabled for now
 					dx = dx/5;
 					dz = dz/5;
-					for i,v in ipairs( surface_types ) do
+					for i,v in pairs( surface_types ) do
 						if( v ~= content_id ) then
 							local x2 = x1+( math.floor( (i-1)/5 )*dx); 
 							local z2 = z1+( math.floor( (i-1)%5 )*dz);
@@ -161,7 +161,7 @@ mg_villages.map_of_world = function( pname )
 	formspec = formspec.."label[10,-0.4;Village types:]";
 	-- explain the meaning of the textures
 	if mg_villages.village_types ~= nil then
-		for _,typ in ipairs(mg_villages.village_types) do 
+		for _,typ in pairs(mg_villages.village_types) do 
 			formspec = formspec.."label[10.5,"..tostring(i)..";"..tostring( typ ).."]"..
 				             "image[10.0,"..tostring(i+0.1)..";0.4,0.4;"..tostring( mg_villages.village_type_data[ typ ].texture ).."]";
 			i = i+0.45;

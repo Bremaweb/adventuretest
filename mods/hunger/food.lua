@@ -92,7 +92,7 @@ if minetest.get_modpath("bushes_classic") then
 		"raspberry",
 		"gooseberry",
 		"mixed_berry"}
-	for _, berry in ipairs(berries) do
+	for _, berry in pairs(berries) do
 		if berry ~= "mixed_berry" then
 			register_food("bushes:"..berry, 1)
 		end

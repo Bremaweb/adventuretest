@@ -140,7 +140,7 @@ local function generate_building_translate_nodenames( nodenames, replacements, c
 	local i;
 	local v;
 	local new_nodes   = {};
-	for i,node_name in ipairs( nodenames ) do
+	for i,node_name in pairs( nodenames ) do
 
 		new_nodes[ i ] = {}; -- array for collecting information about the new content id for nodes with number "i" in their .mts savefile
 
@@ -578,7 +578,7 @@ handle_schematics.place_buildings = function(village, minp, maxp, data, param2_d
 	local extranodes = {}
 	local extra_calls = { on_constr = {}, trees = {}, chests = {}, signs = {}, traders = {} };
 
-	for i, pos in ipairs(bpos) do
+	for i, pos in pairs(bpos) do
 		-- roads are only placed if there are at least mg_villages.MINIMAL_BUILDUNGS_FOR_ROAD_PLACEMENT buildings in the village
 		if( not(pos.btype) or pos.btype ~= 'road' or village.anz_buildings > mg_villages.MINIMAL_BUILDUNGS_FOR_ROAD_PLACEMENT )then 
 			-- replacements are in table format for mapgen-based building spawning
@@ -762,7 +762,7 @@ handle_schematics.place_building_from_file = function( start_pos, end_pos, build
 	for k, v in pairs( res.extra_calls.on_constr ) do
 		local node_name = minetest.get_name_from_content_id( k );
 		if( minetest.registered_nodes[ node_name ].on_construct ) then
-			for _, pos in ipairs(v) do
+			for _, pos in pairs(v) do
 				minetest.registered_nodes[ node_name ].on_construct( pos );
 			end
 		end
@@ -783,7 +783,7 @@ end
 -- add the dirt roads
 handle_schematics.place_dirt_roads = function(village, minp, maxp, data, param2_data, a, c_road_node)
 	local c_air = minetest.get_content_id( 'air' );
-	for _, pos in ipairs(village.to_add_data.dirt_roads) do
+	for _, pos in pairs(village.to_add_data.dirt_roads) do
 		handle_schematics.place_road( minp, maxp, data, param2_data, a, c_road_node, pos, c_air );
 	end
 end

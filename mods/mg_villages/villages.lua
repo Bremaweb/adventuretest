@@ -84,11 +84,11 @@ local function choose_building(l, pr, village_type)
 			-- ...and crash in the next few lines (because there is no real solution for this problem)
 		end
 
-		for _, b in ipairs( mg_villages.village_type_data[ village_type ][ 'building_list'] ) do
+		for _, b in pairs( mg_villages.village_type_data[ village_type ][ 'building_list'] ) do
 			if (   mg_villages.BUILDINGS[ b ] and mg_villages.BUILDINGS[ b ].max_weight
 			   and mg_villages.BUILDINGS[ b ].max_weight[ village_type ] and  mg_villages.BUILDINGS[ b ].max_weight[ village_type ] >= p) then
 
---		for b, i in ipairs(mg_villages.BUILDINGS) do
+--		for b, i in pairs(mg_villages.BUILDINGS) do
 --			if i.weight[ village_type ] and i.weight[ village_type ] > 0 and i.max_weight and i.max_weight[ village_type ] and i.max_weight[ village_type ] >= p then
 				btype = b
 				break
@@ -161,7 +161,7 @@ local function choose_building_rot(l, pr, orient, village_type)
 end
 
 local function placeable(bx, bz, bsizex, bsizez, l, exclude_roads, orientation)
-	for _, a in ipairs(l) do
+	for _, a in pairs(l) do
 		-- with < instead of <=, space_between_buildings can be zero (important for towns where houses are closely packed)
 		if (a.btype ~= "road" or not exclude_roads) and math.abs(bx+bsizex/2-a.x-a.bsizex/2)<(bsizex+a.bsizex)/2 and math.abs(bz+bsizez/2-a.z-a.bsizez/2)<(bsizez+a.bsizez)/2 then
 			-- dirt roads which go at a 90 degree angel to the current road are not a problem
@@ -372,7 +372,7 @@ local function generate_road(village, l, pr, roadsize_list, road_materials, rx, 
 		l[#l].road_material = minetest.get_content_id( road_materials[ iteration_depth ] );
 	end
 	
-	for _, i in ipairs(calls_to_do) do
+	for _, i in pairs(calls_to_do) do
 --		local new_roadsize = roadsize -- - 1
 		if pr:next(1, 100) <= mg_villages.BIG_ROAD_CHANCE then
 			--new_roadsize = roadsize
@@ -391,13 +391,13 @@ local function generate_bpos(village, pr, vnoise, space_between_buildings)
 	local rx = vx - vs
 	--[=[local l={}
 	local total_weight = 0
-	for _, i in ipairs(mg_villages.BUILDINGS) do
+	for _, i in pairs(mg_villages.BUILDINGS) do
 		if i.weight == nil then i.weight = 1 end
 		total_weight = total_weight+i.weight
 		i.max_weight = total_weight
 	end
 	local multiplier = 3000/total_weight
-	for _,i in ipairs(mg_villages.BUILDINGS) do
+	for _,i in pairs(mg_villages.BUILDINGS) do
 		i.max_weight = i.max_weight*multiplier
 	end
 	for i=1, 2000 do
@@ -411,7 +411,7 @@ local function generate_bpos(village, pr, vnoise, space_between_buildings)
 			end
 		end]]
 		p = pr:next(1, 3000)
-		for b, i in ipairs(mg_villages.BUILDINGS) do
+		for b, i in pairs(mg_villages.BUILDINGS) do
 			if i.max_weight > p then
 				btype = b
 				break
@@ -440,7 +440,7 @@ local function generate_bpos(village, pr, vnoise, space_between_buildings)
 			bsizex, bsizez = bsizez, bsizex
 		end
 		if dist_center2(bx-vx, bsizex, bz-vz, bsizez)>vs*vs then goto out end
-		for _, a in ipairs(l) do
+		for _, a in pairs(l) do
 			if math.abs(bx-a.x)<=(bsizex+a.bsizex)/2+2 and math.abs(bz-a.z)<=(bsizez+a.bsizez)/2+2 then goto out end
 		end
 		l[#l+1] = {x=bx, y=vh, z=bz, btype=btype, bsizex=bsizex, bsizez=bsizez, brotate = rotation}
@@ -479,7 +479,7 @@ local function generate_dirt_roads( village, vnoise, bpos, secondary_dirt_roads 
 	if( not( secondary_dirt_roads)) then
 		return dirt_roads;
 	end
-	for _, pos in ipairs( bpos ) do
+	for _, pos in pairs( bpos ) do
 
 		local x = pos.x;
 		local z = pos.z; 
@@ -588,7 +588,7 @@ end
 local MIN_DIST = 1
 
 local function pos_far_buildings(x, z, l)
-	for _, a in ipairs(l) do
+	for _, a in pairs(l) do
 		if a.x - MIN_DIST <= x and x <= a.x + a.bsizex + MIN_DIST and
 		   a.z - MIN_DIST <= z and z <= a.z + a.bsizez + MIN_DIST then
 			return false
@@ -657,7 +657,7 @@ mg_villages.generate_village = function(village, vnoise)
 
 	-- set fruits for all buildings in the village that need it - regardless weather they will be spawned
 	-- now or later; after the first call to this function here, the village data will be final
-	for _, pos in ipairs( bpos ) do
+	for _, pos in pairs( bpos ) do
 		local binfo = mg_villages.BUILDINGS[pos.btype];
 		if( binfo.farming_plus and binfo.farming_plus == 1 and mg_villages.fruit_list and not pos.furit) then
  			pos.fruit = mg_villages.fruit_list[ pr_village:next( 1, #mg_villages.fruit_list )];
@@ -705,7 +705,7 @@ mg_villages.count_inhabitated_buildings = function(village)
 	local bpos             = village.to_add_data.bpos;
 	-- count the buildings
 	local anz_buildings = 0;
-	for i, pos in ipairs(bpos) do
+	for i, pos in pairs(bpos) do
 		if( pos.btype and not(pos.btype == 'road' )) then 
 			local binfo = mg_villages.BUILDINGS[pos.btype];
 			-- count buildings which can house inhabitants as well as those requiring workers
@@ -840,7 +840,7 @@ mg_villages.house_in_mapchunk_mark_intersection = function( villages, c, vnoise 
 	local bsizez = c.to_add_data.bpos[1].bsizez;
 
 	-- make sure that the house does not intersect with the area of a village
-	for _,v in ipairs( villages ) do
+	for _,v in pairs( villages ) do
 		local id = v.vx..':'..v.vz;
 		if( id and mg_villages.all_villages and mg_villages.all_villages[ id ] ) then
 			v = mg_villages.all_villages[ id ];
@@ -896,7 +896,7 @@ mg_villages.houses_in_mapchunk = function( minp, mapchunk_size, villages )
 		end
 	end
 
-	for _,candidate in ipairs(village_candidates) do
+	for _,candidate in pairs(village_candidates) do
 		-- mark all one-house-village-candidates that intersect with villages in this mapchunk
 		mg_villages.house_in_mapchunk_mark_intersection( villages,           candidate, village_noise );
 		-- mark all one-house-village-candidates that intersect with other candidates in this mapchunk
@@ -905,7 +905,7 @@ mg_villages.houses_in_mapchunk = function( minp, mapchunk_size, villages )
 
 	-- now add those villages that do not intersect with others and which *may* at least be part of this mapchunk
 	local d = math.ceil( mapchunk_size / 2 );
-	for _,candidate in ipairs(village_candidates) do
+	for _,candidate in pairs(village_candidates) do
 		if( not( candidate.areas_intersect )
 		    and (candidate.vx > minp.x - d or candidate.vx < (mapchunk_size+d) )
 		    and (candidate.vz > minp.z - d or candidate.vz < (mapchunk_size+d) )) then

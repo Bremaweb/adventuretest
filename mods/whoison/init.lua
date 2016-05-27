@@ -9,7 +9,7 @@ function whoison.createFile(loopit)
 	local file = io.open(filename, "w")
 	file:write(os.time().."\n")
 	file:write(minetest.get_server_status().."\n")
-	for _,player in ipairs(minetest.get_connected_players()) do
+	for _,player in pairs(minetest.get_connected_players()) do
 		
 		local name = player:get_player_name()
 		whoison.updateStats(name)
@@ -118,7 +118,7 @@ minetest.register_chatcommand("timeonline",{
 function breakdowntime(t)
 	local eng = {"Seconds","Minutes","Hours","Days","Weeks","Months","Years"}
 	local inc = {60,60,24,7,4,12,1}	
-	for k,v in ipairs(inc) do
+	for k,v in pairs(inc) do
 		if ( t > v ) then
 			t = math.floor( (t / v) )
 		else

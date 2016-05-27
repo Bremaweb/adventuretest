@@ -6,7 +6,7 @@ local BUSHES_DESCRIPTIONS = {
     "Strawberry",
 }
 
-for i, bush_name in ipairs(BUSHES) do
+for i, bush_name in pairs(BUSHES) do
     minetest.register_node("bushes:" .. bush_name .. "_bush", {
 	description = BUSHES_DESCRIPTIONS[i] .. " bush",
 	drawtype = "plantlike",

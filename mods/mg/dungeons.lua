@@ -43,7 +43,7 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 			local spawn = {}
 			local chests = {}
 			local c = 0
-			for k,v in ipairs(notify.dungeon) do
+			for k,v in pairs(notify.dungeon) do
 				--print(minetest.pos_to_string(v))
 				-- find the size of this room
 				--if v.y < 0 then
@@ -153,16 +153,16 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 			vm:set_data(data)			
 			vm:calc_lighting()
 			vm:write_to_map(data)
-			for _,v in ipairs(spawn) do
+			for _,v in pairs(spawn) do
 				mobs:spawn_mob(v.pos,v.mob)
 			end
 			
-			for _,cpos in ipairs(chests) do
+			for _,cpos in pairs(chests) do
 				minetest.place_node(cpos,{name="default:chest"})
 				local meta = minetest.get_meta( cpos );
 				local inv  = meta:get_inventory();
 				inv:add_item("main","quests:dungeon_token")
-				for _,item in ipairs(dungeon_chest) do
+				for _,item in pairs(dungeon_chest) do
 					if randomChance(item[2]) then
 						local qty = math.random(1,item[3])
 						inv:add_item("main", item[1].." "..tostring(qty))
@@ -173,7 +173,7 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 		
 		if notify.temple ~= nil then
 			minetest.log("info","Temple generated")
-			for k,v in ipairs(notify.temple) do
+			for k,v in pairs(notify.temple) do
 				minetest.log("info",minetest.pos_to_string(v))
 			end
 		end

@@ -42,7 +42,7 @@ end
 
 -- helper functions
 local function player_near(pos)
-	for  _,object in ipairs(minetest.get_objects_inside_radius(pos, VIEW_DISTANCE)) do
+	for  _,object in pairs(minetest.get_objects_inside_radius(pos, VIEW_DISTANCE)) do
 		if object:is_player() then
 			return true
 		end

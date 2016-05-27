@@ -36,7 +36,7 @@ build_chest.add_entry = function( path )
 	end
 
 	local sub_menu = build_chest.menu;
-	for i,v in ipairs( path ) do
+	for i,v in pairs( path ) do
 		if( not( sub_menu[ v ] )) then
 			sub_menu[ v ] = {};
 		end
@@ -379,7 +379,7 @@ build_chest.update_formspec = function( pos, page, player, fields )
 
 	-- find out where we currently are in the menu tree
 	local menu = build_chest.menu;
-	for i,v in ipairs( current_path ) do
+	for i,v in pairs( current_path ) do
 		if( menu and menu[ v ] ) then
 			menu = menu[ v ];
 		end
@@ -464,7 +464,7 @@ build_chest.update_formspec = function( pos, page, player, fields )
 	-- order alphabeticly
 	table.sort( options, function(a,b) return a < b end );
 
-	for index,k in ipairs( options ) do
+	for index,k in pairs( options ) do
 
 		i = i+1;
 

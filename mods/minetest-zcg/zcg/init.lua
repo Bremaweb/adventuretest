@@ -14,7 +14,7 @@ zcg.items_in_group = function(group)
 	for name, item in pairs(minetest.registered_items) do
 		-- the node should be in all groups
 		ok = true
-		for _, g in ipairs(group:split(',')) do
+		for _, g in pairs(group:split(',')) do
 			if not item.groups[g] then
 				ok = false
 			end
@@ -48,7 +48,7 @@ zcg.add_craft = function(input, output, groups)
 			if groups[groupname] ~= nil then
 				c.items[i] = groups[groupname]
 			else
-				for _, gi in ipairs(zcg.items_in_group(groupname)) do
+				for _, gi in pairs(zcg.items_in_group(groupname)) do
 					local g2 = groups
 					g2[groupname] = gi
 					zcg.add_craft({
@@ -69,7 +69,7 @@ zcg.load_crafts = function(name)
 	zcg.crafts[name] = {}
 	local _recipes = minetest.get_all_craft_recipes(name)
 	if _recipes then
-		for i, recipe in ipairs(_recipes) do
+		for i, recipe in pairs(_recipes) do
 			if (recipe and recipe.items and recipe.type) then
 				zcg.add_craft(recipe, name)
 			end
@@ -149,7 +149,7 @@ zcg.formspec = function(pn)
 	local npp = 8*3 -- nodes per page
 	local i = 0 -- for positionning buttons
 	local s = 0 -- for skipping pages
-	for _, name in ipairs(zcg.itemlist) do
+	for _, name in pairs(zcg.itemlist) do
 		if s < page*npp then s = s+1 else
 			if i >= npp then break end
 			formspec = formspec .. "item_image_button["..(i%8)..","..(math.floor(i/8)+3.5)..";1,1;"..name..";zcg:"..name..";]"

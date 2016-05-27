@@ -23,7 +23,7 @@ handle_schematics.analyze_we_file = function(scm, we_origin)
 	-- create a list of nodenames
 	local nodenames    = {};
 	local nodenames_id = {};
-	for i,ent in ipairs( nodes ) do
+	for i,ent in pairs( nodes ) do
 		if( ent and ent.name and not( nodenames_id[ ent.name ])) then
 			nodenames_id[ ent.name ] = #nodenames + 1;
 			nodenames[ nodenames_id[ ent.name ] ] = ent.name;

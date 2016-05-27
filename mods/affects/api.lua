@@ -75,7 +75,7 @@ end
 
 function affects.player_died(player)
 	local name = player:get_player_name()
-	for _,a in ipairs(affects._removeOnDieAffects) do
+	for _,a in pairs(affects._removeOnDieAffects) do
 		affects.removeAffect(name,a)
 	end
 end

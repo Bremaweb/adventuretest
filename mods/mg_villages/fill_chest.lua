@@ -177,7 +177,7 @@ mg_villages.fill_chest_random = function( pos, pr, building_nr, building_typ )
 		return;
 	end
 	local inv_size = inv:get_size('main');
-	for i,v in ipairs( mg_villages.random_chest_content ) do		
+	for i,v in pairs( mg_villages.random_chest_content ) do		
 		-- repeat this many times
 		for count=1, v[ 4 ] do
 			-- to avoid too many things inside a chest, lower probability

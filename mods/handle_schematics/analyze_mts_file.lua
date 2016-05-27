@@ -131,7 +131,7 @@ handle_schematics.analyze_mts_file = function( path )
 	local needs_on_constr = {};
 	local is_air = 0;
 	-- translate nodenames to ids
-	for i,v in ipairs( nodenames ) do
+	for i,v in pairs( nodenames ) do
 		ids[ i ] = minetest.get_content_id( v );
 		needs_on_constr[ i ] = false;
 		if( minetest.registered_nodes[ v ] and minetest.registered_nodes[ v ].on_construct ) then

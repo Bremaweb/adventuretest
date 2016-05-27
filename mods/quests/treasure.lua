@@ -100,7 +100,7 @@ quests.treasure.generateQuest = function()
   local data = vm:get_data()
   
   local allair = true
-  for _,d in ipairs(data) do
+  for _,d in pairs(data) do
     if d ~= c_air and d ~= c_ignore then
       allair = false
     end
@@ -162,7 +162,7 @@ else
 end
 
 function is_ground_node(nodeid)
-    for _,n in ipairs(ground_nodes) do
+    for _,n in pairs(ground_nodes) do
       if minetest.get_content_id(n) == nodeid then
 	return true
       end

@@ -344,7 +344,7 @@ function mobs:register_mob(name, def)
 				if hitter and hitter:is_player() and hitter:get_inventory() then
 					local name = hitter:get_player_name()
 					pd.increment(name,STAT_KILLS,1)
-					for _,drop in ipairs(self.drops) do
+					for _,drop in pairs(self.drops) do
 						if math.random(1, 100) < drop.chance then
 							local d = ItemStack(drop.name.." "..math.random(drop.min, drop.max))
 							default.drop_item(pos,d)
@@ -363,7 +363,7 @@ function mobs:register_mob(name, def)
 						local expGained = math.random(self.exp_min, emax)
 						skills.add_exp(hitter:get_player_name(),expGained)
 						local expStack = experience.exp_to_items(expGained)
-						for _,stack in ipairs(expStack) do
+						for _,stack in pairs(expStack) do
 							default.drop_item(pos,stack)
 						end
 					end

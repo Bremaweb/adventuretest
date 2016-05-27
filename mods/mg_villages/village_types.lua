@@ -77,7 +77,7 @@ mg_villages.add_village_type = function( type_name, v )
 	if( not( v.mods )) then
 		v.mods = {};
 	end
-	for _,m in ipairs( v.mods ) do
+	for _,m in pairs( v.mods ) do
 		if( not( minetest.get_modpath( m ))) then
 			-- this village type will not be used because not all required mods are installed
 			return false;

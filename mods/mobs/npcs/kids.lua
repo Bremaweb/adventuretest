@@ -97,7 +97,7 @@ mobs:register_mob("mobs:kid_lost", {
 				local o = minetest.get_objects_inside_radius(self.object:getpos(), 3)
 				
 				local yaw = 0
-				for _,o in ipairs(o) do
+				for _,o in pairs(o) do
 					if o:is_player() then
 						lp = o:getpos()
 						break

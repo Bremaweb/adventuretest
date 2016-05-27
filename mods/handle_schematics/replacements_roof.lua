@@ -26,7 +26,7 @@ replacements_group['roof'].replace_material = function( replacements, old_materi
 		if( i<=#new_nodes and new_nodes[i] and minetest.registered_nodes[ new_nodes[i]] ) then
 			new = new_nodes[i];
 			local found = false;
-			for i,v in ipairs(replacements) do
+			for i,v in pairs(replacements) do
 				if( v and v[1]==old ) then
 					v[2] = new;
 					found = true;
@@ -64,7 +64,7 @@ replacements_group['roof'].construct_roof_type_list = function()
 
 	-- roof from cottages
 	local roofs = {'straw', 'reet',  'wood', 'slate', 'red', 'brown', 'black'};
-	for i,v in ipairs( roofs ) do
+	for i,v in pairs( roofs ) do
 		replacements_group['roof'].add_material( {
 			'cottages:roof_connector_'..v,
 			'cottages:roof_flat_'..v,
@@ -76,7 +76,7 @@ replacements_group['roof'].construct_roof_type_list = function()
 	
 	-- from dryplants
 	roofs = {'reed', 'wetreed'};
-	for i,v in ipairs( roofs ) do
+	for i,v in pairs( roofs ) do
 		replacements_group['roof'].add_material( {
 			'dryplants:'..v..'_roof',
 			'dryplants:'..v..'_slab',
@@ -88,7 +88,7 @@ replacements_group['roof'].construct_roof_type_list = function()
 	end
 	-- roof from homedecor
 	roofs = {'wood', 'terracotta', 'asphalt', 'glass'};
-	for i,v in ipairs( roofs ) do
+	for i,v in pairs( roofs ) do
 		replacements_group['roof'].add_material( {
 			'homedecor:shingle_side_'..v,
 			'homedecor:shingles_'..v,

@@ -15,10 +15,10 @@ mg_villages.init_weights = function()
 	mg_villages.village_types[ #mg_villages.village_types+1 ] = 'single';
 	mg_villages.village_types[ #mg_villages.village_types+1 ] = 'fields';
 	mg_villages.village_types[ #mg_villages.village_types+1 ] = 'tower';
-	for j,v in ipairs( mg_villages.village_types ) do
+	for j,v in pairs( mg_villages.village_types ) do
 	
 		local total_weight = 0
-		for _, i in ipairs(mg_villages.BUILDINGS) do
+		for _, i in pairs(mg_villages.BUILDINGS) do
 			if( not( i.max_weight )) then
 				i.max_weight = {};
 			end
@@ -28,7 +28,7 @@ mg_villages.init_weights = function()
 			end
 		end
 		local multiplier = 3000/total_weight
-		for _,i in ipairs(mg_villages.BUILDINGS) do
+		for _,i in pairs(mg_villages.BUILDINGS) do
 			if( i.weight and i.weight[ v ] and i.weight[ v ]>0 ) then
 				i.max_weight[v] = i.max_weight[ v ]*multiplier
 			end

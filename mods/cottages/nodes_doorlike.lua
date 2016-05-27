@@ -23,7 +23,7 @@ cottages_window_sutter_operate = function( pos, old_node_state_name, new_node_st
    local stop_up   = 0;
    local stop_down = 0;
 
-   for i,v in ipairs(offsets) do
+   for i,v in pairs(offsets) do
 
       local node = minetest.get_node_or_nil( {x=pos.x, y=(pos.y+v), z=pos.z } );
       if( node and node.name and node.name==old_node_state_name 

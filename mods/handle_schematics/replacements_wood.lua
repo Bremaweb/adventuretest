@@ -33,7 +33,7 @@ replacements_group['wood'].replace_material = function( replacements, old_wood, 
 		if( i<=#new_nodes and new_nodes[i] and minetest.registered_nodes[ new_nodes[i]] ) then
 			new = new_nodes[i];
 			local found = false;
-			for i,v in ipairs(replacements) do
+			for i,v in pairs(replacements) do
 				if( v and v[1]==old ) then
 					v[2] = new;
 					found = true;
@@ -59,7 +59,7 @@ replacements_group['wood'].add_material = function( candidate_list, mod_prefix, 
 	if( not( candidate_list )) then
 		return;
 	end
-	for _,v in ipairs( candidate_list ) do
+	for _,v in pairs( candidate_list ) do
 		local is_loaded = false;
 		local wood_name = mod_prefix..w_pre..v..w_post;
 		-- create a complete list of all possible wood names
@@ -120,7 +120,7 @@ replacements_group['wood'].add_material = function( candidate_list, mod_prefix, 
 
 		-- none of the wood nodes counts as ground
 		local c_ignore = minetest.get_content_id( 'ignore' );
-		for _,v in ipairs( data ) do
+		for _,v in pairs( data ) do
 			local id = minetest.get_content_id( v );
 			if( id and id ~= c_ignore ) then
 				replacements_group.node_is_ground[ id ] = false;

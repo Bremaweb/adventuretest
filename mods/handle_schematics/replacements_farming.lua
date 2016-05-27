@@ -29,7 +29,7 @@ replacements_group['farming'].replace_material = function( replacements, old_mat
 		if( i<=#new_nodes and new_nodes[i] and minetest.registered_nodes[ new_nodes[i]] ) then
 			new = new_nodes[i];
 			local found = false;
-			for i,v in ipairs(replacements) do
+			for i,v in pairs(replacements) do
 				if( v and v[1]==old ) then
 					v[2] = new;
 					found = true;
@@ -90,7 +90,7 @@ replacements_group['farming'].add_material = function( fruit, fruit_item, prefix
 
 	-- farming nodes do not count as ground (except for soil - which is not handled here)
 	local c_ignore = minetest.get_content_id( 'ignore' );
-	for _,v in ipairs( data ) do
+	for _,v in pairs( data ) do
 		local id = minetest.get_content_id( v );
 		if( id and id ~= c_ignore ) then
 			replacements_group.node_is_ground[ id ] = false;
@@ -150,7 +150,7 @@ replacements_group['farming'].construct_farming_type_list = function()
 			'potato','potatoe', -- diffrent mods spell them diffrently
 			'tomato', 'corn'
 			};
-	for i,fruit in ipairs( fruits ) do
+	for i,fruit in pairs( fruits ) do
 		if(     minetest.registered_nodes[ 'farming_plus:'..fruit ]
 		    and minetest.registered_nodes[ 'farming_plus:'..fruit..'_1' ]
 		    and minetest.registered_items[ 'farming_plus:'..fruit..'_item' ] ) then
@@ -162,7 +162,7 @@ replacements_group['farming'].construct_farming_type_list = function()
 
 	-- Docfarming: https://forum.minetest.net/viewtopic.php?t=3948 
 	fruits = {'carrot','corn','potato','raspberry'};
-	for i,fruit in ipairs( fruits ) do
+	for i,fruit in pairs( fruits ) do
 		replacements_group['farming'].add_material( fruit, 'docfarming:'..fruit,         'docfarming:', '', '' );
 	end
 end

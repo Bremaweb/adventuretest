@@ -63,10 +63,10 @@ replacements_group['realtest'].replace = function( replacements )
         end
 
 
-	for i,v in ipairs( repl ) do
+	for i,v in pairs( repl ) do
 		if( v and v[2] and minetest.registered_nodes[ v[2]] ) then
 			local found = false;
-			for j,w in ipairs( replacements ) do
+			for j,w in pairs( replacements ) do
 				if( w and w[1] and w[1]==v[1] ) then
 					w[2] = v[2];
 					found = true;

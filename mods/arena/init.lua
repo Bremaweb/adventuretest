@@ -44,7 +44,7 @@ function arena.list(name)
 end
 
 function arena.in_arena(name)	
-	for _,event in ipairs(events) do
+	for _,event in pairs(events) do
 		if ( event.participants[name] == true ) then
 			return event
 		end

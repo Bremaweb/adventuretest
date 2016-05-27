@@ -8,7 +8,7 @@ function mobs.on_step(self,dtime)
 		self.lifetimer = self.lifetimer - dtime
 		if self.lifetimer <= 0 and not self.tamed and self.type ~= "npc" then
 			local player_count = 0
-			for _,obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 10)) do
+			for _,obj in pairs(minetest.get_objects_inside_radius(self.object:getpos(), 10)) do
 				if obj:is_player() then
 					player_count = player_count+1
 				end
@@ -270,7 +270,7 @@ function mobs.on_step(self,dtime)
 			local inradius = minetest.get_objects_inside_radius(s,self.view_range)
 			local player = nil
 			local type = nil
-			for _,oir in ipairs(inradius) do
+			for _,oir in pairs(inradius) do
 				if oir:is_player() then
 					player = oir
 					type = "player"
@@ -392,7 +392,7 @@ function mobs.on_step(self,dtime)
 				local o = minetest.get_objects_inside_radius(self.object:getpos(), 3)
 				
 				local yaw = 0
-				for _,o in ipairs(o) do
+				for _,o in pairs(o) do
 					if o:is_player() then
 						lp = o:getpos()
 						break
