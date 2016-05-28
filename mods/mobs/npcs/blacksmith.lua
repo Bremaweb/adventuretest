@@ -28,7 +28,7 @@ mobs:register_mob("mobs:blacksmith",{
 		if self.state ~= "path" and self.state ~= "working" then
 			blacksmith_formspec(self,clicker)
 		else
-			chat.local_chat(clicker:getpos(),"Blacksmith: Sorry, I'm busy. Come back later",3)
+			minetest.sound_play("mobs_blacksmith_sorry",{pos=self.object:getpos(),max_hear_distance=12,gain=0.6})
 		end
 	end,
 	walk_chance = 1,
@@ -70,7 +70,7 @@ function blacksmith_formspec(self,player)
 	local name = player:get_player_name()
 	if active_blacksmiths[name] == nil then
 		mobs:face_pos(self,player:getpos())
-		chat.local_chat(player:getpos(),"Blacksmith: Give me your metal lumps and I will smelt them for you",3)
+		minetest.sound_play("mobs_blacksmith_what",{pos=self.object:getpos(),max_hear_distance=12,gain=0.6})
 		active_blacksmiths[name] = {entity=self,inventory=nil,player=player,furnace=nil,active=false}
 		local formspec = "size[8,6.25]"..
 						"list[current_player;main;0,2.5;8,4;]"..
@@ -80,7 +80,7 @@ function blacksmith_formspec(self,player)
 						"button_exit[5,1;2,1;cancel;Cancel]"
 		minetest.show_formspec(name,"blacksmith",formspec)
 	else
-		chat.local_chat(player:getpos(),"Blacksmith: Sorry, I'm not able to work for you at this time",3)
+		minetest.sound_play("mobs_blacksmith_sorry",{pos=self.object:getpos(),max_hear_distance=12,gain=0.6})
 	end
 end
 
@@ -134,6 +134,7 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 					local crNeeded = (stack:get_count() * 2)
 					if money.get(name) < crNeeded then
 						chat.local_chat(player:getpos(),"Blacksmith: Sorry, you don't have enough money. I charge 2cr per lump.")
+						minetest.sound_play("mobs_blacksmith_sorry",{pos=blacksmith.object:getpos(),max_hear_distance=12,gain=0.6})
 						active_blacksmiths[name] = nil
 						return
 					end
@@ -148,11 +149,13 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 					end)
 				else
 					chat.local_chat(player:getpos(),"Blacksmith: Sorry, I can't get to the furance.",3)
+					minetest.sound_play("mobs_blacksmith_sorry",{pos=blacksmith.object:getpos(),max_hear_distance=12,gain=0.6})
 					active_blacksmiths[name] = nil
 					return
 				end
 			else
 				chat.local_chat(player:getpos(),"Blacksmith: Sorry, I don't see a furance in this area.",3)
+				minetest.sound_play("mobs_blacksmith_sorry",{pos=blacksmith.object:getpos(),max_hear_distance=12,gain=0.6})
 				active_blacksmiths[name] = nil
 				-- TODO Get invnetory and throw item toward player
 			end
