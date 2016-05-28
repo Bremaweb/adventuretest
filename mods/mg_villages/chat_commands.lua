@@ -97,7 +97,8 @@ minetest.register_chatcommand( 'visit', {
 
 				minetest.chat_send_player( name, "Initiating transfer to village no. "..tostring( v.nr )..", called "..( tostring( v.name or 'unknown'))..".");
 				local player =  minetest.get_player_by_name( name );
-				player:moveto( { x=v.vx, y=(v.vh+1), z=v.vz }, false);
+				adventuretest.teleport(player,{ x=v.vx, y=(v.vh+1), z=v.vz })
+				--player:moveto( { x=v.vx, y=(v.vh+1), z=v.vz }, false);
 				return;
 			end
 		end

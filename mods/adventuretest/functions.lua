@@ -37,3 +37,9 @@ end
 function adventuretest.register_pl_hook(f,t)
 	table.insert(adventuretest.pl_hooks,{func=f,timeout=t,timer=0})
 end
+
+function adventuretest.teleport(player,pos)
+	local name = player:get_player_name();
+	pd.set(name,"lastpos",pos)
+	player:moveto(pos)
+end

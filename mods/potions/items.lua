@@ -72,7 +72,8 @@ minetest.register_craftitem("potions:bones", {
 		if player_bones[name] ~= nil then
 			local bpos = player_bones[name]
 			bpos.y = bpos.y + 1
-			player:moveto(bpos)
+			adventuretest.teleport(player,bpos)
+			--player:moveto(bpos)
 		else
 			minetest.chat_send_player(name,"Your bones were not found")
 		end

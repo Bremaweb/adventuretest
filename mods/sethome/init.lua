@@ -107,7 +107,8 @@ function sethome_respawnplayer (player)
 	end
 	local homepos = pd.get(name,"homepos")
 	if homepos ~= nil then
-		player:moveto(homepos)
+		adventuretest.teleport(player,homepos)
+		--player:moveto(homepos)
 		return true
 	else	
 		return false
