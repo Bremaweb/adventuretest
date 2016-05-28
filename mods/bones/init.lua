@@ -119,8 +119,10 @@ minetest.register_node("bones:bones", {
 		minetest.log("action", name.." unloaded his fresh bones at "..minetest.pos_to_string(pos))
 		
 		-- destroy the bone node
-		minetest.set_node(pos, {name="air", param1=0, param2=0})
-		minetest.log("action","Destroying bones "..minetest.pos_to_string(pos))
+		if bones_inv:is_empty("main") then
+			minetest.set_node(pos, {name="air", param1=0, param2=0})
+			minetest.log("action","Destroying bones "..minetest.pos_to_string(pos))
+		end
 	end,
 	can_dig = function(pos, player)
 		return is_owner(pos, player:get_player_name())
