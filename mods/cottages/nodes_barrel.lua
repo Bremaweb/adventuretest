@@ -82,7 +82,9 @@ end
 --                end,
 -- TODO: on_rightclick is no longer available - maybe open if empty and closed if full?
                 on_punch      = function(pos, node, puncher)
-                    minetest.add_node(pos, {name = "cottages:barrel_lying", param2 = node.param2})
+                	if barrel.can_dig(pos,puncher) then
+                    	minetest.add_node(pos, {name = "cottages:barrel_lying", param2 = node.param2})
+                    end
                 end,
 
                 on_construct = function( pos )
@@ -112,7 +114,9 @@ end
 --                    minetest.add_node(pos, {name = "cottages:barrel", param2 = node.param2})
 --                end,
                 on_punch      = function(pos, node, puncher)
-                    minetest.add_node(pos, {name = "cottages:barrel_lying_open", param2 = node.param2})
+                	if barrel.can_dig(pos,puncher) then
+                    	minetest.add_node(pos, {name = "cottages:barrel_lying_open", param2 = node.param2})
+                    end
                 end,
 		is_ground_content = false,
         })
@@ -132,10 +136,12 @@ end
                     minetest.add_node(pos, {name = "cottages:barrel_lying_open", param2 = node.param2})
                 end,
                 on_punch      = function(pos, node, puncher)
-                    if( node.param2 < 4 ) then
-                       minetest.add_node(pos, {name = "cottages:barrel_lying", param2 = (node.param2+1)})
-                    else
-                       minetest.add_node(pos, {name = "cottages:barrel", param2 = 0})
+                	if barrel.can_dig(pos,puncher) then
+	                    if( node.param2 < 4 ) then
+	                       minetest.add_node(pos, {name = "cottages:barrel_lying", param2 = (node.param2+1)})
+	                    else
+	                       minetest.add_node(pos, {name = "cottages:barrel", param2 = 0})
+	                    end
                     end
                 end,
 		is_ground_content = false,
@@ -156,10 +162,12 @@ end
                     minetest.add_node(pos, {name = "cottages:barrel_lying", param2 = node.param2})
                 end,
                 on_punch      = function(pos, node, puncher)
-                    if( node.param2 < 4 ) then
-                       minetest.add_node(pos, {name = "cottages:barrel_lying_open", param2 = (node.param2+1)})
-                    else
-                       minetest.add_node(pos, {name = "cottages:barrel_open", param2 = 0})
+                	if barrel.can_dig(pos,puncher) then
+	                    if( node.param2 < 4 ) then
+	                       minetest.add_node(pos, {name = "cottages:barrel_lying_open", param2 = (node.param2+1)})
+	                    else
+	                       minetest.add_node(pos, {name = "cottages:barrel_open", param2 = 0})
+	                    end
                     end
                 end,
 		is_ground_content = false,
