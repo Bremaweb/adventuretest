@@ -31,7 +31,7 @@ minetest.register_node("cottages:straw_mat", {
         paramtype = 'light',
         paramtype2 = "facedir",
         walkable = false,
-        groups = { snappy = 3 },
+        groups = { snappy = 3,flammable=3 },
         sounds = default.node_sound_leaves_defaults(),
 	node_box = {
 		type = "fixed",
@@ -545,16 +545,14 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "cottages:straw_bale",
+	output = "cottages:straw 3",
 	recipe = {
-		{"cottages:straw_mat"},
-		{"cottages:straw_mat"},
-		{"cottages:straw_mat"},
+		{"cottages:straw_mat"},		
 	},
 })
 
 minetest.register_craft({
-	output = "cottages:straw",
+	output = "cottages:straw 4",
 	recipe = {
 		{"cottages:straw_bale"},
 	},
@@ -563,13 +561,13 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "cottages:straw_bale",
 	recipe = {
-		{"cottages:straw"},
+		{"cottages:straw","cottages:straw","cottages:straw","cottages:straw"},
 	},
 })
 
 minetest.register_craft({
-	output = "cottages:straw_mat 3",
+	output = "cottages:straw_mat",
 	recipe = {
-		{"cottages:straw_bale"},
+		{"cottages:straw","cottages:straw","cottages:straw"},
 	},
 })
