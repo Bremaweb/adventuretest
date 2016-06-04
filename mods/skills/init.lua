@@ -109,16 +109,20 @@ end
 
 function skills.get_skills_formspec(player)
 	local name = player:get_player_name()
+	local level = pd.get(name,"level")
 	local formspec = "size[12,10]"
 		.."list[current_player;main;8,0.5;4,8;]"
 	local i = 0
+	local sk = nil
 	for id,skill in pairs(skills.available_skills) do
-		local sk = skills.get_skill(name,id)	
-		formspec = formspec.."label[1.5,"..tostring(i)..".2;"..skill.desc.."]"
-		formspec = formspec.."label[3.5,"..tostring(i)..".2;"..math.floor(sk.exp).." / "..tostring( (math.floor((sk.level^1.75)) * skill.level_exp) ).."]"
-		formspec = formspec.."label[6,"..tostring(i)..".2;"..tostring(sk.level).." / "..tostring(skill.max_level).."]"
-		formspec = formspec.."list[detached:"..name.."_skills;"..tostring(id)..";0.5,"..tostring(i)..";1,1;]"
-		i = i + 1
+		if skill.level == nil or skill.level <= level.level then
+			sk = skills.get_skill(name,id)	
+			formspec = formspec.."label[1.5,"..tostring(i)..".2;"..skill.desc.."]"
+			formspec = formspec.."label[3.5,"..tostring(i)..".2;"..math.floor(sk.exp).." / "..tostring( (math.floor((sk.level^1.75)) * skill.level_exp) ).."]"
+			formspec = formspec.."label[6,"..tostring(i)..".2;"..tostring(sk.level).." / "..tostring(skill.max_level).."]"
+			formspec = formspec.."list[detached:"..name.."_skills;"..tostring(id)..";0.5,"..tostring(i)..";1,1;]"
+			i = i + 1
+		end
 	end
 	return formspec
 end
