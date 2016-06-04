@@ -51,7 +51,7 @@ minetest.register_on_dieplayer(adventuretest_die_player)
 local function adventuretest_dignode(pos, node, digger)
   --print("on_dignode")
   -- going to try to consolidate all on_dignode calls here so there is only one function call
-  
+  local name = digger:get_player_name()
   -- ON DIG NODE FOR MONEY MOD
   for k,v in pairs(money.convert_items) do
     if ( node.name == money.convert_items[k].dig_block ) then     
@@ -63,6 +63,7 @@ local function adventuretest_dignode(pos, node, digger)
   if minetest.registered_nodes[node.name] ~= nil then
     if minetest.registered_nodes[node.name]["skill"] ~= nil then
        default.drop_item(pos,"experience:1_exp")
+       skills.add_exp(name,5)
     end
   end
   
@@ -79,7 +80,8 @@ local function adventuretest_dignode(pos, node, digger)
 		local base = 1
 		local bonus = dug / 1800
 		local decelerator = 2500		
-		local exp = base + bonus - math.floor(dug / decelerator) 
+		local exp = base + bonus - math.floor(dug / decelerator)
+		skills.add_exp(name,exp)
 		local e = experience.exp_to_items(exp)
 		for _,item in pairs(e) do
 			default.drop_item(ppos,item)
@@ -104,7 +106,8 @@ local function adventuretest_placenode(pos, node, placer)
 	  	local base = 1
 		local bonus = placed / 1800
 		local decelerator = 2500		
-		local exp = base + bonus - math.floor(placed / decelerator) 
+		local exp = base + bonus - math.floor(placed / decelerator)
+		skills.add_exp(name,exp) 
 		local e = experience.exp_to_items(exp)
 		for _,item in pairs(e) do
 			default.drop_item(ppos,item)
