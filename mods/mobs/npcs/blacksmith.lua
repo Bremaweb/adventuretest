@@ -59,7 +59,7 @@ mobs:register_mob("mobs:blacksmith",{
 	blood_offset = 0.25,
 	activity_level = 1,
 	lifetimer = false,
-	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_nodes = {"fire:basic_flame","default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
 	avoid_range = 4,
 })
 

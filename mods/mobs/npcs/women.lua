@@ -55,7 +55,7 @@ type = "npc",
 		{chance=60, item="potions:magic_replenish1"},
 	},
 	lifetimer = false,
-	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_nodes = {"fire:basic_flame","default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
 	avoid_range = 4,
 })
 
@@ -117,7 +117,7 @@ type = "npc",
 	},
 	walk_chance = 5,
 	lifetimer = false,
-	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_nodes = {"fire:basic_flame","default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
 	avoid_range = 4,
 })
 
@@ -178,7 +178,7 @@ type = "npc",
 	},
 	walk_chance = 9,
 	lifetimer = false,
-	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_nodes = {"fire:basic_flame","default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
 	avoid_range = 4,
 })
 
@@ -235,7 +235,7 @@ type = "npc_special",
 	},
 	walk_chance = 0,
 	lifetimer = false,
-	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_nodes = {"fire:basic_flame","default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
 	avoid_range = 4,
 	on_step = function(self,dtime)
 		self.timer = self.timer+dtime		

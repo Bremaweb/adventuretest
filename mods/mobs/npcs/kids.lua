@@ -61,7 +61,7 @@ mobs:register_mob("mobs:kid_lost", {
 		{chance=60, item="potions:magic_replenish1"},
 	},
 	lifetimer = false,
-	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_nodes = {"fire:basic_flame","default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
 	avoid_range = 4,
 	passive = false,
 	stationary = true,
