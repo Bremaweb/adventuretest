@@ -35,15 +35,15 @@ local function adventuretest_die_player(player)
 	end
 	bones_on_dieplayer(player)
 	skills_on_dieplayer(player)	
-  	hunger.update_hunger(player, 20)
-  	affects.player_died(player)
-  	player:set_hp(20)
-  	if sethome_respawnplayer(player) == false then  		
-  		mg_villages.spawnplayer(player)
-  	end
-  	energy.respawnplayer(player)
-  	pd.increment(name,STAT_DIED,1)
-  	return true
+	hunger.update_hunger(player, 20)
+	affects.player_died(player)
+	if sethome_respawnplayer(player) == false then  		
+		mg_villages.spawnplayer(player)
+	end
+	energy.respawnplayer(player)
+	pd.increment(name,STAT_DIED,1)
+	player:set_hp(pd.get_number(name,"max_hp"))
+	return true
 end
 
 minetest.register_on_dieplayer(adventuretest_die_player)
@@ -51,7 +51,7 @@ minetest.register_on_dieplayer(adventuretest_die_player)
 local function adventuretest_dignode(pos, node, digger)
   --print("on_dignode")
   -- going to try to consolidate all on_dignode calls here so there is only one function call
-  local name = digger:get_player_name()
+  
   -- ON DIG NODE FOR MONEY MOD
   for k,v in pairs(money.convert_items) do
     if ( node.name == money.convert_items[k].dig_block ) then     
@@ -126,8 +126,18 @@ minetest.register_on_generated(on_generated)
 
 local function on_join(player)	
 	pd.load_player(player:get_player_name())
+	local name = player:get_player_name()
 	if minetest.setting_getbool("enable_damage") then
 		hunger_join_player(player)
+	end
+	-- for backward compatibility if player was created before max hp was added
+	if pd.get_number(name,"max_hp") == 0 then
+		local l = pd.get(name,"level")
+		local hp = 6 + (( math.floor(l.level / 2) ) * 2)
+		if hp > 20 then
+			hp = 20
+		end
+		pd.set(name,"max_hp",hp)
 	end
 end
 minetest.register_on_joinplayer(on_join)
@@ -151,6 +161,8 @@ local function on_new(player)
 	pd.set(name,"jump",1)
 	pd.set(name,"gravity",1)
 	pd.set(name,"level", {level=1,exp=0})
+	pd.set(name,"max_health",6)
+	player:set_hp(6)
 	skills.set_default_skills(name)
 	pd.save_player(name)
 	mg_villages.on_newplayer(player)

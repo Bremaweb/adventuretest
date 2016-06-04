@@ -72,6 +72,11 @@ function skills.add_exp(name, exp)
 			gain = 10.0,
 		})
 		pd.set(name,"level",l)
+		local hp = 6 + (( math.floor(l.level / 2) ) * 2)
+		if hp > 20 then
+			hp = 20
+		end
+		pd.set(name,"max_hp",hp) 
 	end	
 end
 

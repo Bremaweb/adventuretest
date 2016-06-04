@@ -32,7 +32,7 @@ if damage_enabled then
 	number = 20,
 	alignment = {x = -1, y = -1},
 	offset = HUD_HEALTH_OFFSET,
-	background = "hud_heart_bg.png",
+	--background = "hud_heart_bg.png",
 	events = {
 		 {
 			type = "damage",

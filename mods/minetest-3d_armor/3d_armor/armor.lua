@@ -144,6 +144,9 @@ armor.update_armor = function(self, player)
 		self.def[name].state = state
 		self.def[name].count = items
 		if heal_max > math.random(100) then
+			if self.player_hp[name] > pd.get_number(name,"max_hp") then
+				self.player_hp[name] = pd.get_number(name,"max_hp")
+			end
 			player:set_hp(self.player_hp[name])
 			return
 		end

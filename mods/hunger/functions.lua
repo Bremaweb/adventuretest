@@ -94,11 +94,13 @@ function do_health_tick(player,name,dtime)
 
 	-- heal player by 1 hp if not dead and saturation is > 15 (of 30)
 	if lvl > HUNGER_HEAL_LVL and air > 0 then
-		player:set_hp(hp + HUNGER_HEAL)
+		if hp < pd.get_number(name,"max_hp") then
+			player:set_hp(hp + HUNGER_HEAL)
+		end
 	end
 
 	-- or damage player by 1 hp if saturation is < 2 (of 30)
-	if lvl < HUNGER_STARVE_LVL then
+	if lvl < HUNGER_STARVE_LVL then		
 		player:set_hp(hp - HUNGER_STARVE)
 	end
 end
@@ -148,6 +150,7 @@ function hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sound)
 		local name = user:get_player_name()
 		local sat = pd.get_number(name,"hunger_lvl")
 		local hp = user:get_hp()
+		local max_hp = pd.get_number(name,"max_hp")
 		-- Saturation
 		if sat < HUNGER_MAX and hunger_change then
 			sat = sat + hunger_change
@@ -157,10 +160,10 @@ function hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sound)
 			end
 		end
 		-- Healing
-		if hp < 20 and heal then
+		if hp < max_hp and heal then
 			hp = hp + heal
-			if hp > 20 then
-				hp = 20
+			if hp > max_hp then
+				hp = max_hp
 			end
 			user:set_hp(hp)
 		end

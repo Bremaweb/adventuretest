@@ -17,11 +17,15 @@ function energy.update_energy(p,name,dtime)
 					if math.random(0,4) == 1 then
 						minetest.sound_play("default_snore",{object=p})
 					end
-					p:set_hp(p:get_hp()+2)
+					if p:get_hp() < pd.get_number(name,"max_hp") then
+						p:set_hp(p:get_hp()+2)
+					end
 				end
 				if anim.animation == "sit" then
 					adj = adj + 0.5
-					p:set_hp(p:get_hp()+1)
+					if p:get_hp() < pd.get_number(name,"max_hp") then
+						p:set_hp(p:get_hp()+1)
+					end
 				end
 				
 					-- adjust their energy
