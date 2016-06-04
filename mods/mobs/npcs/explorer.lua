@@ -60,6 +60,6 @@ mobs:register_mob("mobs:explorer",{
 	},
 	lifetimer = false,
 	activity_level = 2,
-	avoid_nodes = {"default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
+	avoid_nodes = {"fire:basic_flame","default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
 	avoid_range = 4,
 })
