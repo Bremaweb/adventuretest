@@ -13,6 +13,8 @@ minetest.register_craftitem("farming_plus:strawberry_seed", {
 minetest.register_node("farming_plus:strawberry_1", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_strawberry_1.png"},
@@ -29,6 +31,8 @@ minetest.register_node("farming_plus:strawberry_1", {
 minetest.register_node("farming_plus:strawberry_2", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_strawberry_2.png"},
@@ -45,6 +49,8 @@ minetest.register_node("farming_plus:strawberry_2", {
 minetest.register_node("farming_plus:strawberry_3", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_strawberry_3.png"},
@@ -61,6 +67,8 @@ minetest.register_node("farming_plus:strawberry_3", {
 minetest.register_node("farming_plus:strawberry", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	tiles = {"farming_strawberry_4.png"},
 	drop = {
@@ -84,4 +92,4 @@ minetest.register_craftitem("farming_plus:strawberry_item", {
 	on_use = minetest.item_eat(2),
 })
 
-farming:add_plant("farming_plus:strawberry", {"farming_plus:strawberry_1", "farming_plus:strawberry_2", "farming_plus:strawberry_3"}, 50, 20)
+farming:add_plant("farming_plus:strawberry", {"farming_plus:strawberry_1", "farming_plus:strawberry_2", "farming_plus:strawberry_3"}, 200, 1)

@@ -2,8 +2,8 @@ local register_food = hunger.register_food
 
 register_food("default:apple", 2)
 
-if minetest.get_modpath("farming") ~= nil then
-	register_food("farming:bread", 4)
+if minetest.get_modpath("farming_plus") ~= nil then
+	register_food("farming_plus:bread", 4)
 end
 
 if minetest.get_modpath("mobs") ~= nil then
@@ -113,19 +113,19 @@ if minetest.get_modpath("mushroom") ~= nil then
 end
 
 if minetest.get_modpath("docfarming") ~= nil then
-	register_food("docfarming:carrot", 3)
-	register_food("docfarming:cucumber", 2)
-	register_food("docfarming:corn", 3)
-	register_food("docfarming:potato", 4)
-	register_food("docfarming:bakedpotato", 5)
-	register_food("docfarming:raspberry", 3)
+	register_food("docfarming_plus:carrot", 3)
+	register_food("docfarming_plus:cucumber", 2)
+	register_food("docfarming_plus:corn", 3)
+	register_food("docfarming_plus:potato", 4)
+	register_food("docfarming_plus:bakedpotato", 5)
+	register_food("docfarming_plus:raspberry", 3)
 end
 
 if minetest.get_modpath("farming_plus") ~= nil then
 	register_food("farming_plus:carrot_item", 3)
 	register_food("farming_plus:banana", 2)
 	register_food("farming_plus:orange_item", 2)
-	register_food("farming:pumpkin_bread", 4)
+	register_food("farming_plus:pumpkin_bread", 4)
 	register_food("farming_plus:strawberry_item", 2)
 	register_food("farming_plus:tomato_item", 2)
 	register_food("farming_plus:potato_item", 4)
@@ -226,33 +226,33 @@ if minetest.get_modpath("ethereal") then
 end
 
 if minetest.get_modpath("farming") and farming.mod == "redo" then
-	register_food("farming:bread", 6)
-	register_food("farming:potato", 1)
-	register_food("farming:baked_potato", 6)
-	register_food("farming:cucumber", 4)
-	register_food("farming:tomato", 4)
-	register_food("farming:carrot", 3)
-	register_food("farming:carrot_gold", 6, "", nil, 8)
-	register_food("farming:corn", 3)
-	register_food("farming:corn_cob", 5)
-	register_food("farming:melon_slice", 2)
-	register_food("farming:pumpkin_slice", 1)
-	register_food("farming:pumpkin_bread", 9)
-	register_food("farming:coffee_cup", 2, "farming:drinking_cup")
-	register_food("farming:coffee_cup_hot", 3, "farming:drinking_cup", nil, 2)
-	register_food("farming:cookie", 2)
-	register_food("farming:chocolate_dark", 3)
-	register_food("farming:donut", 4)
-	register_food("farming:donut_chocolate", 6)
-	register_food("farming:donut_apple", 6)
-	register_food("farming:raspberries", 1)
-	register_food("farming:blueberries", 1)
-	register_food("farming:muffin_blueberry", 4)
+	register_food("farming_plus:bread", 6)
+	register_food("farming_plus:potato", 1)
+	register_food("farming_plus:baked_potato", 6)
+	register_food("farming_plus:cucumber", 4)
+	register_food("farming_plus:tomato", 4)
+	register_food("farming_plus:carrot", 3)
+	register_food("farming_plus:carrot_gold", 6, "", nil, 8)
+	register_food("farming_plus:corn", 3)
+	register_food("farming_plus:corn_cob", 5)
+	register_food("farming_plus:melon_slice", 2)
+	register_food("farming_plus:pumpkin_slice", 1)
+	register_food("farming_plus:pumpkin_bread", 9)
+	register_food("farming_plus:coffee_cup", 2, "farming_plus:drinking_cup")
+	register_food("farming_plus:coffee_cup_hot", 3, "farming_plus:drinking_cup", nil, 2)
+	register_food("farming_plus:cookie", 2)
+	register_food("farming_plus:chocolate_dark", 3)
+	register_food("farming_plus:donut", 4)
+	register_food("farming_plus:donut_chocolate", 6)
+	register_food("farming_plus:donut_apple", 6)
+	register_food("farming_plus:raspberries", 1)
+	register_food("farming_plus:blueberries", 1)
+	register_food("farming_plus:muffin_blueberry", 4)
 	if minetest.get_modpath("vessels") then
-		register_food("farming:smoothie_raspberry", 2, "vessels:drinking_glass")
+		register_food("farming_plus:smoothie_raspberry", 2, "vessels:drinking_glass")
 	end
-	register_food("farming:rhubarb", 1)
-	register_food("farming:rhubarb_pie", 6)
+	register_food("farming_plus:rhubarb", 1)
+	register_food("farming_plus:rhubarb_pie", 6)
 end
 
 if minetest.get_modpath("kpgmobs") ~= nil then
@@ -266,10 +266,10 @@ if minetest.get_modpath("kpgmobs") ~= nil then
 end
 
 if minetest.get_modpath("jkfarming") ~= nil then
-	register_food("jkfarming:carrot", 3)
-	register_food("jkfarming:corn", 3)
-	register_food("jkfarming:melon_part", 2)
-	register_food("jkfarming:cake", 3)
+	register_food("jkfarming_plus:carrot", 3)
+	register_food("jkfarming_plus:corn", 3)
+	register_food("jkfarming_plus:melon_part", 2)
+	register_food("jkfarming_plus:cake", 3)
 end
 
 if minetest.get_modpath("jkanimals") ~= nil then

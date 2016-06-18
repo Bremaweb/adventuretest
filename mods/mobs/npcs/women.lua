@@ -171,7 +171,7 @@ type = "npc",
 	blood_amount = 35,
 	blood_offset = 0.25,
 	rewards = {
-		{chance=100, item="farming:bread 6"},
+		{chance=100, item="farming_plus:bread 6"},
 		{chance=70, item="food:cheese 6"},
 		{chance=80, item="experience:6_exp 2"},
 		{chance=40, item="potions:magic_replenish1"},

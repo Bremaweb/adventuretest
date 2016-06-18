@@ -13,6 +13,8 @@ minetest.register_craftitem("farming_plus:carrot_seed", {
 minetest.register_node("farming_plus:carrot_1", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_carrot_1.png"},
@@ -31,6 +33,8 @@ minetest.register_node("farming_plus:carrot_2", {
 	walkable = false,
 	drawtype = "plantlike",
 	drop = "",
+	buildable_to = true,
+	floodable = true,
 	tiles = {"farming_carrot_2.png"},
 	selection_box = {
 		type = "fixed",
@@ -45,6 +49,8 @@ minetest.register_node("farming_plus:carrot_2", {
 minetest.register_node("farming_plus:carrot_3", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_carrot_3.png"},
@@ -61,6 +67,8 @@ minetest.register_node("farming_plus:carrot_3", {
 minetest.register_node("farming_plus:carrot", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	tiles = {"farming_carrot_4.png"},
 	drop = {
@@ -84,4 +92,4 @@ minetest.register_craftitem("farming_plus:carrot_item", {
 	on_use = minetest.item_eat(3),
 })
 
-farming:add_plant("farming_plus:carrot", {"farming_plus:carrot_1", "farming_plus:carrot_2", "farming_plus:carrot_3"}, 50, 20)
+farming:add_plant("farming_plus:carrot", {"farming_plus:carrot_1", "farming_plus:carrot_2", "farming_plus:carrot_3"}, 900, 1)

@@ -2,18 +2,19 @@
 local S
 S = farming.S
 
-minetest.register_craftitem(":farming:pumpkin_seed", {
+minetest.register_craftitem(":farming_plus:pumpkin_seed", {
 	description = S("Pumpkin Seed"),
 	inventory_image = "farming_pumpkin_seed.png",
 	on_place = function(itemstack, placer, pointed_thing)
-		return farming:place_seed(itemstack, placer, pointed_thing, "farming:pumpkin_1")
+		return farming:place_seed(itemstack, placer, pointed_thing, "farming_plus:pumpkin_1")
 	end
 })
 
-minetest.register_node(":farming:pumpkin_1", {
+minetest.register_node(":farming_plus:pumpkin_1", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	drawtype = "nodebox",
+	floodable = true,
 	drop = "",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png"},
 	node_box = {
@@ -32,9 +33,10 @@ minetest.register_node(":farming:pumpkin_1", {
 	sounds = default.node_sound_wood_defaults(),
 })
 
-minetest.register_node(":farming:pumpkin_2", {
+minetest.register_node(":farming_plus:pumpkin_2", {
 	paramtype = "light",
 	sunlight_propagates = true,
+	floodable = true,
 	drawtype = "nodebox",
 	drop = "",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png"},
@@ -54,9 +56,10 @@ minetest.register_node(":farming:pumpkin_2", {
 	sounds = default.node_sound_wood_defaults(),
 })
 
-minetest.register_node(":farming:pumpkin", {
+minetest.register_node(":farming_plus:pumpkin", {
 	description = S("Pumpkin"),
 	paramtype2 = "facedir",
+	floodable = true,
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png"},
 	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2, plant=1},
 	sounds = default.node_sound_wood_defaults(),
@@ -64,19 +67,19 @@ minetest.register_node(":farming:pumpkin", {
 	on_punch = function(pos, node, puncher)
 		local tool = puncher:get_wielded_item():get_name()
 		if tool and string.match(tool, "sword") then
-			node.name = "farming:pumpkin_face"
+			node.name = "farming_plus:pumpkin_face"
 			minetest.set_node(pos, node)
-			puncher:get_inventory():add_item("main", ItemStack("farming:pumpkin_seed"))
+			puncher:get_inventory():add_item("main", ItemStack("farming_plus:pumpkin_seed"))
 			if math.random(1, 5) == 1 then
-				puncher:get_inventory():add_item("main", ItemStack("farming:pumpkin_seed"))
+				puncher:get_inventory():add_item("main", ItemStack("farming_plus:pumpkin_seed"))
 			end
 		end
 	end
 })
 
-farming:add_plant("farming:pumpkin", {"farming:pumpkin_1", "farming:pumpkin_2"}, 80, 20)
+farming:add_plant("farming_plus:pumpkin", {"farming_plus:pumpkin_1", "farming_plus:pumpkin_2"}, 375, 1)
 
-minetest.register_node(":farming:pumpkin_face", {
+minetest.register_node(":farming_plus:pumpkin_face", {
 	description = S("Pumpkin Face"),
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
@@ -84,7 +87,7 @@ minetest.register_node(":farming:pumpkin_face", {
 	sounds = default.node_sound_wood_defaults(),
 })
 
-minetest.register_node(":farming:pumpkin_face_light", {
+minetest.register_node(":farming_plus:pumpkin_face_light", {
 	description = S("Pumpkin Face With Light"),
 	paramtype2 = "facedir",
 	light_source = LIGHT_MAX-2,
@@ -95,12 +98,12 @@ minetest.register_node(":farming:pumpkin_face_light", {
 
 minetest.register_craft({
 	type = "shapeless",
-	output = "farming:pumpkin_face_light",
-	recipe = {"farming:pumpkin_face", "default:torch"}
+	output = "farming_plus:pumpkin_face_light",
+	recipe = {"farming_plus:pumpkin_face", "default:torch"}
 })
 
 -- ========= BIG PUMPKIN =========
-minetest.register_node(":farming:big_pumpkin", {
+minetest.register_node(":farming_plus:big_pumpkin", {
 	description = S("Big Pumpkin"),
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_big_side.png"},
@@ -129,7 +132,7 @@ minetest.register_node(":farming:big_pumpkin", {
 							minetest.after(0.1, function(placer)
 								local inv = placer:get_inventory()
 								local index = placer:get_wield_index()
-								inv:set_stack("main", index, ItemStack("farming:big_pumpkin"))
+								inv:set_stack("main", index, ItemStack("farming_plus:big_pumpkin"))
 							end, placer)
 							return
 						end
@@ -143,29 +146,29 @@ minetest.register_node(":farming:big_pumpkin", {
 		for dy=0,1 do
 			pos.y = pos.y+dy
 			pos.z = pos.z+1
-			minetest.set_node(pos, {name="farming:big_pumpkin_side", param2=2})
+			minetest.set_node(pos, {name="farming_plus:big_pumpkin_side", param2=2})
 			pos.x = pos.x-1
-			minetest.set_node(pos, {name="farming:big_pumpkin_corner", param2=2})
+			minetest.set_node(pos, {name="farming_plus:big_pumpkin_corner", param2=2})
 			pos.x = pos.x+1
 			pos.z = pos.z-2
-			minetest.set_node(pos, {name="farming:big_pumpkin_side", param2=4})
+			minetest.set_node(pos, {name="farming_plus:big_pumpkin_side", param2=4})
 			pos.x = pos.x+1
-			minetest.set_node(pos, {name="farming:big_pumpkin_corner", param2=4})
+			minetest.set_node(pos, {name="farming_plus:big_pumpkin_corner", param2=4})
 			pos.z = pos.z+1
-			minetest.set_node(pos, {name="farming:big_pumpkin_side", param2=3})
+			minetest.set_node(pos, {name="farming_plus:big_pumpkin_side", param2=3})
 			pos.z = pos.z+1
-			minetest.set_node(pos, {name="farming:big_pumpkin_corner", param2=3})
+			minetest.set_node(pos, {name="farming_plus:big_pumpkin_corner", param2=3})
 			pos.z = pos.z-1
 			pos.x = pos.x-2
-			minetest.set_node(pos, {name="farming:big_pumpkin_side", param2=1})
+			minetest.set_node(pos, {name="farming_plus:big_pumpkin_side", param2=1})
 			pos.z = pos.z-1
-			minetest.set_node(pos, {name="farming:big_pumpkin_corner", param2=1})
+			minetest.set_node(pos, {name="farming_plus:big_pumpkin_corner", param2=1})
 			pos.z = pos.z+1
 			pos.x = pos.x+1
 			pos.y = pos.y-dy
 		end
 		pos.y = pos.y+1
-		minetest.set_node(pos, {name="farming:big_pumpkin_top"})
+		minetest.set_node(pos, {name="farming_plus:big_pumpkin_top"})
 	end,
 	
 	after_destruct = function(pos, oldnode)
@@ -176,7 +179,7 @@ minetest.register_node(":farming:big_pumpkin", {
 					pos.y = pos.y+dy
 					pos.z = pos.z+dz
 					local name = minetest.get_node(pos).name
-					if string.find(name, "farming:big_pumpkin") then
+					if string.find(name, "farming_plus:big_pumpkin") then
 						minetest.remove_node(pos)
 					end
 					pos.x = pos.x-dx
@@ -188,7 +191,7 @@ minetest.register_node(":farming:big_pumpkin", {
 	end
 })
 
-minetest.register_node(":farming:big_pumpkin_side", {
+minetest.register_node(":farming_plus:big_pumpkin_side", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
@@ -208,7 +211,7 @@ minetest.register_node(":farming:big_pumpkin_side", {
 	},
 	groups = {not_in_creative_inventory=1},
 })
-minetest.register_node(":farming:big_pumpkin_corner", {
+minetest.register_node(":farming_plus:big_pumpkin_corner", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
@@ -229,7 +232,7 @@ minetest.register_node(":farming:big_pumpkin_corner", {
 	groups = {not_in_creative_inventory=1},
 })
 
-minetest.register_node(":farming:big_pumpkin_top", {
+minetest.register_node(":farming_plus:big_pumpkin_top", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	tiles = {"farming_pumpkin_big_top.png"},
@@ -244,8 +247,8 @@ minetest.register_node(":farming:big_pumpkin_top", {
 
 minetest.register_craft({
 	type = "shapeless",
-	output = "farming:big_pumpkin",
-	recipe = {"bucket:bucket_water", "farming:pumpkin"},
+	output = "farming_plus:big_pumpkin",
+	recipe = {"bucket:bucket_water", "farming_plus:pumpkin"},
 	replacements = {
 		{"bucket:bucket_water", "bucket:bucket_empty"}
 	}
@@ -276,7 +279,7 @@ for j,list in pairs(box2) do
 	box2[j] = list
 end
 
-minetest.register_node(":farming:scarecrow", {
+minetest.register_node(":farming_plus:scarecrow", {
 	description = S("Scarecrow"),
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -305,25 +308,25 @@ minetest.register_node(":farming:scarecrow", {
 			minetest.after(0.1, function(placer)
 				local inv = placer:get_inventory()
 				local index = placer:get_wield_index()
-				inv:set_stack("main", index, ItemStack("farming:scarecrow"))
+				inv:set_stack("main", index, ItemStack("farming_plus:scarecrow"))
 			end, placer)
 			return
 		end
 		minetest.set_node(pos, node)
 		pos.y = pos.y-1
-		node.name = "farming:scarecrow_bottom"
+		node.name = "farming_plus:scarecrow_bottom"
 		minetest.set_node(pos, node)
 	end,
 	
 	after_destruct = function(pos, oldnode)
 		pos.y = pos.y-1
-		if minetest.get_node(pos).name == "farming:scarecrow_bottom" then
+		if minetest.get_node(pos).name == "farming_plus:scarecrow_bottom" then
 			minetest.remove_node(pos)
 		end
 	end
 })
 
-minetest.register_node(":farming:scarecrow_bottom", {
+minetest.register_node(":farming_plus:scarecrow_bottom", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
@@ -343,15 +346,15 @@ minetest.register_node(":farming:scarecrow_bottom", {
 })
 
 minetest.register_craft({
-	output = "farming:scarecrow",
+	output = "farming_plus:scarecrow",
 	recipe = {
-		{"", "farming:pumpkin_face", "",},
+		{"", "farming_plus:pumpkin_face", "",},
 		{"default:stick", "default:stick", "default:stick",},
 		{"", "default:stick", "",}
 	}
 })
 
-minetest.register_node(":farming:scarecrow_light", {
+minetest.register_node(":farming_plus:scarecrow_light", {
 	description = S("Scarecrow With light"),
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -381,57 +384,57 @@ minetest.register_node(":farming:scarecrow_light", {
 			minetest.after(0.1, function(placer)
 				local inv = placer:get_inventory()
 				local index = placer:get_wield_index()
-				inv:set_stack("main", index, ItemStack("farming:scarecrow_light"))
+				inv:set_stack("main", index, ItemStack("farming_plus:scarecrow_light"))
 			end, placer)
 			return
 		end
 		minetest.set_node(pos, node)
 		pos.y = pos.y-1
-		node.name = "farming:scarecrow_bottom"
+		node.name = "farming_plus:scarecrow_bottom"
 		minetest.set_node(pos, node)
 	end,
 	
 	after_destruct = function(pos, oldnode)
 		pos.y = pos.y-1
-		if minetest.get_node(pos).name == "farming:scarecrow_bottom" then
+		if minetest.get_node(pos).name == "farming_plus:scarecrow_bottom" then
 			minetest.remove_node(pos)
 		end
 	end
 })
 
 minetest.register_craft({
-	output = "farming:scarecrow_light",
+	output = "farming_plus:scarecrow_light",
 	recipe = {
-		{"", "farming:pumpkin_face_light", "",},
+		{"", "farming_plus:pumpkin_face_light", "",},
 		{"default:stick", "default:stick", "default:stick",},
 		{"", "default:stick", "",}
 	}
 })
 
 --===============
-minetest.register_craftitem(":farming:pumpkin_bread", {
+minetest.register_craftitem(":farming_plus:pumpkin_bread", {
 	description = S("Pumpkin Bread"),
 	inventory_image = "farming_bread_pumpkin.png",
 	stack_max = 99,
 	on_use = minetest.item_eat(8)
 })
 
-minetest.register_craftitem(":farming:pumpkin_flour", {
+minetest.register_craftitem(":farming_plus:pumpkin_flour", {
 	description = "Pumpkin Flour",
 	inventory_image = "farming_cake_mix_pumpkin.png",
 })
-minetest.register_alias("farming:pumpkin_cake_mix", "farming:pumpkin_flour")
+minetest.register_alias("farming_plus:pumpkin_cake_mix", "farming_plus:pumpkin_flour")
 
 minetest.register_craft({
-	output = "farming:pumpkin_flour",
+	output = "farming_plus:pumpkin_flour",
 	type = "shapeless",
-	recipe = {"farming:flour", "farming:pumpkin"}
+	recipe = {"farming_plus:flour", "farming_plus:pumpkin"}
 })
 
 minetest.register_craft({
 	type = "cooking",
-	output = "farming:pumpkin_bread",
-	recipe = "farming:pumpkin_flour",
+	output = "farming_plus:pumpkin_bread",
+	recipe = "farming_plus:pumpkin_flour",
 	cooktime = 10
 })
 
@@ -439,42 +442,42 @@ minetest.register_craft({
 -- ========= FUEL =========
 minetest.register_craft({
 	type = "fuel",
-	recipe = "farming:pumpkin_seed",
+	recipe = "farming_plus:pumpkin_seed",
 	burntime = 1
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "farming:pumpkin",
+	recipe = "farming_plus:pumpkin",
 	burntime = 5
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "farming:pumpkin_face",
+	recipe = "farming_plus:pumpkin_face",
 	burntime = 5
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "farming:pumpkin_face_light",
+	recipe = "farming_plus:pumpkin_face_light",
 	burntime = 7
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "farming:big_pumpkin",
+	recipe = "farming_plus:big_pumpkin",
 	burntime = 10
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "farming:scarecrow",
+	recipe = "farming_plus:scarecrow",
 	burntime = 5
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "farming:scarecrow_light",
+	recipe = "farming_plus:scarecrow_light",
 	burntime = 5
 })

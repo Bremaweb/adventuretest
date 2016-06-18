@@ -16,7 +16,7 @@ mobs:register_mob("mobs:jungle_spider",{
     armor = 200,
 	damage = 1,
 	drops = {
-		{name = "farming:string",
+		{name = "farming_plus:string",
 		chance = 40,
 		min = 3,
 		max = 6,},

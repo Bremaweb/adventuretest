@@ -48,9 +48,9 @@ replacements_group['realtest'].replace = function( replacements )
 		table.insert( repl, {'default:furnace',          'oven:oven'});
 		table.insert( repl, {'default:clay',             'grounds:clay'});
 		-- Realtest does not know about these nodes yet
-		table.insert( repl, {'farming:soil_wet',            'farming:soil'});
-		table.insert( repl, {'farming:desert_sand_soil',    'farming:soil'});
-		table.insert( repl, {'farming:desert_sand_soil_wet','farming:soil'});
+		table.insert( repl, {'farming_plus:soil_wet',            'farming_plus:soil'});
+		table.insert( repl, {'farming_plus:desert_sand_soil',    'farming_plus:soil'});
+		table.insert( repl, {'farming_plus:desert_sand_soil_wet','farming_plus:soil'});
 		for i=1,5 do
                 	table.insert( repl, {'default:grass_'..i,'air' });
 		end
@@ -59,7 +59,7 @@ replacements_group['realtest'].replace = function( replacements )
 	else
 		table.insert(         repl, {'oven:oven',        'default:furnace'});
 		table.insert(         repl, {'grounds:clay',     'default:clay'});
-		table.insert(         repl, {'farming:soil',     'farming:soil_wet'});
+		table.insert(         repl, {'farming_plus:soil',     'farming_plus:soil_wet'});
         end
 
 

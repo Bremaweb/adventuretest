@@ -29,12 +29,12 @@ mobs:register_mob("mobs:sheep", {
 		walk_start = 81,
 		walk_end = 100,
 	},
-	follow = "farming:wheat",
+	follow = "farming_plus:wheat",
 	view_range = 5,
 	
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
-		if item:get_name() == "farming:wheat" then
+		if item:get_name() == "farming_plus:wheat" then
 			if not self.tamed then
 				if not minetest.setting_getbool("creative_mode") then
 					item:take_item()

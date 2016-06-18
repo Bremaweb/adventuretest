@@ -69,7 +69,7 @@ ADD_RCC({"fishing:pole",                   60,  1, 1 });
 if( minetest.get_modpath("ropes") ~= nil ) then
 	ADD_RCC({"ropes:rope",                     60,  5, 2, chest_work=1, shelf=1, chest_storage=1 });
 elseif( minetest.get_modpath("farming") ~= nil ) then
-	ADD_RCC({"farming:string",                 60,  5, 2, church=1, library=1, chest_work=1, shelf=1, chest_storage=1 });
+	ADD_RCC({"farming_plus:string",                 60,  5, 2, church=1, library=1, chest_work=1, shelf=1, chest_storage=1 });
 elseif( minetest.get_modpath("moreblocks") ~= nil ) then
 	ADD_RCC({"moreblocks:rope",                60,  5, 2, chest_work=1, shelf=1, chest_storage=1 });
 end
@@ -110,7 +110,7 @@ ADD_RCC({'cottages:anvil',                 80,  1,  2, forge=1 });
 
 ADD_RCC({'currency:minegeld',              80, 10,  2, chest_private=1, chest_work=1 }); -- TODO: could be in any chest with a certain chance
 
-ADD_RCC({'farming:hoe_stone',              80,  1,  2, farm_tiny=2, farm_full=2, chest_work=2 });
+ADD_RCC({'farming_plus:hoe_stone',              80,  1,  2, farm_tiny=2, farm_full=2, chest_work=2 });
 
 ADD_RCC({'homedecor:beer_mug',             50,  1,  2, tavern=5, inn=3});
 ADD_RCC({'homedecor:book_blue',            50,  1,  2, church=1, library=1, chest_private=1});

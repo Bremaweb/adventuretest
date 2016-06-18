@@ -842,7 +842,7 @@ minetest.register_abm({
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		if abm_limiter() then return end
 		local item_count = math.random(0,5)
-		local items_available = { [0] = "default:apple", [1] = "mobs:meat_raw", [2]="farming:bread",[3]="bushes:berry_pie_cooked",[4]="bushes:basket_empty",[5]="farming:wheat",[6]="throwing:arrow",[7]="default:torch",[8]="farming:string"}
+		local items_available = { [0] = "default:apple", [1] = "mobs:meat_raw", [2]="farming_plus:bread",[3]="bushes:berry_pie_cooked",[4]="bushes:basket_empty",[5]="farming_plus:wheat",[6]="throwing:arrow",[7]="default:torch",[8]="farming_plus:string"}
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		for i = 0, item_count do
@@ -1579,7 +1579,7 @@ minetest.register_node("default:ice", {
 	is_ground_content = true,
 	paramtype = "light",
 	freezemelt = "default:water_source",
-	groups = {choppy=3,cracky=3, melts=1},
+	groups = {choppy=3,cracky=3, melts=1, frozen=1},
 	sounds = default.node_sound_glass_defaults(),
 })
 
@@ -1591,6 +1591,7 @@ minetest.register_node("default:snow", {
 	is_ground_content = true,
 	paramtype = "light",
 	buildable_to = true,
+	floodable = true,
 	leveled = 7,
 	drawtype = "nodebox",
 	freezemelt = "default:water_flowing",
@@ -1601,7 +1602,7 @@ minetest.register_node("default:snow", {
 			{-0.5, -0.5, -0.5,  0.5, -0.5+2/16, 0.5},
 		},
 	},
-	groups = {crumbly=3,falling_node=1, melts=1, float=1,puts_out_fire=1},
+	groups = {crumbly=3,falling_node=1, melts=1, float=1,puts_out_fire=1, frozen=1},
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_snow_footstep", gain=0.25},
 		dug = {name="default_snow_footstep", gain=0.75},
@@ -1614,7 +1615,7 @@ minetest.register_node("default:snowblock", {
 	tiles = {"default_snow.png"},
 	is_ground_content = true,
 	freezemelt = "default:water_source",
-	groups = {crumbly=3, melts=1, puts_out_fire=1},
+	groups = {crumbly=3, melts=1, puts_out_fire=1,frozen=1},
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_snow_footstep", gain=0.25},
 		dug = {name="default_snow_footstep", gain=0.75},

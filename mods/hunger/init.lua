@@ -24,19 +24,5 @@ dofile(modpath .. "/food.lua")
 dofile(modpath .. "/legacy.lua")
 
 
--- Callbacks
-
-function hunger_join_player(player)
-	local name = player:get_player_name()		
-	local lvl = pd.get_number(name,"hunger_lvl")
-	if lvl > 20 then
-		lvl = 20
-	end
-	minetest.after(0.8, function()
-		hud.change_item(player, "hunger", {offset = "item", item_name = "hunger"})
-		hud.change_item(player, "hunger", {number = lvl, max = 20})
-	end)
-end
-
 minetest.register_on_item_eat(hunger.eat)
 

@@ -270,7 +270,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "cottages:wood_flat 16",
 	recipe = {
-		{cottages.craftitem_stick, "farming:string",cottages.craftitem_stick },
+		{cottages.craftitem_stick, "farming_plus:string",cottages.craftitem_stick },
 		{cottages.craftitem_stick, "",              cottages.craftitem_stick },
 	}
 })
@@ -278,7 +278,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "cottages:wool_tent 2",
 	recipe = {
-		{"farming:string", "farming:string"},
+		{"farming_plus:string", "farming_plus:string"},
 		{"",cottages.craftitem_stick}
 	}
 })

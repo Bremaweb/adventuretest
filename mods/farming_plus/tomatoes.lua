@@ -13,6 +13,8 @@ minetest.register_craftitem("farming_plus:tomato_seed", {
 minetest.register_node("farming_plus:tomato_1", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_tomato_1.png"},
@@ -29,6 +31,8 @@ minetest.register_node("farming_plus:tomato_1", {
 minetest.register_node("farming_plus:tomato_2", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_tomato_2.png"},
@@ -45,6 +49,8 @@ minetest.register_node("farming_plus:tomato_2", {
 minetest.register_node("farming_plus:tomato_3", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_tomato_3.png"},
@@ -61,6 +67,8 @@ minetest.register_node("farming_plus:tomato_3", {
 minetest.register_node("farming_plus:tomato", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	tiles = {"farming_tomato_4.png"},
 	drop = {
@@ -84,4 +92,4 @@ minetest.register_craftitem("farming_plus:tomato_item", {
 	on_use = minetest.item_eat(4),
 })
 
-farming:add_plant("farming_plus:tomato", {"farming_plus:tomato_1", "farming_plus:tomato_2", "farming_plus:tomato_3"}, 50, 20)
+farming:add_plant("farming_plus:tomato", {"farming_plus:tomato_1", "farming_plus:tomato_2", "farming_plus:tomato_3"}, 175, 1)

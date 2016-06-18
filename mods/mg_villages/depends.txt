@@ -1,7 +1,7 @@
 default
 handle_schematics
 doors
-farming
+farming_plus
 wool
 mg?
 stairs?

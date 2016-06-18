@@ -13,6 +13,8 @@ minetest.register_craftitem("farming_plus:rhubarb_seed", {
 minetest.register_node("farming_plus:rhubarb_1", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_rhubarb_1.png"},
@@ -29,6 +31,8 @@ minetest.register_node("farming_plus:rhubarb_1", {
 minetest.register_node("farming_plus:rhubarb_2", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_rhubarb_2.png"},
@@ -45,6 +49,8 @@ minetest.register_node("farming_plus:rhubarb_2", {
 minetest.register_node("farming_plus:rhubarb", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	tiles = {"farming_rhubarb_3.png"},
 	drop = {
@@ -67,4 +73,4 @@ minetest.register_craftitem("farming_plus:rhubarb_item", {
 	inventory_image = "farming_rhubarb.png",
 })
 
-farming:add_plant("farming_plus:rhubarb", {"farming_plus:rhubarb_1", "farming_plus:rhubarb_2"}, 50, 20)
+farming:add_plant("farming_plus:rhubarb", {"farming_plus:rhubarb_1", "farming_plus:rhubarb_2"}, 300, 1)

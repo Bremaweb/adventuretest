@@ -3,8 +3,8 @@ quests.chest = {}
 quests.chest.go = function(npc,player)
   local inv = player:get_inventory()
   local pos = npc.object:getpos()
-  if inv:contains_item("main","farming:flour") and inv:contains_item("main","food:bowl") then
-    inv:remove_item("main","farming:flour")
+  if inv:contains_item("main","farming_plus:flour") and inv:contains_item("main","food:bowl") then
+    inv:remove_item("main","farming_plus:flour")
     inv:remove_item("main","food:bowl")
     chat.local_chat(pos,"'Thank you very much, take this as a token of my appreciation!'",6)
     local lp = player:getpos()

@@ -105,10 +105,10 @@ replacements_group['farming'].add_material = function( fruit, fruit_item, prefix
 			{ fruit_item.." 1",   "default:coal_lump 3",    "default:wood 8"},
 			{ fruit_item.." 10",  "default:steel_ingot 2",  "default:chest_locked 1"}};
 		if( fruit_item ~= data[1] ) then
-			table.insert( goods, { data[1].." 1", "farming:scarecrow", "farming:scarecrow_light 1"});
+			table.insert( goods, { data[1].." 1", "farming_plus:scarecrow", "farming_plus:scarecrow_light 1"});
 			table.insert( goods, { data[1].." 2", "default:dirt 20", "default:bucket_water", "default:steel_ingot 4", "default:leaves 99" });
 		end
-		table.insert( goods, {"farming:hoe_wood 1","default:wood 10", "default:cobble 10"});
+		table.insert( goods, {"farming_plus:hoe_wood 1","default:wood 10", "default:cobble 10"});
 		
 		mobf_trader.add_trader( mobf_trader.npc_trader_prototype,
 			"farmer growing "..fruit.."s", -- not always the right grammatical form
@@ -129,14 +129,14 @@ end
 replacements_group['farming'].construct_farming_type_list = function()
 
 	-- farming from minetest_game
-	replacements_group['farming'].add_material( 'wheat',  'farming:wheat',                   'farming:', '_', '' );
-	replacements_group['farming'].add_material( 'cotton', 'farming:cotton',                  'farming:', '_', '' );
-	replacements_group['farming'].add_material( 'pumpkin','farming:pumpkin',                 'farming:', '_', '' );
+	replacements_group['farming'].add_material( 'wheat',  'farming_plus:wheat',                   'farming_plus:', '_', '' );
+	replacements_group['farming'].add_material( 'cotton', 'farming_plus:cotton',                  'farming_plus:', '_', '' );
+	replacements_group['farming'].add_material( 'pumpkin','farming_plus:pumpkin',                 'farming_plus:', '_', '' );
 
 	-- RealTest
-	replacements_group['farming'].add_material( 'flax',   'farming:string',                  'farming:', '_', '' );
-	replacements_group['farming'].add_material( 'spelt',  'farming:wheat',                   'farming:', '_', '' );
-	replacements_group['farming'].add_material( 'soy',    'farming:soy',                     'farming:', '_', '' );
+	replacements_group['farming'].add_material( 'flax',   'farming_plus:string',                  'farming_plus:', '_', '' );
+	replacements_group['farming'].add_material( 'spelt',  'farming_plus:wheat',                   'farming_plus:', '_', '' );
+	replacements_group['farming'].add_material( 'soy',    'farming_plus:soy',                     'farming_plus:', '_', '' );
 
 
 	-- diffrent versions of farming_plus:
@@ -160,10 +160,10 @@ replacements_group['farming'].construct_farming_type_list = function()
 	-- coffee beans from farming_plus/farming_plusplus
 	replacements_group['farming'].add_material( 'coffee', 'farming_plus:coffee_beans',       'farming_plus:', '_', '' );
 
-	-- Docfarming: https://forum.minetest.net/viewtopic.php?t=3948 
+	-- Docfarming_plus: https://forum.minetest.net/viewtopic.php?t=3948 
 	fruits = {'carrot','corn','potato','raspberry'};
 	for i,fruit in pairs( fruits ) do
-		replacements_group['farming'].add_material( fruit, 'docfarming:'..fruit,         'docfarming:', '', '' );
+		replacements_group['farming'].add_material( fruit, 'docfarming_plus:'..fruit,         'docfarming_plus:', '', '' );
 	end
 end
 

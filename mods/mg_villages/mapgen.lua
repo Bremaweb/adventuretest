@@ -760,12 +760,12 @@ mg_villages.village_area_fill_with_plants = function( village_area, villages, mi
 	cid.c_savannasapling  = minetest.get_content_id( 'mg:savannasapling');
 	cid.c_pinesapling     = minetest.get_content_id( 'mg:pinesapling');
 	-- add farmland
-	cid.c_wheat           = minetest.get_content_id( 'farming:wheat_8' );
-	cid.c_cotton          = minetest.get_content_id( 'farming:cotton_8' );
+	cid.c_wheat           = minetest.get_content_id( 'farming_plus:wheat_8' );
+	cid.c_cotton          = minetest.get_content_id( 'farming_plus:cotton_8' );
 	cid.c_shrub           = minetest.get_content_id( 'default:dry_shrub');
 	-- these extra nodes are used in order to avoid abms on the huge fields around the villages
-	cid.c_soil_wet        = minetest.get_content_id( 'mg_villages:soil' ); --'farming:soil_wet' );
-	cid.c_soil_sand       = minetest.get_content_id( 'mg_villages:desert_sand_soil'); --'farming:desert_sand_soil_wet' );
+	cid.c_soil_wet        = minetest.get_content_id( 'mg_villages:soil' ); --'farming_plus:soil_wet' );
+	cid.c_soil_sand       = minetest.get_content_id( 'mg_villages:desert_sand_soil'); --'farming_plus:desert_sand_soil_wet' );
 	-- desert sand soil is only available in minetest_next
 	if( not( cid.c_soil_sand )) then
 		cid.c_soil_sand = cid.c_soil_wet;
@@ -776,10 +776,10 @@ mg_villages.village_area_fill_with_plants = function( village_area, villages, mi
 	end
 
 	if( mg_villages.realtest_trees ) then
-		cid.c_soil_wet        = minetest.get_content_id( 'farming:soil' ); -- TODO: the one from mg_villages would be better...but that one lacks textures
-		cid.c_soil_sand       = minetest.get_content_id( 'farming:soil' ); -- TODO: the one from mg_villages would be better...but that one lacks textures
-		cid.c_wheat           = minetest.get_content_id( 'farming:spelt_4' );
-		cid.c_cotton          = minetest.get_content_id( 'farming:flax_4' );
+		cid.c_soil_wet        = minetest.get_content_id( 'farming_plus:soil' ); -- TODO: the one from mg_villages would be better...but that one lacks textures
+		cid.c_soil_sand       = minetest.get_content_id( 'farming_plus:soil' ); -- TODO: the one from mg_villages would be better...but that one lacks textures
+		cid.c_wheat           = minetest.get_content_id( 'farming_plus:spelt_4' );
+		cid.c_cotton          = minetest.get_content_id( 'farming_plus:flax_4' );
 --		cid.c_shrub           = minetest.get_content_id( 'default:dry_shrub');
 	end
 

@@ -39,7 +39,7 @@ dofile(minetest.get_modpath("cottages").."/adaptions.lua");
 -- add to this table what you want the handmill to convert;
 -- add a stack size if you want a higher yield
 cottages.handmill_product = {};
-cottages.handmill_product[ cottages.craftitem_seed_wheat ] = 'farming:flour 1';
+cottages.handmill_product[ cottages.craftitem_seed_wheat ] = 'farming_plus:flour 1';
 --[[ some examples:
 cottages.handmill_product[ 'default:cobble' ] = 'default:gravel';
 cottages.handmill_product[ 'default:gravel' ] = 'default:sand';

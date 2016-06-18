@@ -15,17 +15,17 @@
 --                of villages, the village name will consist of  name_prefix..village_name..name_postfix
 --	sapling_divisor = 1	Villages are sourrounded by a flat area that may contain trees. Increasing this
 --				value decreses the mount of trees placed.
---	plant_type = 'farming:wheat_8'  Type of plant that is placed around villages.
+--	plant_type = 'farming_plus:wheat_8'  Type of plant that is placed around villages.
 --	plant_frequency = 1	The higher this value is, the less plants are placed.
 
 local village_type_data_list = {
 	nore         = { min = 20, max = 40,   space_between_buildings=1, mods={},            texture = 'default_stone_brick.png',
 			 replacement_function = mg_villages.replacements_nore },
 	taoki        = { min = 30, max = 70,   space_between_buildings=1, mods={},            texture = 'default_brick.png' ,
-			 sapling_divisor =  5, plant_type = 'farming:cotton_8',    plant_frequency = 1,
+			 sapling_divisor =  5, plant_type = 'farming_plus:cotton_8',    plant_frequency = 1,
 			 replacement_function = mg_villages.replacements_taoki },
 	medieval     = { min = 25, max = 60,   space_between_buildings=2, mods={'cottages'},  texture = 'cottages_darkage_straw.png', -- they often have straw roofs
-			 sapling_divisor = 10, plant_type = 'farming:wheat_8',     plant_frequency = 1,
+			 sapling_divisor = 10, plant_type = 'farming_plus:wheat_8',     plant_frequency = 1,
 			 replacement_function = mg_villages.replacements_medieval,
 			roadsize_list = {2,3,4,5,6},
 --			road_materials = {'default:cobble','default:gravel','default:stonebrick','default:coalblock'},

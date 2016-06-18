@@ -240,15 +240,15 @@ mg_villages.replace_tree_trunk = function( replacements, wood_type )
 				-- not really wood-realted, but needs to be replaced as well
 				table.insert( replacements, {'default:furnace',      'oven:oven'});
 				-- farming is also handled diffrently
-				table.insert( replacements, {'farming:soil_wet',     'farming:soil'});
-				table.insert( replacements, {'farming:cotton_1',     'farming:flax_1'});
-				table.insert( replacements, {'farming:cotton_2',     'farming:flax_1'});
-				table.insert( replacements, {'farming:cotton_3',     'farming:flax_2'});
-				table.insert( replacements, {'farming:cotton_4',     'farming:flax_2'});
-				table.insert( replacements, {'farming:cotton_5',     'farming:flax_3'});
-				table.insert( replacements, {'farming:cotton_6',     'farming:flax_3'});
-				table.insert( replacements, {'farming:cotton_7',     'farming:flax_4'});
-				table.insert( replacements, {'farming:cotton_8',     'farming:flax_4'});
+				table.insert( replacements, {'farming_plus:soil_wet',     'farming_plus:soil'});
+				table.insert( replacements, {'farming_plus:cotton_1',     'farming_plus:flax_1'});
+				table.insert( replacements, {'farming_plus:cotton_2',     'farming_plus:flax_1'});
+				table.insert( replacements, {'farming_plus:cotton_3',     'farming_plus:flax_2'});
+				table.insert( replacements, {'farming_plus:cotton_4',     'farming_plus:flax_2'});
+				table.insert( replacements, {'farming_plus:cotton_5',     'farming_plus:flax_3'});
+				table.insert( replacements, {'farming_plus:cotton_6',     'farming_plus:flax_3'});
+				table.insert( replacements, {'farming_plus:cotton_7',     'farming_plus:flax_4'});
+				table.insert( replacements, {'farming_plus:cotton_8',     'farming_plus:flax_4'});
 				-- stairs and slabs made out of default wood
 				table.insert( replacements, {'stairs:stair_wood',    'trees:'..v..'_planks_stair'});
 				table.insert( replacements, {'stairs:slab_wood',     'trees:'..v..'_planks_slab'});
@@ -340,8 +340,8 @@ mg_villages.get_replacement_list = function( housetype, pr )
    -- realtest lacks quite a lot from default
    if( mg_villages.realtest_trees ) then
 	for i=1,8 do
-   		table.insert( replacements, {'farming:wheat_'..i,       'farming:spelt_'..tostring( (i+(i%2))/2) });
-   		table.insert( replacements, {'farming:cotton_'..i,      'farming:flax_' ..tostring( (i+(i%2))/2) });
+   		table.insert( replacements, {'farming_plus:wheat_'..i,       'farming_plus:spelt_'..tostring( (i+(i%2))/2) });
+   		table.insert( replacements, {'farming_plus:cotton_'..i,      'farming_plus:flax_' ..tostring( (i+(i%2))/2) });
 	end
 	for i=1,5 do
    		table.insert( replacements, {'default:grass_'..i,       'air' });
@@ -936,22 +936,22 @@ mg_villages.get_fruit_replacements = function( replacements, fruit)
 		local new_name = '';
 		-- farming_plus plants sometimes come in 3 or 4 variants, but not in 8 as cotton does
 		if(     minetest.registered_nodes[ 'farming_plus:'..fruit..'_'..i ]) then
-			old_name = "farming:cotton_"..i;
+			old_name = "farming_plus:cotton_"..i;
 			new_name = 'farming_plus:'..fruit..'_'..i;
 	
 		-- "surplus" cotton variants will be replaced with the full grown fruit
 		elseif( minetest.registered_nodes[ 'farming_plus:'..fruit ]) then
-			old_name = "farming:cotton_"..i;
+			old_name = "farming_plus:cotton_"..i;
 			new_name = 'farming_plus:'..fruit;
 
-		-- and plants from farming: are supported as well
-		elseif( minetest.registered_nodes[ 'farming:'..fruit..'_'..i ]) then
-			old_name = "farming:cotton_"..i;
-			new_name = 'farming:'..fruit..'_'..i;
+		-- and plants from farming_plus: are supported as well
+		elseif( minetest.registered_nodes[ 'farming_plus:'..fruit..'_'..i ]) then
+			old_name = "farming_plus:cotton_"..i;
+			new_name = 'farming_plus:'..fruit..'_'..i;
 
-		elseif( minetest.registered_nodes[ 'farming:'..fruit ]) then
-			old_name = "farming:cotton_"..i;
-			new_name = 'farming:'..fruit;
+		elseif( minetest.registered_nodes[ 'farming_plus:'..fruit ]) then
+			old_name = "farming_plus:cotton_"..i;
+			new_name = 'farming_plus:'..fruit;
 		end
 
 		if( old_name ~= '' and new_name ~= '' ) then

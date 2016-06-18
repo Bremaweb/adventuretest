@@ -55,7 +55,7 @@ cottages.texture_chest = {"default_chest_top.png", "default_chest_top.png", "def
                 "default_chest_side.png", "default_chest_side.png", "default_chest_front.png"};
 
 -- the treshing floor produces wheat seeds
-cottages.craftitem_seed_wheat   = "farming:seed_wheat";
+cottages.craftitem_seed_wheat   = "farming_plus:seed_wheat";
 cottages.texture_wheat_seed = "farming_wheat_seed.png";
 cottages.texture_stick      = "default_stick.png";
 
@@ -84,7 +84,7 @@ if( not( minetest.registered_nodes["default:tree"])) then
 			"spruce_chest_side.png", "spruce_chest_side.png", "spruce_chest_front.png"};
 
 		-- wheat is called spelt in RealTest
-		cottages.craftitem_seed_wheat = 'farming:seed_spelt';
+		cottages.craftitem_seed_wheat = 'farming_plus:seed_spelt';
 		cottages.texture_wheat_seed   = 'farming_spelt_seed.png';
 		cottages.texture_stick        = 'trees_maple_stick.png';
 	else

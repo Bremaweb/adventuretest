@@ -22,6 +22,7 @@ minetest.register_node("flowers:dandelion_white", {
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
+	floodable = true,
 	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_white=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -41,6 +42,7 @@ minetest.register_node("flowers:magic", {
 	light_source = 12,
 	walkable = false,
 	buildable_to = true,
+	floodable = true,
 	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_white=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -59,6 +61,7 @@ minetest.register_node("flowers:dandelion_yellow", {
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
+	floodable = true,
 	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_yellow=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -77,6 +80,7 @@ minetest.register_node("flowers:geranium", {
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
+	floodable = true,
 	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_blue=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -95,6 +99,7 @@ minetest.register_node("flowers:rose", {
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
+	floodable = true,
 	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_red=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -113,6 +118,7 @@ minetest.register_node("flowers:tulip", {
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
+	floodable = true,
 	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_orange=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -131,6 +137,7 @@ minetest.register_node("flowers:viola", {
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
+	floodable = true,
 	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_violet=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -163,7 +170,7 @@ minetest.register_abm({
 
 minetest.register_abm({
 	nodenames = {"group:flora"},
-	neighbors = {"default:dirt_with_grass", "default:desert_sand"},
+	neighbors = {"default:dirt_with_grass", "default:desert_sand","mg:dirt_with_dry_grass"},
 	interval = 50,
 	chance = 25,
 	action = function(pos, node)
@@ -171,7 +178,7 @@ minetest.register_abm({
 		pos.y = pos.y - 1
 		local under = minetest.get_node(pos)
 		pos.y = pos.y + 1
-		if under.name == "default:desert_sand" then
+		if under.name == "default:desert_sand" or under.name == "mg:dirt_with_dry_grass" then
 			minetest.set_node(pos, {name="default:dry_shrub"})
 		elseif under.name ~= "default:dirt_with_grass" then
 			return

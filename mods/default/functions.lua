@@ -185,6 +185,22 @@ minetest.register_abm({
 	end,
 })
 
+-- freeze things
+minetest.register_abm({
+	nodenames = {"group:freezes"},
+	neighbors = {"group:frozen"},
+	interval = 10,
+	chance = 2,
+	action = function(pos, node)
+		local new_node = minetest.registered_nodes[node.name].freezemelt
+		if new_node ~= nil then
+			minetest.set_node(pos,{name=new_node})
+		else
+			minetest.log("error","Freezing node without freezemelt set: "..node.name)
+		end
+	end
+})
+
 --
 -- Papyrus and cactus growing
 --

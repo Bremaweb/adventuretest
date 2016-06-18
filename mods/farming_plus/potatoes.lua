@@ -13,6 +13,8 @@ minetest.register_craftitem("farming_plus:potato_seed", {
 minetest.register_node("farming_plus:potato_1", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_potato_1.png"},
@@ -29,6 +31,8 @@ minetest.register_node("farming_plus:potato_1", {
 minetest.register_node("farming_plus:potato_2", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	drop = "",
 	tiles = {"farming_potato_2.png"},
@@ -45,6 +49,8 @@ minetest.register_node("farming_plus:potato_2", {
 minetest.register_node("farming_plus:potato", {
 	paramtype = "light",
 	walkable = false,
+	buildable_to = true,
+	floodable = true,
 	drawtype = "plantlike",
 	tiles = {"farming_potato_3.png"},
 	drop = {
@@ -67,7 +73,7 @@ minetest.register_craftitem("farming_plus:potato_item", {
 	inventory_image = "farming_potato.png",
 })
 
-farming:add_plant("farming_plus:potato", {"farming_plus:potato_1", "farming_plus:potato_2"}, 50, 20)
+farming:add_plant("farming_plus:potato", {"farming_plus:potato_1", "farming_plus:potato_2"}, 475, 1)
 
 minetest.register_alias("farming_plus:potatoe_item", "farming_plus:potato_item")
 minetest.register_alias("farming_plus:potatoe_seed", "farming_plus:potato_seed")

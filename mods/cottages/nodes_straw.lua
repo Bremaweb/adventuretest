@@ -175,7 +175,7 @@ minetest.register_node("cottages:threshing_floor", {
 		-- only accept input the threshing floor can use/process
 		if(    listname=='straw'
 		    or listname=='seeds' 
-		    or (listname=='harvest' and stack and stack:get_name() ~= 'farming:wheat' )) then
+		    or (listname=='harvest' and stack and stack:get_name() ~= 'farming_plus:wheat' )) then
 			return 0;
 		end
 
@@ -218,8 +218,8 @@ minetest.register_node("cottages:threshing_floor", {
 		local stack2 = inv:get_stack( 'harvest', 2);
 
 		if(       (      stack1:is_empty()  and stack2:is_empty())
-			or( not( stack1:is_empty()) and stack1:get_name() ~= 'farming:wheat')
-			or( not( stack2:is_empty()) and stack2:get_name() ~= 'farming:wheat')) then
+			or( not( stack1:is_empty()) and stack1:get_name() ~= 'farming_plus:wheat')
+			or( not( stack2:is_empty()) and stack2:get_name() ~= 'farming_plus:wheat')) then
 
 --			minetest.chat_send_player( name, 'One of the input slots contains something else than wheat, or there is no wheat at all.');
 			-- update the formspec
@@ -254,7 +254,7 @@ minetest.register_node("cottages:threshing_floor", {
 			inv:add_item("straw",'cottages:straw_mat '..tostring( anz_straw ));
 			inv:add_item("seeds",cottages.craftitem_seed_wheat..' '..tostring( anz_seeds ));
 			-- consume the wheat
-			inv:remove_item("harvest", 'farming:wheat '..tostring( anz_wheat ));
+			inv:remove_item("harvest", 'farming_plus:wheat '..tostring( anz_wheat ));
 
 			local anz_left = found_wheat - anz_wheat;
 			if( anz_left > 0 ) then
@@ -520,7 +520,7 @@ minetest.register_craft({
 	output = "cottages:straw_mat 6",
 	recipe = {
                 {cottages.craftitem_stone,'',''},
-		{"farming:wheat", "farming:wheat", "farming:wheat", },
+		{"farming_plus:wheat", "farming_plus:wheat", "farming_plus:wheat", },
 	},
         replacements = {{ cottages.craftitem_stone, cottages.craftitem_seed_wheat.." 3" }},  
 })
