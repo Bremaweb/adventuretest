@@ -502,7 +502,7 @@ minetest.register_node("default:rail", {
                 -- but how to specify the dimensions for curved and sideways rails?
                 fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
 	},
-	groups = {bendy=2,dig_immediate=2,attached_node=1},
+	groups = {bendy=2,dig_immediate=2,attached_node=1,connect_to_raillike=1},
 })
 
 minetest.register_node("default:ladder", {
@@ -605,7 +605,38 @@ minetest.register_node("default:water_source", {
 	liquid_viscosity = WATER_VISC,
 	freezemelt = "default:ice",
 	post_effect_color = {a=64, r=100, g=100, b=200},
-	groups = {water=3, liquid=3, puts_out_fire=1, freezes=1},
+	groups = {water=3, liquid=3, puts_out_fire=1, freezes = 1},
+})
+
+minetest.register_node("default:mg_water_source", {
+	description = "Mapgen Water Source",
+	inventory_image = minetest.inventorycube("default_water.png"),
+	drawtype = "liquid",
+	tiles = {
+		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}}
+	},
+	special_tiles = {
+		-- New-style water source material (mostly unused)
+		{
+			name="default_water_source_animated.png",
+			animation={type="vertical_frames", aspect_w=128, aspect_h=128, length=2.0},
+			backface_culling = false,
+		}
+	},
+	alpha = WATER_ALPHA,
+	paramtype = "light",
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	drop = "",
+	drowning = 1,
+	liquidtype = "source",
+	liquid_alternative_flowing = "default:water_flowing",
+	liquid_alternative_source = "default:mg_water_source",
+	liquid_viscosity = WATER_VISC,	
+	post_effect_color = {a=64, r=100, g=100, b=200},
+	groups = {water=3, liquid=3, puts_out_fire=1 },
 })
 
 minetest.register_node("default:lava_flowing", {
@@ -1579,7 +1610,7 @@ minetest.register_node("default:ice", {
 	is_ground_content = true,
 	paramtype = "light",
 	freezemelt = "default:water_source",
-	groups = {choppy=3,cracky=3, melts=1, frozen=1},
+	groups = {choppy=3,cracky=3, melts=1, cold=1},
 	sounds = default.node_sound_glass_defaults(),
 })
 
@@ -1602,7 +1633,7 @@ minetest.register_node("default:snow", {
 			{-0.5, -0.5, -0.5,  0.5, -0.5+2/16, 0.5},
 		},
 	},
-	groups = {crumbly=3,falling_node=1, melts=1, float=1,puts_out_fire=1, frozen=1},
+	groups = {crumbly=3,falling_node=1, melts=1, float=1,puts_out_fire=1, cold=1},
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_snow_footstep", gain=0.25},
 		dug = {name="default_snow_footstep", gain=0.75},
@@ -1615,7 +1646,7 @@ minetest.register_node("default:snowblock", {
 	tiles = {"default_snow.png"},
 	is_ground_content = true,
 	freezemelt = "default:water_source",
-	groups = {crumbly=3, melts=1, puts_out_fire=1,frozen=1},
+	groups = {crumbly=3, melts=1, puts_out_fire=1,cold=1},
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_snow_footstep", gain=0.25},
 		dug = {name="default_snow_footstep", gain=0.75},

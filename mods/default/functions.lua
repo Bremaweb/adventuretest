@@ -188,16 +188,36 @@ minetest.register_abm({
 -- freeze things
 minetest.register_abm({
 	nodenames = {"group:freezes"},
-	neighbors = {"group:frozen"},
+	neighbors = {"group:cold"},
 	interval = 10,
-	chance = 2,
+	chance = 4,
 	action = function(pos, node)
-		local new_node = minetest.registered_nodes[node.name].freezemelt
+		pos.y = pos.y - 1
+		if minetest.get_node(pos).name == "air" then
+			pos.y = pos.y + 1
+			local new_node = minetest.registered_nodes[node.name].freezemelt
+			if new_node ~= nil then
+				minetest.set_node(pos,{name=new_node})
+			else
+				minetest.log("error","Freezing node without freezemelt set: "..node.name)
+			end
+		end
+	end
+})
+
+-- melt things
+minetest.register_abm({
+	nodenames = {"group:melts"},
+	neighbors = {"group:hot"},
+	interval = 10,
+	chance = 4,
+	action = function(pos, node)
+	local new_node = minetest.registered_nodes[node.name].freezemelt
 		if new_node ~= nil then
 			minetest.set_node(pos,{name=new_node})
 		else
-			minetest.log("error","Freezing node without freezemelt set: "..node.name)
-		end
+			minetest.log("error","Thawing node without freezemelt set: "..node.name)
+		end	
 	end
 })
 

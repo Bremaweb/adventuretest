@@ -168,6 +168,14 @@ bucket.register_liquid(
 )
 
 bucket.register_liquid(
+	"default:mg_water_source",
+	"default:water_flowing",
+	"bucket:bucket_water",
+	"bucket_water.png",
+	"Water Bucket"
+)
+
+bucket.register_liquid(
 	"default:lava_source",
 	"default:lava_flowing",
 	"bucket:bucket_lava",

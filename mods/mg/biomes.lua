@@ -13,6 +13,10 @@ minetest.register_biome({
 	node_shore_filler = "default:sand",
 	heat_point = 65,
 	humidity_point = 60,
+	node_water_top = "default:mg_water_source",
+	depth_water_top = 2,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
 })
 
 minetest.register_biome({
@@ -28,6 +32,10 @@ minetest.register_biome({
 	node_shore_filler = "default:sand",
 	heat_point = 80,
 	humidity_point = 65,
+	node_water_top = "default:mg_water_source",
+	depth_water_top = 2,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
 })
 
 minetest.register_biome({
@@ -43,6 +51,10 @@ minetest.register_biome({
 	node_shore_filler = "default:sand",
 	heat_point = 80,
 	humidity_point = 65,
+	node_water_top = "default:mg_water_source",
+	depth_water_top = 2,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
 })
 
 minetest.register_biome({
@@ -58,6 +70,10 @@ minetest.register_biome({
 	--node_shore_filler = "default:gravel",
 	heat_point = 65,
 	humidity_point = 60,
+	node_water_top = "default:mg_water_source",
+	depth_water_top = 2,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
 })
 
 
@@ -74,6 +90,10 @@ minetest.register_biome({
 	node_shore_filler = "default:sand",
 	heat_point = 65,
 	humidity_point = 70,
+	node_water_top = "default:mg_water_source",
+	depth_water_top = 2,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
 })
 
 minetest.register_biome({
@@ -89,6 +109,10 @@ minetest.register_biome({
 	node_shore_filler = "default:gravel",
 	heat_point = 65,
 	humidity_point = 70,
+	node_water_top = "default:mg_water_source",
+	depth_water_top = 2,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
 })
 
 minetest.register_biome({
@@ -100,6 +124,10 @@ minetest.register_biome({
 	node_dust = "default:snow",
 	y_min = 230,
 	y_max = 32000,
+	node_water_top = "default:mg_water_source",
+	depth_water_top = 2,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
 })
 
 minetest.register_biome({
@@ -113,10 +141,15 @@ minetest.register_biome({
 	--node_water_top = "",
 	--depth_water_top = ,
 	--node_water = "",
-	y_min = 1,
+	y_min = -10,
 	y_max = 230,
 	heat_point = 90,
 	humidity_point = 10,
+	node_water_top = "default:mg_water_source",
+	depth_water_top = 2,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
 })
 
 minetest.register_biome({
@@ -130,10 +163,14 @@ minetest.register_biome({
 	--node_water_top = "",
 	--depth_water_top = ,
 	--node_water = "",
-	y_min = 1,
+	y_min = -10,
 	y_max = 230,
 	heat_point = 90,
 	humidity_point = 35,
+	node_water_top = "default:mg_water_source",
+	depth_water_top = 2,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
 })
 
 minetest.register_biome({
@@ -151,6 +188,8 @@ minetest.register_biome({
 	y_max = 245,
 	heat_point = 20,
 	humidity_point = 70,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:ice",
 })
 
 minetest.register_biome({
@@ -167,6 +206,8 @@ minetest.register_biome({
 	y_max = 230,
 	heat_point = 10,
 	humidity_point = 40,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:ice",
 })
 
 minetest.register_biome({
@@ -183,7 +224,9 @@ minetest.register_biome({
 	y_min = 1,
 	y_max = 230,
 	heat_point = -10,
-	humidity_point = 20,
+	humidity_point = 20,	
+	node_water = "default:mg_water_source",
+	node_river_water = "default:ice",
 })
 
 minetest.register_biome({
@@ -215,10 +258,14 @@ minetest.register_biome({
 	--node_water_top = "default:ice",
 	--depth_water_top = 2,
 	--node_water = "",
-	y_min = 1,
+	y_min = -10,
 	y_max = 230,
 	heat_point = 90,
 	humidity_point = 90,
+	node_water_top = "default:mg_water_source",
+	depth_water_top = 2,
+	node_water = "default:mg_water_source",
+	node_river_water = "default:mg_water_source",
 })
 
 

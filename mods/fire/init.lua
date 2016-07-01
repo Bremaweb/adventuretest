@@ -28,7 +28,7 @@ minetest.register_node("fire:basic_flame", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 4,
-	groups = {igniter = 2, dig_immediate = 3},
+	groups = {igniter = 2, dig_immediate = 3, hot = 3},
 	drop = "",
 
 	on_construct = function(pos)
@@ -64,7 +64,7 @@ minetest.register_node("fire:permanent_flame", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 4,
-	groups = {igniter = 2, dig_immediate = 3},
+	groups = {igniter = 2, dig_immediate = 3, hot = 3},
 	drop = "",
 
 	on_blast = function()

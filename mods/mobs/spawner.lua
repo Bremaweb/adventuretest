@@ -53,12 +53,15 @@ end,
 	end,
 })
 
-minetest.register_abm({
+minetest.register_lbm({
+	name = "mobs:spawner_lbm",
 	nodenames = {"mobs:spawner"},
-	interval = 60,
-	chance = 5,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-	if abm_limiter() then return end	
+	run_at_every_load = true,
+	action = function(pos, node)
+	
+	local active_object_count = minetest.get_objects_inside_radius(pos,5)
+	local active_object_count_wider = minetest.get_objects_inside_radius(pos,15)
+		
 	local meta = minetest.get_meta(pos)
 	local entity = meta:get_string("entity")
 	local active_objects = meta:get_int("active_objects")
