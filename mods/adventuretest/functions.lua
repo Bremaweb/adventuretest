@@ -44,6 +44,75 @@ function adventuretest.teleport(player,pos)
 	player:moveto(pos)
 end
 
+function adventuretest.check_spawn(player)
+	local count = 0
+	local newpos = player:getpos()
+	local badpos = false
+	while adventuretest.obj_stuck(player) == true and count < 5 do
+		print("moving player")
+		local pos = player:getpos()		
+		newpos.x = pos.x + math.rand(-10,10)
+		newpos.z = pos.z + math.rand(-10,10)
+		adventuretest.teleport(player,newpos)
+		count = count + 1
+		badpos = true
+	end
+	if badpos == true then
+		-- check the elevation so they don't fall to their death
+		local ab = adventuretest.above_ground(newpos)
+		if ab ~= false and ab > 3 then
+			newpos.y = ( newpos.y - ( ab - 3 ) )
+			adventuretest.teleport(player,newpos)
+		end
+	end
+	local n = player:get_player_name()
+	pd.set(n,"homepos",newpos)
+end
+
+-- sees if a player  or entity is in a block
+function adventuretest.obj_stuck(obj)
+	local pos = obj:getpos()
+	local pn = adventuretest.get_obj_nodes(obj)
+	if pn.feet.walkable == false or pn.head.walkable == false then
+		return true
+	end
+	return false
+end
+
+-- mostly used for getting the nodes the player or entity is in
+function adventuretest.get_obj_nodes(obj)
+	local pos = obj:getpos()
+	local retval = {}
+	
+	pos.y = pos.y - 1
+	retval.standing_on = minetest.get_node(pos)
+	pos.y = pos.y + 1
+	retval.feet = minetest.get_node(pos)
+	pos.y = pos.y + 1
+	retval.head = minetest.get_node(pos)
+	
+	return retval
+end
+
+function adventuretest.above_ground(pos)
+	local step = 0
+	local dest = 0
+	if pos.y > 0 then
+		step = -1
+		dest = -35 
+	else
+		step = 1
+		dest = 125
+	end
+	for y = pos.y,dest,step do
+		local n = minetest.get_node({x=pos.x,y=y,z=pos.z})
+		if n.walkable == false then
+			return math.abs(pos.y - y)
+		end
+	end 
+	return false
+end
+
 function hunger_join_player(player)
 	local name = player:get_player_name()		
 	local lvl = pd.get_number(name,"hunger_lvl")

@@ -75,13 +75,13 @@ minetest.register_lbm({
 		    end
 		end
 		if active_objects_wider > 0 then
-		  if active_object_count_wider > active_objects_wider then    
+		  if #active_object_count_wider > active_objects_wider then    
 		    return
 		  end
 		end
 		
 		if active_objects > 0 then
-		  if active_object_count > active_objects then    
+		  if #active_object_count > active_objects then    
 		    return
 		  end
 		end

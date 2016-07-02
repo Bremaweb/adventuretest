@@ -165,7 +165,8 @@ local function on_new(player)
 	player:set_hp(6)
 	skills.set_default_skills(name)
 	pd.save_player(name)
-	mg_villages.on_newplayer(player)
+	minetest.after(5,adventuretest.check_spawn,player)
+	--mg_villages.spawnplayer(player)
 end
 minetest.register_on_newplayer(on_new)
 

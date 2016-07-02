@@ -1,10 +1,7 @@
 
 
 function mg_villages.spawnplayer(player)
-	if( minetest.setting_get("static_spawnpoint")) then
-		return;
-	end
-
+	
 	-- make sure the village types are initialized
 	if( not( mg_villages.village_types )) then
 		mg_villages.init_weights();
@@ -33,7 +30,7 @@ function mg_villages.spawnplayer(player)
 		end
 	end
 	end
-	player:setpos(min_pos)
+	adventuretest.teleport(player,min_pos)
 	local name = player:get_player_name()
 	pd.set(name,"homepos",min_pos)
 end

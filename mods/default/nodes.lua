@@ -14,7 +14,7 @@ minetest.register_node("default:desert_stone", {
 	description = "Desert Stone",
 	tiles = {"default_desert_stone.png"},
 	is_ground_content = true,
-	groups = {cracky=3, stone=1},
+	groups = {cracky=3, stone=1, hot=1},
 	drop = 'default:desert_stone',
 	legacy_mineral = true,
 	sounds = default.node_sound_stone_defaults(),
@@ -130,7 +130,7 @@ minetest.register_node("default:dirt_with_snow", {
 	description = "Dirt with Snow",
 	tiles = {"default_snow.png", "default_dirt.png", "default_dirt.png^default_snow_side.png"},
 	is_ground_content = true,
-	groups = {crumbly=3,puts_out_fire=1},
+	groups = {crumbly=3,puts_out_fire=1,cold=1},
 	drop = 'default:dirt',
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_snow_footstep", gain=0.25},
@@ -216,7 +216,7 @@ minetest.register_node("default:desert_sand", {
 	description = "Desert Sand",
 	tiles = {"default_desert_sand.png"},
 	is_ground_content = true,
-	groups = {crumbly=3, falling_node=1, sand=1},
+	groups = {crumbly=3, falling_node=1, sand=1, hot=1},
 	sounds = default.node_sound_sand_defaults(),
 })
 
@@ -1496,6 +1496,7 @@ minetest.register_node("default:dry_shrub", {
 	walkable = false,
 	is_ground_content = true,
 	buildable_to = true,
+	floodable = true,
 	groups = {snappy=3,flammable=3,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
