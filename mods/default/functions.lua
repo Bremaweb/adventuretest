@@ -461,7 +461,7 @@ end
 
 function randomChance (percent) 
 	math.randomseed( os.clock() )
-	return percent >= math.random(1, 100)                                          
+	return percent >= ( math.random(1000, 100000) / 1000 )
 end
 
 function default.tprint (tbl, indent)

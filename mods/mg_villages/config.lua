@@ -20,7 +20,7 @@ mg_villages.MINIMAL_BUILDUNGS_FOR_ROAD_PLACEMENT = 4;
 
 -- players without the mg_villages priv can only see villages which are less than that many blocks away
 -- from them when using the /vmap command
-mg_villages.VILLAGE_DETECT_RANGE = 400;
+mg_villages.VILLAGE_DETECT_RANGE = 50;
 
 -- if set to true, only players which have the mg_villages priv can use the "/visit <village nr>"
 -- command which allows teleporting to the village with the given number
@@ -68,12 +68,12 @@ mg_villages.medieval_subtype = false;
 -- on average, every n.th node inside a village area may be one of these trees - and it will be a relatively dense packed forrest
 mg_villages.sapling_probability = {};
 
-mg_villages.sapling_probability[ minetest.get_content_id( 'default:sapling' )       ] = 25; -- suitable for a relatively dense forrest of normal trees
-mg_villages.sapling_probability[ minetest.get_content_id( 'default:junglesapling' ) ] = 40; -- jungletrees are a bit bigger and need more space
-mg_villages.sapling_probability[ minetest.get_content_id( 'default:pinesapling' )   ] = 30; 
+mg_villages.sapling_probability[ minetest.get_content_id( 'default:sapling' )       ] = 15; -- suitable for a relatively dense forrest of normal trees
+mg_villages.sapling_probability[ minetest.get_content_id( 'default:junglesapling' ) ] = 30; -- jungletrees are a bit bigger and need more space
+mg_villages.sapling_probability[ minetest.get_content_id( 'default:pinesapling' )   ] = 20; 
 if( minetest.get_modpath( 'mg' )) then
-	mg_villages.sapling_probability[ minetest.get_content_id( 'mg:savannasapling'     ) ] = 30; 
-	mg_villages.sapling_probability[ minetest.get_content_id( 'mg:pinesapling'        ) ] = 35; 
+	mg_villages.sapling_probability[ minetest.get_content_id( 'mg:savannasapling'     ) ] = 20; 
+	mg_villages.sapling_probability[ minetest.get_content_id( 'mg:pinesapling'        ) ] = 25; 
 end
 mg_villages.moretrees_treelist = nil;
 if( minetest.get_modpath( 'moretrees' )) then
@@ -159,9 +159,9 @@ mg_villages.prices = {
 -- know exactly what you are doing.
 -----------------------------------------------------------------------------
 -- if set to false, villages will not be integrated into the terrain - which looks very bad
-mg_villages.ENABLE_TERRAIN_BLEND = true;
+mg_villages.ENABLE_TERRAIN_BLEND = false;
 -- if set to false, holes digged by cavegen and mudflow inside the village will not be repaired; houses will be destroyed
-mg_villages.UNDO_CAVEGEN_AND_MUDFLOW = true;
+mg_villages.UNDO_CAVEGEN_AND_MUDFLOW = false;
 
 -- internal variables for village generation
 

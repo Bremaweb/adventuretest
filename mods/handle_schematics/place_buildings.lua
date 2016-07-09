@@ -1,11 +1,7 @@
 -- TODO: this function also occours in replacements.lua
 handle_schematics.get_content_id_replaced = function( node_name, replacements )
-	if( not( replacements ) or not(replacements.table )) then
-		if not( node_name ) then
-			return minetest.get_content_id( 'ignore' );
-		else
-			return minetest.get_content_id( node_name );
-		end
+	if( not( node_name ) or not( replacements ) or not(replacements.table )) then
+		return minetest.get_content_id( 'ignore' )
 	end
 	if( replacements.table[ node_name ]) then
 		return minetest.get_content_id( replacements.table[ node_name ] );
@@ -113,7 +109,10 @@ local function generate_building_plotmarker( pos, minp, maxp, data, param2_data,
 	end
 	-- actually position the marker
 	if(   p.x >= minp.x and p.x <= maxp.x and p.z >= minp.z and p.z <= maxp.z and p.y >= minp.y and p.y <= maxp.y) then
-		if( data[ a:index(p.x, p.y, p.z)] == cid.c_snow and p.y<maxp.y and moresnow and moresnow.c_snow_top and cid.c_snow_top ~= cid.c_ignore) then
+		if( handle_schematics.moresnow_installed
+		   and data[ a:index(p.x, p.y, p.z)] == cid.c_snow
+		   and p.y<maxp.y
+		   and moresnow and moresnow.c_snow_top and cid.c_snow_top ~= cid.c_ignore) then
 			data[ a:index(p.x, p.y+1, p.z)] = moresnow.c_snow_top;
 		end
 		data[       a:index(p.x, p.y, p.z)] = cid.c_plotmarker;
@@ -166,9 +165,9 @@ local function generate_building_translate_nodenames( nodenames, replacements, c
 			new_nodes[ i ].special_chest = node_name;
 			-- TODO: perhaps use a locked chest owned by the mob living there?
 			-- place a normal chest here
-			new_nodes[ i ].new_content   = cid.c_chest;
-			new_nodes[ i ].special_chest = node_name;
-			new_node_name = 'default:chest';			
+			new_nodes[ i ].new_content   = cid.c_chest
+			new_nodes[ i ].special_chest = node_name
+			new_node_name = 'default:chest'			
 
 		elseif(new_node_name == 'cottages:chest_private'
 		   or  new_node_name == 'cottages:chest_work'
@@ -220,6 +219,15 @@ local function generate_building_translate_nodenames( nodenames, replacements, c
 			elseif( new_content == cid.c_sign ) then
 				-- the sign may require some text to be written on it
 				new_nodes[ i ].is_sign      = 1;
+
+			-- doors need special treatment as they changed from 2 to 1 node
+			elseif( string.sub( node_name,     1, 6)=="doors:"
+			    and string.sub( new_node_name, 1, 6)=="doors:" ) then
+				if(     string.sub( new_node_name, -2 ) =="_a") then
+					new_nodes[ i ].is_door_a    = 1;
+				elseif( string.sub( new_node_name, -2 ) =="_b") then
+					new_nodes[ i ].is_door_b    = 1;
+				end
 			end
 
 
@@ -431,7 +439,8 @@ local function generate_building(pos, minp, maxp, data, param2_data, a, extranod
 				end
 
 				if( not( t )) then
-					if( node_content ~= cid.c_plotmarker and (not(moresnow) or node_content ~= moresnow.c_snow_top )) then
+					if( node_content ~= cid.c_plotmarker
+					   and (not(handle_schematics.moresnow_installed) or not(moresnow) or node_content ~= moresnow.c_snow_top )) then
 						data[ a:index(ax, ay, az)] = cid.c_air;
 					end
 				else
@@ -458,19 +467,6 @@ local function generate_building(pos, minp, maxp, data, param2_data, a, extranod
 					-- do not overwrite plotmarkers
 					if( new_content ~= cid.c_air or node_content ~= cid.c_plotmarker ) then
 						data[       a:index(ax, ay, az)] = new_content;
-					end
-
-					-- store that a tree is to be grown there
-					if(     n.is_tree ) then
-						table.insert( extra_calls.trees,  {x=ax, y=ay, z=az, typ=new_content, snow=has_snow});
-
-					-- we're dealing with a chest that might need filling
-					elseif( n.is_chestlike ) then
-						table.insert( extra_calls.chests, {x=ax, y=ay, z=az, typ=new_content, bpos_i=building_nr_in_bpos, typ_name=n.special_chest});
-
-					-- the sign may require some text to be written on it
-					elseif( n.is_sign ) then
-						table.insert( extra_calls.signs,  {x=ax, y=ay, z=az, typ=new_content, bpos_i=building_nr_in_bpos});
 					end
 
 					-- handle rotation
@@ -516,6 +512,26 @@ local function generate_building(pos, minp, maxp, data, param2_data, a, extranod
 						param2_data[a:index(ax, ay, az)] = np2;
 					else
 						param2_data[a:index(ax, ay, az)] = t[2];
+					end
+
+
+					-- store that a tree is to be grown there
+					if(     n.is_tree ) then
+						table.insert( extra_calls.trees,  {x=ax, y=ay, z=az, typ=new_content, snow=has_snow});
+
+					-- we're dealing with a chest that might need filling
+					elseif( n.is_chestlike ) then
+						table.insert( extra_calls.chests, {x=ax, y=ay, z=az, typ=new_content, bpos_i=building_nr_in_bpos, typ_name=n.special_chest});
+
+					-- the sign may require some text to be written on it
+					elseif( n.is_sign ) then
+						table.insert( extra_calls.signs,  {x=ax, y=ay, z=az, typ=new_content, bpos_i=building_nr_in_bpos});
+
+					-- doors need the state param to be set (which depends on param2)
+					elseif( n.is_door_a ) then
+						table.insert( extra_calls.door_a, {x=ax, y=ay, z=az, typ=new_content, p2=param2_data[a:index(ax, ay, az)]});
+					elseif( n.is_door_b ) then
+						table.insert( extra_calls.door_b, {x=ax, y=ay, z=az, typ=new_content, p2=param2_data[a:index(ax, ay, az)]});
 					end
 				end
 			end
@@ -576,7 +592,7 @@ handle_schematics.place_buildings = function(village, minp, maxp, data, param2_d
 --print('REPLACEMENTS: '..minetest.serialize( replacements.table )..' CHEST: '..tostring( minetest.get_name_from_content_id( cid.c_chest ))); -- TODO
 	--print("Chest CID" ..tostring(cid.c_chest))
 	local extranodes = {}
-	local extra_calls = { on_constr = {}, trees = {}, chests = {}, signs = {}, traders = {} };
+	local extra_calls = { on_constr = {}, trees = {}, chests = {}, signs = {}, traders = {}, door_a = {}, door_b = {} };
 
 	for i, pos in pairs(bpos) do
 		-- roads are only placed if there are at least mg_villages.MINIMAL_BUILDUNGS_FOR_ROAD_PLACEMENT buildings in the village
@@ -625,7 +641,7 @@ end
 -- 
 -- replacement_list		contains replacements in the same list format as place_schematic uses
 --
-handle_schematics.place_building_using_voxelmanip = function( pos, binfo, replacement_list)
+handle_schematics.place_building_using_voxelmanip = function( pos, binfo, replacement_list, keep_ground)
 
 	if( not( replacement_list ) or type( replacement_list ) ~= 'table' ) then
 		return;
@@ -681,10 +697,10 @@ handle_schematics.place_building_using_voxelmanip = function( pos, binfo, replac
 	cid.c_sign             = handle_schematics.get_content_id_replaced( 'default:gravel',         replacements );
 
 	local extranodes = {}
-	local extra_calls = { on_constr = {}, trees = {}, chests = {}, signs = {}, traders = {} };
+	local extra_calls = { on_constr = {}, trees = {}, chests = {}, signs = {}, traders = {}, door_a = {}, door_b = {} };
 
 	-- last parameter false -> place dirt nodes instead of trying to keep the ground nodes
-	generate_building(pos, minp, maxp, data, param2_data, a, extranodes, replacements, cid, extra_calls, pos.building_nr, pos.village_id, binfo, cid.c_gravel, false);
+	generate_building(pos, minp, maxp, data, param2_data, a, extranodes, replacements, cid, extra_calls, pos.building_nr, pos.village_id, binfo, cid.c_gravel, keep_ground);
 
 	-- store the changed map data
 	vm:set_data(data);
@@ -702,7 +718,7 @@ end
 
 -- places a building read from file "building_name" on the map between start_pos and end_pos using luavoxelmanip
 -- returns error message on failure and nil on success
-handle_schematics.place_building_from_file = function( start_pos, end_pos, building_name, replacement_list, rotate, axis, mirror, no_plotmarker )
+handle_schematics.place_building_from_file = function( start_pos, end_pos, building_name, replacement_list, rotate, axis, mirror, no_plotmarker, keep_ground )
 	if( not( building_name )) then
 		return "No file name given. Cannot find the schematic.";
 	end
@@ -752,7 +768,7 @@ handle_schematics.place_building_from_file = function( start_pos, end_pos, build
 	start_pos.no_plotmarker = no_plotmarker;
 
 	-- all those calls to on_construct need to be done now
-	local res = handle_schematics.place_building_using_voxelmanip( start_pos, binfo, replacement_list);
+	local res = handle_schematics.place_building_using_voxelmanip( start_pos, binfo, replacement_list, keep_ground);
 	if( not(res) or not( res.extra_calls )) then
 		return;
 	end
@@ -767,6 +783,24 @@ handle_schematics.place_building_from_file = function( start_pos, end_pos, build
 			end
 		end
 	end
+
+	for k, v in pairs( res.extra_calls.door_b ) do
+		local meta = minetest.get_meta( v );
+
+		local l = 2 -- b
+		local h = meta:get_int("right") + 1
+
+		local replace = {
+			{ { type = "a", state = 0 }, { type = "a", state = 3 } },
+			{ { type = "b", state = 1 }, { type = "b", state = 2 } }
+		}
+		local new = replace[l][h]
+--		minetest.swap_node(v, {name = name .. "_" .. new.type, param2 = v.p2})
+		meta:set_int("state", new.state)
+		-- wipe meta on top node as it's unused
+		minetest.set_node({x = v.x, y = v.y + 1, z = v.z}, { name = "doors:hidden" })
+	end
+
 
 	if( binfo.metadata ) then
 		-- if it is a .we/.wem file, metadata was included directly
@@ -827,6 +861,51 @@ handle_schematics.place_road = function(minp, maxp, data, param2_data, a, c_road
 --]]
 		end
 	end
+end
+
+
+
+-- the node layer at height "ground_level" is not touched; thus
+-- dirt/sand/whatever can remain there (=biome dependant); this
+-- also means that the foundations for the ex-building's walls
+-- will keep standing
+handle_schematics.clear_area = function( start_pos, end_pos, ground_level)
+
+	local vm = minetest.get_voxel_manip()
+	local minp, maxp = vm:read_from_map(
+		{x = start_pos.x, y = start_pos.y, z = start_pos.z},
+		{x = end_pos.x,   y = end_pos.y,   z = end_pos.z}
+        )
+	local a = VoxelArea:new({MinEdge = minp, MaxEdge = maxp})
+	local data        = vm:get_data()
+
+	if( ground_level < start_pos.y or ground_level > end_pos.y ) then
+		ground_level = start_pos.y;
+	end
+
+	local cid_air = minetest.get_content_id("air");
+	for y=ground_level+1, end_pos.y do
+	for x=start_pos.x, end_pos.x do
+	for z=start_pos.z, end_pos.z do
+		data[ a:index( x, y, z ) ] = cid_air;
+	end
+	end
+	end
+
+	local cid_dirt = minetest.get_content_id("default:dirt");
+	for y=start_pos.y, ground_level-1 do
+	for x=start_pos.x, end_pos.x do
+	for z=start_pos.z, end_pos.z do
+		data[ a:index( x, y, z ) ] = cid_dirt;
+	end
+	end
+	end
+
+	-- store the changed map data
+	vm:set_data(data);
+	vm:write_to_map();
+	vm:update_liquids();
+	vm:update_map();
 end
 
 

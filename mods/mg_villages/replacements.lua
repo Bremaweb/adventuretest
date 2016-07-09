@@ -172,6 +172,8 @@ mg_villages.replace_tree_trunk = function( replacements, wood_type )
 		table.insert( replacements, {'default:tree',  'default:pine_tree'});
 	elseif( wood_type == 'default:acacia_wood' ) then
 		table.insert( replacements, {'default:tree',  'default:acacia_tree'});
+	elseif( wood_type == 'default:aspen_wood' ) then
+		table.insert( replacements, {'default:tree',  'default:aspen_tree'});
 	elseif( wood_type == 'mg:savannawood' ) then
 		table.insert( replacements, {'default:tree',  'mg:savannatree'});
 	elseif( wood_type == 'mg:pinewood' ) then
@@ -272,6 +274,8 @@ mg_villages.replace_saplings = function( replacements, wood_type )
 		table.insert( replacements, {'default:sapling',  'default:pine_sapling'});
 	elseif( wood_type == 'default:acacia_wood' ) then
 		table.insert( replacements, {'default:sapling',  'default:acacia_sapling'});
+	elseif( wood_type == 'default:aspen_wood' ) then
+		table.insert( replacements, {'default:sapling',  'default:aspen_sapling'});
 	elseif( wood_type == 'mg:savannawood' ) then
 		table.insert( replacements, {'default:sapling',  'mg:savannasapling'});
 	elseif( wood_type == 'mg:pinewood' ) then
@@ -309,6 +313,7 @@ mg_villages.replace_saplings = function( replacements, wood_type )
 				table.insert( replacements, {'default:sapling', "trees:"..v.."_sapling"});
 				table.insert( replacements, {'default:junglesapling', "trees:"..v.."_sapling"});
 				table.insert( replacements, {'default:pine_sapling',  "trees:"..v.."_sapling"});
+				table.insert( replacements, {'default:aspen_sapling', "trees:"..v.."_sapling"});
 			end
 		end
 
@@ -349,6 +354,14 @@ mg_villages.get_replacement_list = function( housetype, pr )
   	table.insert(         replacements, {'default:apple',           'air' });
   	table.insert(         replacements, {'default:cobble',          'default:stone_macadam' });
   	table.insert(         replacements, {'default:obsidian_glass',  'default:glass' });
+
+   -- the default doors from minetest game have been changed since the schematics where built
+   -- TODO: the door replacement function needs to be more complex; doesn't really work this way
+   else
+	table.insert( replacements, {'doors:door_wood_t_1',  'doors:hidden'});
+	table.insert( replacements, {'doors:door_wood_b_1',  'doors:door_wood_a'});
+	table.insert( replacements, {'doors:door_wood_t_2',  'doors:hidden'});
+	table.insert( replacements, {'doors:door_wood_b_2',  'doors:door_wood_b'});
    end
 
    if( housetype and mg_villages.village_type_data[ housetype ] and mg_villages.village_type_data[ housetype ].replacement_function ) then

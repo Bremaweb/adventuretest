@@ -48,8 +48,7 @@ function mobs.on_step(self,dtime)
 		end
 	end
 	
-	-- if pause state then this is where the loop ends
-	-- pause is only set after a monster is hit
+	-- if pause state then this is where the loop ends	
 	if self.pause_timer > 0 then
 		self.pause_timer = self.pause_timer - dtime
 		if self.pause_timer <= 0 then

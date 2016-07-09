@@ -134,7 +134,7 @@ build_chest.preview_image_formspec = function( building_name, replacements, side
 
 	local side_names = {"front","right","back","left","top"};
 	local side = 1;
-	for i,v in pairs( side_names ) do
+	for i,v in ipairs( side_names ) do
 		if( side_name and side_name==v ) then
 			side = i;
 		end
@@ -154,9 +154,9 @@ build_chest.preview_image_formspec = function( building_name, replacements, side
 
 	-- the draw_tile function is based on content_id
 	local content_ids = {};
-	for i,v in pairs( data.nodenames ) do
+	for i,v in ipairs( data.nodenames ) do
 		local found = false;
-		for j,w in pairs( replacements ) do
+		for j,w in ipairs( replacements ) do
 			if( w and w[1] and w[1]==v) then
 				found        = true;
 				if( minetest.registered_nodes[ w[2]] ) then
@@ -203,8 +203,8 @@ build_chest.preview_image_formspec = function( building_name, replacements, side
 		formspec = formspec.."label[3,3;Sorry, this schematic is too big for a preview image.]";
 		return formspec;
 	end
-	for y,y_values in pairs( preview ) do
-		for l,v in pairs( y_values ) do
+	for y,y_values in ipairs( preview ) do
+		for l,v in ipairs( y_values ) do
 			-- air, ignore and mg:ignore are not stored
 			if(     v and content_ids[ v ]==-1 ) then
 				formspec = formspec..build_chest.preview_image_draw_tile( nil, "unknown_node.png", (l*scale), 9-(y*scale), scale*1.3, scale*1.2, tile_nr);

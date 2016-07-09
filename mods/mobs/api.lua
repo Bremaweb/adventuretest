@@ -146,26 +146,28 @@ function mobs:register_mob(name, def)
 		end,
 		
 		do_avoidance = function(self)
+			
 			if self.avoid_nodes ~= nil then
 				local avoid_range = self.avoid_range
 				local avoid_nodes = self.avoid_nodes
 				
 				local pos = self.object:getpos()
 				
-				local minx = pos.x - math.ceil( avoid_range / 2 )
-				local maxx = pos.x + math.ceil( avoid_range / 2 )
+				local minx = pos.x - avoid_range
+				local maxx = pos.x + avoid_range
 				
-				local minz = pos.z - math.ceil( avoid_range / 2 )
-				local maxz = pos.z + math.ceil( avoid_range / 2 )
+				local minz = pos.z - avoid_range
+				local maxz = pos.z + avoid_range
 
-				local npos = minetest.find_nodes_in_area({x=minx,y=(pos.y-1),z=minz},{x=maxx,y=(pos.y+1),z=maxz}, avoid_nodes)
+				local npos = minetest.find_nodes_in_area({x=minx,y=(pos.y-2),z=minz},{x=maxx,y=(pos.y+2),z=maxz}, avoid_nodes)
 				
 				if #npos > 0 then
 					local fpos = { x=(npos[1].x * -1),y=npos[1].y,z=(npos[1].z*-1) } 
 					mobs:face_pos(self,fpos)
 					self.state="walk"
 					self:set_animation("walk")
-					self:set_velocity(4)
+					self.set_velocity(self, self.walk_velocity)
+					self.pause_timer = 3
 				end
 			end
 		end,
@@ -337,7 +339,7 @@ function mobs:register_mob(name, def)
 				tflp = 1
 			end
 			process_weapon(hitter,tflp,tool_capabilities)
-			
+			self.pause_timer = 0
 			local hpos = hitter:getpos()
 			local pos = self.object:getpos()
 			if self.object:get_hp() <= 0 then
