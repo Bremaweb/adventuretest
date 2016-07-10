@@ -608,6 +608,41 @@ minetest.register_node("default:water_source", {
 	groups = {water=3, liquid=3, puts_out_fire=1, freezes = 1},
 })
 
+minetest.register_node("default:mg_water_flowing", {
+	description = "Flowing Water",
+	inventory_image = minetest.inventorycube("default_water.png"),
+	drawtype = "flowingliquid",
+	tiles = {"default_water.png"},
+	special_tiles = {
+		{
+			image="default_water_flowing_animated.png",
+			backface_culling=false,
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=0.8}
+		},
+		{
+			image="default_water_flowing_animated.png",
+			backface_culling=true,
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=0.8}
+		},
+	},
+	alpha = WATER_ALPHA,
+	paramtype = "light",
+	paramtype2 = "flowingliquid",
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	drop = "",
+	drowning = 1,
+	liquidtype = "flowing",
+	liquid_alternative_flowing = "default:mg_water_flowing",
+	liquid_alternative_source = "default:mg_water_source",
+	liquid_viscosity = WATER_VISC,
+	post_effect_color = {a=64, r=100, g=100, b=200},
+	groups = {water=3, liquid=3, puts_out_fire=1, not_in_creative_inventory=1, melt_around=1},
+})
+
+
 minetest.register_node("default:mg_water_source", {
 	description = "Mapgen Water Source",
 	inventory_image = minetest.inventorycube("default_water.png"),
@@ -632,7 +667,7 @@ minetest.register_node("default:mg_water_source", {
 	drop = "",
 	drowning = 1,
 	liquidtype = "source",
-	liquid_alternative_flowing = "default:water_flowing",
+	liquid_alternative_flowing = "default:mg_water_flowing",
 	liquid_alternative_source = "default:mg_water_source",
 	liquid_viscosity = WATER_VISC,	
 	post_effect_color = {a=64, r=100, g=100, b=200},

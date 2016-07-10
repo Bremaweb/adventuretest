@@ -1,5 +1,4 @@
 -- VARIOUS MISC ADVENTURETEST RELATED STUFF
-
 adventuretest = {}
 
 game_origin = nil

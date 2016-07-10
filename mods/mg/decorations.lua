@@ -23,7 +23,7 @@ minetest.register_decoration({
 minetest.register_decoration({
 	deco_type = "simple",
 	place_on = {"default:sand","default:desert_sand","default:river_gravel"},
-	spawn_by = "default:water_source",
+	spawn_by = "default:mg_water_source",
 	num_spawn_by = 1,
 	sidelen = 16,
 	noise_params = {
