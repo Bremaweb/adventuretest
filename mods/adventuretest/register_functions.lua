@@ -148,6 +148,15 @@ end
 minetest.register_on_leaveplayer(on_leave)
 
 local function on_new(player)
+	local hud_id = player:hud_add({
+		hud_elem_type = "image",
+		position = {x = 0.5, y = 0.5},
+		scale = {
+			x = -100,
+			y = -100
+		},
+		text = "adventuretest_spawning_hud.png"
+	})
 	local name = player:get_player_name()
 	pd.load_player(name)
 	-- set some defaults
@@ -164,8 +173,9 @@ local function on_new(player)
 	player:set_hp(6)
 	skills.set_default_skills(name)
 	pd.save_player(name)
-	minetest.after(5,adventuretest.check_spawn,player)
-	--mg_villages.spawnplayer(player)
+	pd.set(name,"spawning_hud",hud_id)
+	adventuretest.teleport(player,game_origin)
+	minetest.after(3,adventuretest.check_spawn,player)
 end
 minetest.register_on_newplayer(on_new)
 
