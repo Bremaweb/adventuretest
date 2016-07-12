@@ -124,3 +124,12 @@ function hunger_join_player(player)
 		hud.change_item(player, "hunger", {number = lvl, max = 20})
 	end)
 end
+
+function adventuretest.is_night()
+	local t = minetest.get_timeofday()
+	if t > 0.8 or t < 4 then
+		return true
+	else
+		return false
+	end
+end

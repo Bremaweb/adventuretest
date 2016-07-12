@@ -8,8 +8,8 @@ to specific rooms only for example.
 -- New defined for the mesecon part
 
 vendor.mese_formspec = function(pos, player)
-	local meta = minetest.env:get_meta(pos)
-	local node = minetest.env:get_node(pos)
+	local meta = minetest.get_meta(pos)
+	local node = minetest.get_node(pos)
 	local description = minetest.registered_nodes[node.name].description;
 	local buysell =  "sell"
 
@@ -34,9 +34,9 @@ vendor.mese_on_receive_fields = function(pos, formname, fields, sender)
 		return
 	end
 	
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 	local description = minetest.registered_nodes[node.name].description;
-	local meta = minetest.env:get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	local owner = meta:get_string("owner")
 	if sender:get_player_name() ~= owner then
 		minetest.chat_send_player(sender:get_player_name(), "vendor:  Cannot configure machine.  The " .. description .. " belongs to " .. owner ..".")
@@ -73,8 +73,8 @@ vendor.mese_on_receive_fields = function(pos, formname, fields, sender)
 end
 
 vendor.mese_refresh = function(pos, err)
-	local meta = minetest.env:get_meta(pos)
-	local node = minetest.env:get_node_or_nil(pos)
+	local meta = minetest.get_meta(pos)
+	local node = minetest.get_node_or_nil(pos)
 	if ( node == nil ) then
 		return
 	end
@@ -107,8 +107,8 @@ vendor.mese_refresh = function(pos, err)
 end
 
 vendor.mese_on_punch = function(pos, node, player)
-	local meta = minetest.env:get_meta(pos)
-	local node = minetest.env:get_node_or_nil(pos)
+	local meta = minetest.get_meta(pos)
+	local node = minetest.get_node_or_nil(pos)
 	if ( node == nil ) then
 		return
 	end
@@ -177,7 +177,7 @@ vendor.mese_on_punch = function(pos, node, player)
 end
 
 vendor.signal_vendor_turnoff = function (pos)
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 	if node.name=='vendor:signal_vendor_on' then --has not been dug
 		mesecon:swap_node(pos, 'vendor:signal_vendor_off')
 		local rules = mesecon.rules.buttonlike_get(node)
@@ -195,12 +195,12 @@ minetest.register_node( 'vendor:signal_vendor_off', {
 	groups = {snappy=2,choppy=2,oddly_breakable_by_hand=2},
 	after_place_node = function( pos, placer )
 		--print( 'Placed a new signal vendor')
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		meta:set_int("cost", 0)
 		meta:set_int("limit", 0)
 		meta:set_string("owner", placer:get_player_name() or "")
 		meta:set_string("formspec", vendor.mese_formspec(pos, placer))
-		local description = minetest.registered_nodes[minetest.env:get_node(pos).name].description
+		local description = minetest.registered_nodes[minetest.get_node(pos).name].description
 		vendor.disable(pos, "New " .. description)
 	end,
 	can_dig = vendor.can_dig,

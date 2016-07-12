@@ -35,9 +35,9 @@ vendor.traversable_node_types = {
 }
 
 vendor.formspec = function(pos, player)
-	local meta = minetest.env:get_meta(pos)
-	local meta = minetest.env:get_meta(pos)
-	local node = minetest.env:get_node(pos)	
+	local meta = minetest.get_meta(pos)
+	local meta = minetest.get_meta(pos)
+	local node = minetest.get_node(pos)	
 	local description = minetest.registered_nodes[node.name].description;
 	local buysell =  "sell"
 	if ( node.name == "vendor:depositor" ) then	
@@ -64,7 +64,7 @@ vendor.formspec = function(pos, player)
 end
 
 vendor.after_place_node = function(pos, placer)
-	local meta = minetest.env:get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	meta:set_string("itemtype", "")
 	meta:set_int("number", 0)
 	meta:set_int("cost", 0)
@@ -72,12 +72,12 @@ vendor.after_place_node = function(pos, placer)
 	meta:set_string("owner", placer:get_player_name() or "")
 	meta:set_string("shop","")
 	meta:set_string("formspec", vendor.formspec(pos, placer))
-	local description = minetest.registered_nodes[minetest.env:get_node(pos).name].description;
+	local description = minetest.registered_nodes[minetest.get_node(pos).name].description;
 	vendor.disable(pos, "New " .. description)
 end
 
 vendor.can_dig = function(pos,player)
-	local meta = minetest.env:get_meta(pos);
+	local meta = minetest.get_meta(pos);
 	local owner = meta:get_string("owner")
 	local name = player:get_player_name()
 	if name == owner then
@@ -92,9 +92,9 @@ vendor.on_receive_fields = function(pos, formname, fields, sender)
 		return
 	end
 
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 	local description = minetest.registered_nodes[node.name].description;
-	local meta = minetest.env:get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	local owner = meta:get_string("owner")
 	if sender:get_player_name() ~= owner then
 		minetest.chat_send_player(sender:get_player_name(), "vendor:  Cannot configure machine.  The " .. description .. " belongs to " .. owner ..".")
@@ -163,9 +163,9 @@ end
 
 vendor.disable = function(pos, desc) 
 	vendor.sound_deactivate(pos)
-	local meta = minetest.env:get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	local owner = meta:get_string("owner")
-	local description = minetest.registered_nodes[minetest.env:get_node(pos).name].description;
+	local description = minetest.registered_nodes[minetest.get_node(pos).name].description;
 	if ( desc == nil ) then
 		desc = "Disabled " .. description
 	end
@@ -174,8 +174,8 @@ vendor.disable = function(pos, desc)
 end
 
 vendor.refresh = function(pos, err) 
-	local meta = minetest.env:get_meta(pos)
-	local node = minetest.env:get_node_or_nil(pos)
+	local meta = minetest.get_meta(pos)
+	local node = minetest.get_node_or_nil(pos)
 	if ( node == nil ) then
 		return 
 	end
@@ -244,8 +244,8 @@ vendor.sound_vend = function(pos)
 end
 
 vendor.on_punch = function(pos, node, player)
-	local meta = minetest.env:get_meta(pos)
-	local node = minetest.env:get_node_or_nil(pos)
+	local meta = minetest.get_meta(pos)
+	local node = minetest.get_node_or_nil(pos)
 	if ( node == nil ) then
 		return 
 	end
@@ -398,7 +398,7 @@ end
 
 
 vendor.is_traversable = function(pos) 
-	local node = minetest.env:get_node_or_nil(pos)
+	local node = minetest.get_node_or_nil(pos)
 	if ( node == nil ) then
 		return false
 	end
@@ -467,7 +467,7 @@ end
 vendor.find_chest_inv = function(owner, pos, dx, dy, dz, nodename, amount, removing)
 	pos = {x=pos.x + dx, y=pos.y + dy, z=pos.z + dz}
 
-	local node = minetest.env:get_node_or_nil(pos)
+	local node = minetest.get_node_or_nil(pos)
 	if ( node == nil ) then
 		return nil
 	end
@@ -485,7 +485,7 @@ vendor.find_chest_inv = function(owner, pos, dx, dy, dz, nodename, amount, remov
 	  or node.name == "technic:silver_chest"
 	  or node.name == "technic:silver_locked_chest"
 	  ) then
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		if ( string.find(node.name,"_locked") ~= nil and owner ~= meta:get_string("owner") ) then
 			return nil
 		end

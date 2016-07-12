@@ -13,7 +13,7 @@ local MAGICMISSLE_ENTITY={
 MAGICMISSLE_ENTITY.on_step = function(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:getpos()
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 
 	--if self.timer>0.2 then
 		if self.player ~= nil then
@@ -21,7 +21,7 @@ MAGICMISSLE_ENTITY.on_step = function(self, dtime)
 		else
 			hitter = self.object
 		end		
-		local objs = minetest.env:get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)
 		for k, obj in pairs(objs) do
 			if obj:get_luaentity() ~= nil then
 				if obj:get_luaentity().name ~= "magic:magicmissle" and obj:get_luaentity().name ~= "__builtin:item" then
@@ -135,7 +135,7 @@ local magicmissle_spell = {
 				pd.set(name,"mana",p_mana)
 				minetest.sound_play("magic_magicmissle_cast",{object=user})
 				local playerpos = user:getpos()
-				local obj = minetest.env:add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, "magic:magicmissle")
+				local obj = minetest.add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, "magic:magicmissle")
 				local dir = user:get_look_dir()
 				obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
 				obj:setacceleration({x=dir.x*-3, y=-1, z=dir.z*-3})

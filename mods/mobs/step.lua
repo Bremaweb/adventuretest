@@ -1,9 +1,4 @@
 function mobs.on_step(self,dtime)
-	if self.type == "monster" and minetest.setting_getbool("only_peaceful_mobs") then
-		self.object:remove()
-		return
-	end
-	
 	if self.lifetimer ~= false then
 		self.lifetimer = self.lifetimer - dtime
 		if self.lifetimer <= 0 and not self.tamed and self.type ~= "npc" then

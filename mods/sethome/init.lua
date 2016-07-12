@@ -46,7 +46,7 @@ minetest.register_chatcommand("home", {
         end
         local last_moved = pd.get_number(pname,"last_moved")
     	local homepos = pd.get(pname,"homepos")
-        local player = minetest.env:get_player_by_name(name)
+        local player = minetest.get_player_by_name(name)
         if player == nil then
             -- just a check to prevent server death
             return false
@@ -92,7 +92,7 @@ minetest.register_chatcommand("sethome", {
         	pname = name
         end
         
-        local player = minetest.env:get_player_by_name(name)
+        local player = minetest.get_player_by_name(name)
         local pos = player:getpos()
         pd.set(pname,"homepos",pos)        
         minetest.chat_send_player(name, "Home set!")
