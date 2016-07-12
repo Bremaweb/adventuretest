@@ -148,7 +148,7 @@ end
 
 function adventuretest.is_night()
 	local t = minetest.get_timeofday()
-	if t > 0.8 or t < 4 then
+	if t > 0.8 or t < 0.4 then
 		return true
 	else
 		return false
