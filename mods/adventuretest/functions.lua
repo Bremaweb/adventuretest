@@ -52,7 +52,7 @@ function adventuretest.check_spawn(player)
 	if adventuretest.obj_stuck(player) == true then
 		print("moving player "..tostring(count))
 		local pos = player:getpos()		
-		math.randomseed(os.time())
+		--math.randomseed(os.time())
 		newpos.x = pos.x + math.random(-50,50)
 		newpos.z = pos.z + math.random(-50,50)
 		

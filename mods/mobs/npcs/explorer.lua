@@ -62,4 +62,5 @@ mobs:register_mob("mobs:explorer",{
 	activity_level = 2,
 	avoid_nodes = {"fire:basic_flame","default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
 	avoid_range = 4,
+	icon = "mobs:icon_quest",
 })

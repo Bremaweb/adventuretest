@@ -65,6 +65,7 @@ function mobs:register_mob(name, def)
 		avoid_nodes = def.avoid_nodes or nil,
 		avoid_range = def.avoid_range or nil,
 		random_freq = def.random_freq or 1,
+		icon = def.icon or nil,
 		
 		stimer = 0,
 		timer = 0,
@@ -137,6 +138,7 @@ function mobs:register_mob(name, def)
 				if self.sounds.war_cry then
 					if math.random(0,100) < 90 then
 						minetest.sound_play(self.sounds.war_cry,{ object = self.object })
+						mobs.put_icon(self,"mobs:icon_notice",3)
 					end
 				end
 				self.state = "attack"
@@ -322,6 +324,9 @@ function mobs:register_mob(name, def)
 			end
 			if self.lifetimer <= 0 and not self.tamed and self.type ~= "npc" then
 				self.object:remove()
+			end
+			if self.icon ~= nil then
+				mobs.put_icon(self,self.icon,false)
 			end
 		end,
 		
@@ -554,7 +559,7 @@ function mobs:spawn_mob(pos,name)
 			mob.object:set_hp( newHP )
 			mob.state = "walk"	-- make them walk when they spawn so they walk away from their original spawn position
 			-- vary the walk and run velocity when a mob is spawned so groups of mobs don't clump up so bad
-			math.randomseed(os.clock())
+			--math.randomseed(os.clock())
 			
 			mob.walk_velocity = mob.walk_velocity - ( mob.walk_velocity * ( math.random(0,12) / 100 ) )
 			if mob.walk_velocity < 0 then
@@ -565,6 +570,9 @@ function mobs:spawn_mob(pos,name)
 			if mob.run_velocity < 0 then
 				mob.run_velocity = 0
 			end
+			if mob.icon ~= nil then
+				mobs.put_icon(mob,mob.icon,false)
+			end
 			return true
 		end
 	end
@@ -572,8 +580,8 @@ end
 
 function mobs:get_random(type)
 	if mobs.mob_list[type] ~= nil then
-		local seed = os.clock() + os.time()
-		math.randomseed(seed)
+		--local seed = os.clock() + os.time()
+		--math.randomseed(seed)
 		local idx = math.random(1,#mobs.mob_list[type])
 		if mobs.mob_list[type][idx] ~= nil then
 			return mobs.mob_list[type][idx]

@@ -1,4 +1,5 @@
 function mobs.on_step(self,dtime)
+	--math.randomseed(os.time() + dtime)
 	if self.lifetimer ~= false then
 		self.lifetimer = self.lifetimer - dtime
 		if self.lifetimer <= 0 and not self.tamed and self.type ~= "npc" then
@@ -70,6 +71,7 @@ function mobs.on_step(self,dtime)
 					g = 0.7
 				end 			
 				minetest.sound_play(self.sounds.random, {object = self.object, max_hear_distance=maxhear, gain=g})
+				mobs.put_icon(self,"mobs:icon_notice",4)
 			end
 		end
 	end
@@ -376,7 +378,7 @@ function mobs.on_step(self,dtime)
 	
 	if self.state == "stand" then
 		-- randomly turn
-		math.randomseed(os.clock())
+		--math.randomseed(os.clock())
 		if math.random(1, 100) < self.activity_level then
 			if mobs.api_throttling(self) then return end
 			-- if there is a player nearby look at them			

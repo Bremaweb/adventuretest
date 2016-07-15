@@ -460,7 +460,7 @@ function default.get_file_contents(filename)
 end
 
 function randomChance (percent) 
-	math.randomseed( os.clock() )
+	--math.randomseed( os.clock() )
 	return percent >= ( math.random(1000, 100000) / 1000 )
 end
 

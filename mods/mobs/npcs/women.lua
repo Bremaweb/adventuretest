@@ -43,7 +43,7 @@ type = "npc",
 		attack = "default_punch",
 		random =  "mobs_female1_random",
 	},
-	random_freq = 1,
+	random_freq = 7,
 	attacks_monsters=false,
 	peaceful = true,
 	step=2,
@@ -104,7 +104,7 @@ type = "npc",
 		attack = "default_punch",
 		random =  "mobs_female2_random",
 	},
-	random_freq = 1,
+	random_freq = 12,
 	attacks_monsters=false,
 	peaceful = true,
 	step=2,
@@ -183,7 +183,7 @@ type = "npc",
 })
 
 mobs:register_mob("mobs:mother", {
-type = "npc_special",
+	type = "npc_special",
 	hp_min = 30,
 	hp_max = 75,
 	exp_min = 0,
@@ -257,7 +257,7 @@ type = "npc_special",
 			end
 		end
 		
-		math.randomseed(os.clock())
+		--math.randomseed(os.clock())
 		if math.random(1, 100) < self.activity_level then
 			if mobs.api_throttling(self) then return end
 			-- if there is a player nearby look at them			

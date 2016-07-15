@@ -52,7 +52,7 @@ minetest.register_abm({
 	chance = 3,
 	action = function (pos, node)
 		-- default:grass_#   # = 1-5
-		math.randomseed(os.time())
+		--math.randomseed(os.time())
 		local grass = math.random(1,5)
 		local node = "default:grass_" .. grass
 		minetest.set_node(pos,{name=node})

@@ -116,7 +116,7 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 					
 					local size = xsize * zsize
 					
-					math.randomseed(os.clock())
+					--math.randomseed(os.clock())
 					local fillratio = ( math.random(8,14) / 100 )
 					local numgoblins = 2 + ( ((xsize * 2) * (zsize * 2)) * fillratio )
 					

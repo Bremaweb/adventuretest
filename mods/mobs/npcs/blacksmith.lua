@@ -29,6 +29,7 @@ mobs:register_mob("mobs:blacksmith",{
 			blacksmith_formspec(self,clicker)
 		else
 			minetest.sound_play("mobs_blacksmith_sorry",{pos=self.object:getpos(),max_hear_distance=12,gain=0.6})
+			mobs.put_icon(self,"mobs:icon_notice",5)
 		end
 	end,
 	walk_chance = 1,
@@ -71,6 +72,7 @@ function blacksmith_formspec(self,player)
 	if active_blacksmiths[name] == nil then
 		mobs:face_pos(self,player:getpos())
 		minetest.sound_play("mobs_blacksmith_what",{pos=self.object:getpos(),max_hear_distance=12,gain=0.6})
+		mobs.put_icon(self,"mobs:icon_notice",5)
 		active_blacksmiths[name] = {entity=self,inventory=nil,player=player,furnace=nil,active=false}
 		local formspec = "size[8,6.25]"..
 						"list[current_player;main;0,2.5;8,4;]"..
@@ -81,6 +83,7 @@ function blacksmith_formspec(self,player)
 		minetest.show_formspec(name,"blacksmith",formspec)
 	else
 		minetest.sound_play("mobs_blacksmith_sorry",{pos=self.object:getpos(),max_hear_distance=12,gain=0.6})
+		mobs.put_icon(self,"mobs:icon_notice",5)
 	end
 end
 
@@ -111,6 +114,7 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 			local stack = inv:get_stack("src",1)
 			if stack:get_count() == 0 then
 				chat.local_chat(player:getpos(),"Blacksmith: Please give me something to smelt",3)
+				mobs.put_icon(blacksmith,"mobs:icon_notice",5)
 				active_blacksmiths[name] = nil
 				return
 			else
@@ -135,6 +139,7 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 					if money.get(name) < crNeeded then
 						chat.local_chat(player:getpos(),"Blacksmith: Sorry, you don't have enough money. I charge 2cr per lump.")
 						minetest.sound_play("mobs_blacksmith_sorry",{pos=blacksmith.object:getpos(),max_hear_distance=12,gain=0.6})
+						mobs.put_icon(blacksmith,"mobs:icon_notice",5)
 						active_blacksmiths[name] = nil
 						return
 					end
@@ -150,12 +155,14 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 				else
 					chat.local_chat(player:getpos(),"Blacksmith: Sorry, I can't get to the furance.",3)
 					minetest.sound_play("mobs_blacksmith_sorry",{pos=blacksmith.object:getpos(),max_hear_distance=12,gain=0.6})
+					mobs.put_icon(blacksmith,"mobs:icon_notice",5)
 					active_blacksmiths[name] = nil
 					return
 				end
 			else
 				chat.local_chat(player:getpos(),"Blacksmith: Sorry, I don't see a furance in this area.",3)
 				minetest.sound_play("mobs_blacksmith_sorry",{pos=blacksmith.object:getpos(),max_hear_distance=12,gain=0.6})
+				mobs.put_icon(blacksmith,"mobs:icon_notice",5)
 				active_blacksmiths[name] = nil
 				-- TODO Get invnetory and throw item toward player
 			end
@@ -200,6 +207,7 @@ function blacksmith_globalstep(dtime)
 					bs.entity.state = "standing"
 					bs.entity.set_animation(bs.entity,"stand")
 					chat.local_chat(bs.entity.object:getpos(),"Blacksmith: "..name.." your ingots are ready!",25)
+					mobs.put_icon(bs.entity,"mobs:icon_notice",5)
 					active_blacksmiths[name] = nil		-- I think it's all byref so bs = nil should also work
 					meta:set_int("in_use",0)
 				end

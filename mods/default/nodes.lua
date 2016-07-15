@@ -1281,7 +1281,7 @@ minetest.register_abm({
 					skilled_item = true
 				end
 				
-				math.randomseed(os.time() + probability)
+				--math.randomseed(os.time() + probability)
 				local r = math.random(1,99)
 				
 				if r < probability then

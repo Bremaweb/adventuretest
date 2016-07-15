@@ -20,6 +20,8 @@ local function adventuretest_globalstep(dtime)
   
   abm_globalstep(dtime)
   --ambience_globalstep(dtime)
+  adventuretest.seed = adventuretest.seed + dtime
+  math.randomseed(adventuretest.seed)
 end
 minetest.register_globalstep(adventuretest_globalstep)
 
