@@ -21,12 +21,9 @@ function mobs.put_icon(obj,icon,timeout)
 	local pos = obj.object:getpos()
 	local iobj = minetest.add_entity({x=pos.x,y=(pos.y+3),z=pos.z},icon)
 	if iobj ~= nil then
-		print("putting icon ")
 		iobj = iobj:get_luaentity()
 		iobj.timeout = timeout
 		iobj.object:set_attach(obj.object,"",{x = 0, y = 10, z = 0}, {x = 0, y = 0, z = 0})
-	else
-		print("failed to add entity")
 	end
 end
 

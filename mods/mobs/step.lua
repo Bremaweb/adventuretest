@@ -67,8 +67,8 @@ function mobs.on_step(self,dtime)
 				local maxhear = 50
 				local g = 1
 				if self.type == "npc" then
-					maxhear = 20
-					g = 0.7
+					maxhear = 30
+					g = 0.75
 				end 			
 				minetest.sound_play(self.sounds.random, {object = self.object, max_hear_distance=maxhear, gain=g})
 				mobs.put_icon(self,"mobs:icon_notice",4)
