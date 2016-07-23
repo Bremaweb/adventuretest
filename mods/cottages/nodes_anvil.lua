@@ -45,7 +45,9 @@ local cottages_anvil_formspec =
 					"label[0,-0.5;"..S("Anvil").."]"..
 					"label[0,3.0;"..S("Punch anvil with hammer to").."]"..
 					"label[0,3.3;"..S("repair tool in workpiece-slot.").."]"..
-                                "list[current_player;main;0,4;8,4;]";
+                                "list[current_player;main;0,4;8,4;]"
+				.."listring[current_player;main]".."listring[current_name;hammer]"
+				.."listring[current_player;main]".."listring[current_name;input]"
 
 
 minetest.register_node("cottages:anvil", {

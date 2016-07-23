@@ -320,7 +320,12 @@ function circular_saw.on_construct(pos)
 			"field[0.3,3.5;1,1;max_offered;" ..S("Max").. ":;${max_offered}]" ..
 			"button[1,3.2;1,1;Set;" ..S("Set").. "]" ..
 			"list[current_name;output;2.8,0;8,6;]" ..
-			"list[current_player;main;1.5,6.25;8,4;]")
+			"list[current_player;main;1.5,6.25;8,4;]"..
+			"listring[current_name;output]".."listring[current_player;main]"..
+			"listring[current_name;input]".."listring[current_player;main]"..
+			"listring[current_name;micro]".."listring[current_player;main]"..
+			"listring[current_name;recyle]".."listring[current_player;main]"..
+			)
 
 	meta:set_int("anz", 0) -- No microblocks inside yet.
 	meta:set_string("max_offered", 99) -- How many items of this kind are offered by default?
