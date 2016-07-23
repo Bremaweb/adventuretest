@@ -261,3 +261,4 @@ stairs.register_stair_and_slab("stonebrick", "default:stonebrick",
 		"Stone Brick Stair",
 		"Stone Brick Slab",
 		default.node_sound_stone_defaults())
+		

@@ -85,14 +85,14 @@ minetest.register_node("bones:bones", {
 			return
 		end
 		
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 
 		local name = player:get_player_name()
 		if name ~= meta:get_string("owner") then
 			return
 		end
 	
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		local bones_inv = meta:get_inventory()
 		if ( bones_inv == nil ) then
 			return

@@ -149,7 +149,7 @@ mg_villages.fill_chest_random = function( pos, pr, building_nr, building_typ )
 
 	local building_data = mg_villages.BUILDINGS[ building_nr.btype ];
 
-	local meta = minetest.env:get_meta( pos );
+	local meta = minetest.get_meta( pos );
 	local inv  = meta:get_inventory();
 
 	local count = 0;

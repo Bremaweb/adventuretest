@@ -42,11 +42,14 @@ function ts_doors.register_door(recipe, description, texture)
 	end
 end
 
-ts_doors.register_door("default:aspen_wood" , "Aspen"      , "default_aspen_wood.png" )
-ts_doors.register_door("default:pine_wood"  , "Pine"       , "default_pine_wood.png"  )
-ts_doors.register_door("default:acacia_wood", "Acacia"     , "default_acacia_wood.png")
+ts_doors.register_door("mg:savannawood" , "Savanna"      , "mg_dry_wood.png" )
+ts_doors.register_door("mg:pinewood"  , "Pine"       , "mg_pine_wood.png"  )
 ts_doors.register_door("default:wood"       , "Wooden"     , "default_wood.png"       )
 ts_doors.register_door("default:junglewood" , "Jungle Wood", "default_junglewood.png" )
+ts_doors.register_door("default:tree" , "Unfinished Wood", "default_tree.png" )
+ts_doors.register_door("default:jungletree" , "Unifished Jungle Wood", "default_jungletree.png" )
+ts_doors.register_door("mg:savannatree" , "Unfinished Savanna"      , "mg_dry_tree.png" )
+ts_doors.register_door("mg:pinetree" , "Unfinished Pine"      , "mg_pine_tree.png" )
 
 
 if(minetest.get_modpath("moretrees")) then

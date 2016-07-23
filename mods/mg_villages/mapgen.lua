@@ -12,7 +12,7 @@ mg_villages.new_village_spawned = function( village_id )
 	if mg_villages.anz_villages < 2 then
 		mg_villages.all_villages[ village_id ].barbarians = false
 	else
-		if  rptype <= 3 then
+		if rptype <= 3 then
 			mg_villages.all_villages[ village_id ].barbarians = true
 		else
 			mg_villages.all_villages[ village_id ].barbarians = false
@@ -94,11 +94,8 @@ end
 
 
 -- TODO: determine water level from mapgens?
-local MG_VILLAGES_WATER_LEVEL = 1;
-if( minetest.get_modpath( 'mg' )) then
-	MG_VILLAGES_WATER_LEVEL = 0;
-end
-
+local mg_params = minetest.get_mapgen_params()
+local MG_VILLAGES_WATER_LEVEL = mg_params.water_level;
 --replacements_group.node_is_ground = {}; -- store nodes which have previously been identified as ground
 
 mg_villages.check_if_ground = function( ci )
@@ -106,7 +103,7 @@ mg_villages.check_if_ground = function( ci )
 	-- pre-generate a list of no-ground-nodes for caching
 	if( replacements_group.node_is_ground[ minetest.get_content_id('air')]==nil) then
 		local no_ground_nodes = {'air','ignore','default:sandstonebrick','default:cactus','default:wood','default:junglewood',
-			'default:pine_wood','default:pine_tree','default:acacia_wood','default:acacia_tree',
+			'mg:pinewood','mg:pinetree','mg:savannawood','mg:savannatree',
 			'ethereal:mushroom_pore','ethereal:mushroom_trunk','ethereal:bamboo', 'ethereal:mushroom'};
 		-- TODO: add all those other tree and leaf nodes that might be added by mapgen
 		for _,name in pairs( no_ground_nodes ) do
@@ -155,6 +152,7 @@ mg_villages.lower_or_raise_terrain_at_point = function( x, z, target_height, min
 	local jtree         = false;
 	local ptree         = false;
 	local atree         = false;
+        local asptree       = false;
 	local old_height    = maxp.y;
 	local y = maxp.y;
 
@@ -198,6 +196,9 @@ mg_villages.lower_or_raise_terrain_at_point = function( x, z, target_height, min
 		-- acacia
 		elseif( ci == cid.c_atree and data[a:index( x, y-1, z)]==cid.c_atree) then
 			atree = true;
+                -- aspen
+		elseif( ci == cid.c_asptree and data[a:index( x, y-1, z)]==cid.c_asptree) then
+			asptree = true;
 		elseif( not( surface_node) and ci ~= cid.c_air and ci ~= cid.c_ignore and mg_villages.check_if_ground( ci ) == true) then
 			-- we have found a surface of some kind
 			surface_node = ci;
@@ -290,6 +291,9 @@ mg_villages.lower_or_raise_terrain_at_point = function( x, z, target_height, min
 			table.insert( treepos, {x=x, y=target_height+1, z=z, typ=2, snow=has_artificial_snow});
 		elseif( atree and not( mg_villages.ethereal_trees ) and treepos) then
 			data[       a:index( x, target_height+1, z)] = cid.c_asapling
+			table.insert( treepos, {x=x, y=target_height+1, z=z, typ=3, snow=has_artificial_snow});
+		elseif( asptree and not( mg_villages.ethereal_trees ) and treepos) then
+			data[       a:index( x, target_height+1, z)] = cid.c_aspsapling
 			table.insert( treepos, {x=x, y=target_height+1, z=z, typ=3, snow=has_artificial_snow});
 		elseif( has_snow ) then
 			data[       a:index( x, target_height+1, z)] = cid.c_snow;
@@ -737,6 +741,10 @@ mg_villages.grow_a_tree = function( pos, plant_id, minp, maxp, data, a, cid, pr,
 	elseif( plant_id == cid.c_asapling and minetest.registered_nodes[ 'default:acacia_tree']) then
 		data[ a:index( pos.x, pos.y, pos.z )] = cid.c_asapling;
 		return true;
+        -- aspen tree from newer minetest game
+	elseif( plant_id == cid.c_aspsapling and minetest.registered_nodes[ 'default:aspen_tree']) then
+		data[ a:index( pos.x, pos.y, pos.z )] = cid.c_aspsapling;
+		return true;
 	-- a savannatree from the mg mod
 	elseif( plant_id == cid.c_savannasapling and mg_villages.add_savannatree) then
 		mg_villages.add_savannatree(         data, a, pos.x, pos.y, pos.z, minp, maxp, pr) -- TODO: snow
@@ -907,6 +915,8 @@ mg_villages.place_villages_via_voxelmanip = function( villages, minp, maxp, vm, 
 	cid.c_psapling = minetest.get_content_id( 'default:pine_sapling');
 	cid.c_atree    = minetest.get_content_id( 'default:acacia_tree');
 	cid.c_asapling = minetest.get_content_id( 'default:acacia_sapling');
+	cid.c_asptree    = minetest.get_content_id( 'default:aspen_tree');
+	cid.c_aspsapling = minetest.get_content_id( 'default:aspen_sapling');
 	cid.c_water = minetest.get_content_id( 'default:water_source'); -- PM ^
 	cid.c_stone_with_coal = minetest.get_content_id( 'default:stone_with_coal');
 	cid.c_sandstone       = minetest.get_content_id( 'default:sandstone');
@@ -1103,6 +1113,29 @@ mg_villages.place_villages_via_voxelmanip = function( villages, minp, maxp, vm, 
 			end
 		end
 	end
+
+	-- the doors need to be adjusted as well
+	for _, village in ipairs(villages) do
+	  if( village.to_add_data.extra_calls.door_b ) then
+		for k, v in pairs( village.to_add_data.extra_calls.door_b ) do
+			local meta = minetest.get_meta( v );
+
+			local l = 2 -- b
+			local h = meta:get_int("right") + 1
+
+			local replace = {
+			        { { type = "a", state = 0 }, { type = "a", state = 3 } },
+			        { { type = "b", state = 1 }, { type = "b", state = 2 } }
+			}
+			local new = replace[l][h]
+--			minetest.swap_node(v, {name = name .. "_" .. new.type, param2 = v.p2})
+			meta:set_int("state", new.state)
+			-- wipe meta on top node as it's unused
+			minetest.set_node({x = v.x, y = v.y + 1, z = v.z}, { name = "doors:hidden" })
+		end
+          end
+	end
+
 
 	local pr = PseudoRandom(mg_villages.get_bseed(minp));
 	for _, village in pairs(villages) do

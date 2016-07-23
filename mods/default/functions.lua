@@ -192,9 +192,9 @@ minetest.register_abm({
 	interval = 10,
 	chance = 4,
 	action = function(pos, node)
-		pos.y = pos.y - 1
+		pos.y = pos.y + 1
 		if minetest.get_node(pos).name == "air" then
-			pos.y = pos.y + 1
+			pos.y = pos.y - 1
 			local new_node = minetest.registered_nodes[node.name].freezemelt
 			if new_node ~= nil then
 				minetest.set_node(pos,{name=new_node})
@@ -460,8 +460,8 @@ function default.get_file_contents(filename)
 end
 
 function randomChance (percent) 
-	math.randomseed( os.clock() )
-	return percent >= math.random(1, 100)                                          
+	--math.randomseed( os.clock() )
+	return percent >= ( math.random(1000, 100000) / 1000 )
 end
 
 function default.tprint (tbl, indent)

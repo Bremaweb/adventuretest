@@ -3,7 +3,7 @@ mobs = {}
 dofile(minetest.get_modpath("mobs").."/step.lua")
 
 mobs.mob_list = { npc={}, barbarian={}, monster={}, animal={}, npc_special={}}
-mobs.api_throttle = 20	-- limits the amount of intense operations that can happen per second
+mobs.api_throttle = 99	-- limits the amount of intense operations that can happen per second
 mobs.api_icount = 0
 mobs.api_timer = 0
 
@@ -65,6 +65,7 @@ function mobs:register_mob(name, def)
 		avoid_nodes = def.avoid_nodes or nil,
 		avoid_range = def.avoid_range or nil,
 		random_freq = def.random_freq or 1,
+		icon = def.icon or nil,
 		
 		stimer = 0,
 		timer = 0,
@@ -137,6 +138,7 @@ function mobs:register_mob(name, def)
 				if self.sounds.war_cry then
 					if math.random(0,100) < 90 then
 						minetest.sound_play(self.sounds.war_cry,{ object = self.object })
+						mobs.put_icon(self,"mobs:icon_notice",3)
 					end
 				end
 				self.state = "attack"
@@ -146,26 +148,28 @@ function mobs:register_mob(name, def)
 		end,
 		
 		do_avoidance = function(self)
+			
 			if self.avoid_nodes ~= nil then
 				local avoid_range = self.avoid_range
 				local avoid_nodes = self.avoid_nodes
 				
 				local pos = self.object:getpos()
 				
-				local minx = pos.x - math.ceil( avoid_range / 2 )
-				local maxx = pos.x + math.ceil( avoid_range / 2 )
+				local minx = pos.x - avoid_range
+				local maxx = pos.x + avoid_range
 				
-				local minz = pos.z - math.ceil( avoid_range / 2 )
-				local maxz = pos.z + math.ceil( avoid_range / 2 )
+				local minz = pos.z - avoid_range
+				local maxz = pos.z + avoid_range
 
-				local npos = minetest.find_nodes_in_area({x=minx,y=(pos.y-1),z=minz},{x=maxx,y=(pos.y+1),z=maxz}, avoid_nodes)
+				local npos = minetest.find_nodes_in_area({x=minx,y=(pos.y-2),z=minz},{x=maxx,y=(pos.y+2),z=maxz}, avoid_nodes)
 				
 				if #npos > 0 then
 					local fpos = { x=(npos[1].x * -1),y=npos[1].y,z=(npos[1].z*-1) } 
 					mobs:face_pos(self,fpos)
 					self.state="walk"
 					self:set_animation("walk")
-					self:set_velocity(4)
+					self.set_velocity(self, self.walk_velocity)
+					self.pause_timer = 3
 				end
 			end
 		end,
@@ -321,6 +325,9 @@ function mobs:register_mob(name, def)
 			if self.lifetimer <= 0 and not self.tamed and self.type ~= "npc" then
 				self.object:remove()
 			end
+			if self.icon ~= nil then
+				mobs.put_icon(self,self.icon,false)
+			end
 		end,
 		
 		get_staticdata = function(self)
@@ -337,7 +344,7 @@ function mobs:register_mob(name, def)
 				tflp = 1
 			end
 			process_weapon(hitter,tflp,tool_capabilities)
-			
+			self.pause_timer = 0
 			local hpos = hitter:getpos()
 			local pos = self.object:getpos()
 			if self.object:get_hp() <= 0 then
@@ -552,7 +559,7 @@ function mobs:spawn_mob(pos,name)
 			mob.object:set_hp( newHP )
 			mob.state = "walk"	-- make them walk when they spawn so they walk away from their original spawn position
 			-- vary the walk and run velocity when a mob is spawned so groups of mobs don't clump up so bad
-			math.randomseed(os.clock())
+			--math.randomseed(os.clock())
 			
 			mob.walk_velocity = mob.walk_velocity - ( mob.walk_velocity * ( math.random(0,12) / 100 ) )
 			if mob.walk_velocity < 0 then
@@ -563,6 +570,9 @@ function mobs:spawn_mob(pos,name)
 			if mob.run_velocity < 0 then
 				mob.run_velocity = 0
 			end
+			if mob.icon ~= nil then
+				mobs.put_icon(mob,mob.icon,false)
+			end
 			return true
 		end
 	end
@@ -570,8 +580,8 @@ end
 
 function mobs:get_random(type)
 	if mobs.mob_list[type] ~= nil then
-		local seed = os.clock() + os.time()
-		math.randomseed(seed)
+		--local seed = os.clock() + os.time()
+		--math.randomseed(seed)
 		local idx = math.random(1,#mobs.mob_list[type])
 		if mobs.mob_list[type][idx] ~= nil then
 			return mobs.mob_list[type][idx]

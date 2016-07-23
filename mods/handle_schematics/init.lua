@@ -30,6 +30,7 @@ dofile(handle_schematics.modpath.."/handle_schematics_meta.lua");
 replacements_group = {};
 -- the replacement groups do add some non-ground nodes; needed by mg_villages
 replacements_group.node_is_ground = {}
+dofile(handle_schematics.modpath.."/replacements_discontinued_nodes.lua")
 dofile(handle_schematics.modpath.."/replacements_wood.lua")
 dofile(handle_schematics.modpath.."/replacements_realtest.lua")
 dofile(handle_schematics.modpath.."/replacements_farming.lua")

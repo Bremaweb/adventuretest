@@ -43,21 +43,21 @@ local THROWING_ARROW_ENTITY={
 THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:getpos()
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 
 	if self.timer>0.2 then
-		local objs = minetest.env:get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 1)
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 1)
 		for k, obj in pairs(objs) do
 			if obj:get_luaentity() ~= nil then
 				if obj:get_luaentity().name ~= "throwing:arrow_build_entity" and obj:get_luaentity().name ~= "__builtin:item" then
 					if self.node ~= "" then
-						minetest.env:set_node(self.lastpos, {name=self.node})
+						minetest.set_node(self.lastpos, {name=self.node})
 					end
 					self.object:remove()
 				end
 			else
 				if self.node ~= "" then
-					minetest.env:set_node(self.lastpos, {name=self.node})
+					minetest.set_node(self.lastpos, {name=self.node})
 				end
 				self.object:remove()
 			end
@@ -67,7 +67,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	if self.lastpos.x~=nil then
 		if node.name ~= "air" then
 			if self.node ~= "" then
-				minetest.env:set_node(self.lastpos, {name=self.node})
+				minetest.set_node(self.lastpos, {name=self.node})
 			end
 			self.object:remove()
 		end

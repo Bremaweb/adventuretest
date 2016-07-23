@@ -11,7 +11,7 @@ table.insert(dungeon_chest, { "default:mese", 15, 4 })
 table.insert(dungeon_chest, { "default:diamondblock",10, 4 })
 table.insert(dungeon_chest, { "potions:fly3", 50, 1})
 table.insert(dungeon_chest, { "potions:bones", 70, 5})
-table.insert(dungeon_chest, { "potions:magid_replenish3", 60, 10})
+table.insert(dungeon_chest, { "potions:magic_replenish3", 60, 10})
 table.insert(dungeon_chest, { "potions:antidote", 80, 10})
 table.insert(dungeon_chest, { "farming_plus:bread", 80, 15})
 table.insert(dungeon_chest, { "mobs:meat", 80, 5})
@@ -116,7 +116,7 @@ minetest.register_on_generated( function (minp, maxp, blockseed)
 					
 					local size = xsize * zsize
 					
-					math.randomseed(os.clock())
+					--math.randomseed(os.clock())
 					local fillratio = ( math.random(8,14) / 100 )
 					local numgoblins = 2 + ( ((xsize * 2) * (zsize * 2)) * fillratio )
 					

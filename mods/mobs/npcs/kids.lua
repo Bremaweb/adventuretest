@@ -87,7 +87,7 @@ mobs:register_mob("mobs:kid_lost", {
 			end
 		end
 		
-		math.randomseed(os.clock())
+		--math.randomseed(os.clock())
 		if math.random(1, 100) < self.activity_level then
 			if mobs.api_throttling(self) then return end
 			-- if there is a player nearby look at them			

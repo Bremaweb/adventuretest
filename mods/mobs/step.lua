@@ -1,9 +1,5 @@
 function mobs.on_step(self,dtime)
-	if self.type == "monster" and minetest.setting_getbool("only_peaceful_mobs") then
-		self.object:remove()
-		return
-	end
-	
+	--math.randomseed(os.time() + dtime)
 	if self.lifetimer ~= false then
 		self.lifetimer = self.lifetimer - dtime
 		if self.lifetimer <= 0 and not self.tamed and self.type ~= "npc" then
@@ -48,8 +44,7 @@ function mobs.on_step(self,dtime)
 		end
 	end
 	
-	-- if pause state then this is where the loop ends
-	-- pause is only set after a monster is hit
+	-- if pause state then this is where the loop ends	
 	if self.pause_timer > 0 then
 		self.pause_timer = self.pause_timer - dtime
 		if self.pause_timer <= 0 then
@@ -72,10 +67,11 @@ function mobs.on_step(self,dtime)
 				local maxhear = 50
 				local g = 1
 				if self.type == "npc" then
-					maxhear = 20
-					g = 0.7
+					maxhear = 30
+					g = 0.75
 				end 			
 				minetest.sound_play(self.sounds.random, {object = self.object, max_hear_distance=maxhear, gain=g})
+				mobs.put_icon(self,"mobs:icon_notice",4)
 			end
 		end
 	end
@@ -382,7 +378,7 @@ function mobs.on_step(self,dtime)
 	
 	if self.state == "stand" then
 		-- randomly turn
-		math.randomseed(os.clock())
+		--math.randomseed(os.clock())
 		if math.random(1, 100) < self.activity_level then
 			if mobs.api_throttling(self) then return end
 			-- if there is a player nearby look at them			

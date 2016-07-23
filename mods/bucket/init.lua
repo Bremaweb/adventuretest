@@ -17,6 +17,7 @@ minetest.register_craft({
 
 bucket = {}
 bucket.liquids = {}
+bucket.swaps = {}
 
 local function check_protection(pos, name, text)
 	if minetest.is_protected(pos, name) then
@@ -73,6 +74,12 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 				end
 
 				local place_liquid = function(pos, node, source, flowing, fullness)
+					if bucket.swaps[source] ~= nil then
+						source = bucket.swaps[source]
+					end
+					if bucket.swaps[flowing] ~= nil then
+						flowing = bucket.swaps[flowing]
+					end
 					if check_protection(pos,
 							user and user:get_player_name() or "",
 							"place "..source) then
@@ -125,6 +132,11 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 	end
 end
 
+function bucket.register_swap(source, flowing, new_source, new_flowing)
+	bucket.swaps[source] = new_source
+	bucket.swaps[flowing] = new_flowing
+end
+
 minetest.register_craftitem("bucket:bucket_empty", {
 	description = "Empty Bucket",
 	inventory_image = "bucket.png",
@@ -136,8 +148,8 @@ minetest.register_craftitem("bucket:bucket_empty", {
 			return
 		end
 		-- Check if pointing to a liquid source
-		node = minetest.get_node(pointed_thing.under)
-		liquiddef = bucket.liquids[node.name]
+		local node = minetest.get_node(pointed_thing.under)
+		local liquiddef = bucket.liquids[node.name]
 		if liquiddef ~= nil and liquiddef.itemname ~= nil and
 			(node.name == liquiddef.source or
 			(node.name == liquiddef.flowing and
@@ -169,11 +181,13 @@ bucket.register_liquid(
 
 bucket.register_liquid(
 	"default:mg_water_source",
-	"default:water_flowing",
+	"default:mg_water_flowing",
 	"bucket:bucket_water",
 	"bucket_water.png",
 	"Water Bucket"
 )
+
+bucket.register_swap("default:mg_water_source","default:mg_water_flowing","default:water_source","default:water_flowing")
 
 bucket.register_liquid(
 	"default:lava_source",

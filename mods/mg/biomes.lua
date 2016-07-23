@@ -132,15 +132,11 @@ minetest.register_biome({
 
 minetest.register_biome({
 	name = "desert",
-	--node_dust = "",
 	node_top = "default:desert_sand",
 	depth_top = 1,
 	node_filler = "default:desert_sand",
 	depth_filler = 1,
 	node_stone = "default:desert_stone",
-	--node_water_top = "",
-	--depth_water_top = ,
-	--node_water = "",
 	y_min = -10,
 	y_max = 230,
 	heat_point = 90,
@@ -148,7 +144,6 @@ minetest.register_biome({
 	node_water_top = "default:mg_water_source",
 	depth_water_top = 2,
 	node_water = "default:mg_water_source",
-	node_river_water = "default:mg_water_source",
 	node_river_water = "default:mg_water_source",
 })
 
@@ -160,9 +155,6 @@ minetest.register_biome({
 	node_filler = "default:dirt",
 	depth_filler = 4,
 	node_stone = "default:stone",
-	--node_water_top = "",
-	--depth_water_top = ,
-	--node_water = "",
 	y_min = -10,
 	y_max = 230,
 	heat_point = 90,
@@ -255,9 +247,6 @@ minetest.register_biome({
 	node_filler = "default:dirt",
 	depth_filler = 6,
 	node_stone = "default:stone",
-	--node_water_top = "default:ice",
-	--depth_water_top = 2,
-	--node_water = "",
 	y_min = -10,
 	y_max = 230,
 	heat_point = 90,

@@ -46,7 +46,7 @@ local THROWING_ARROW_ENTITY={
 THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:getpos()
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 	local hitter
 	local damage = 0
 	
@@ -56,7 +56,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 		else
 			hitter = self.object
 		end		
-		local objs = minetest.env:get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)
 		for k, obj in pairs(objs) do
 			if obj:get_luaentity() ~= nil then
 				if obj:get_luaentity().name ~= "throwing:arrow_entity" and obj:get_luaentity().name ~= "__builtin:item" then
@@ -93,7 +93,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	if self.lastpos.x~=nil then
 		if ( minetest.registered_nodes[node.name].walkable == true or minetest.registered_nodes[node.name].walkable == nil ) and ( node.name ~= "air" and node.name ~= "default:water_source" and node.name ~= "default:water_flowing" ) then
 			minetest.sound_play("throwing_arrow_hit_wall",{object=self.object})
-			minetest.env:add_item(self.lastpos, 'throwing:arrow')
+			minetest.add_item(self.lastpos, 'throwing:arrow')
 			self.object:remove()
 		end
 	end

@@ -20,12 +20,12 @@
 
 minetest.register_on_punchnode(function(pos, node, puncher)
 	local bottom_pos = {x=pos.x, y=pos.y - 1, z=pos.z}
-	local bottom_node = minetest.env:get_node(bottom_pos)
+	local bottom_node = minetest.get_node(bottom_pos)
 	if (node.name == "locked_sign:sign_wall_locked") and (bottom_node.name == "default:chest_locked") and
-		minetest.env:get_meta(pos):get_string("owner") == minetest.env:get_meta(bottom_pos):get_string("owner") then
-		local sign_text = minetest.env:get_meta(pos):get_string("text")
+		minetest.get_meta(pos):get_string("owner") == minetest.get_meta(bottom_pos):get_string("owner") then
+		local sign_text = minetest.get_meta(pos):get_string("text")
 		local shop_name, shop_type, nodename, amount, cost = string.match(sign_text, "([^ ]+) ([^ ]+) ([^ ]+) ([^ ]+) ([^ ]+)")
-		local owner_name = minetest.env:get_meta(pos):get_string("owner")
+		local owner_name = minetest.get_meta(pos):get_string("owner")
 		local puncher_name = puncher:get_player_name()
 		if (shop_type ~= "B") and (shop_type ~= "S") or (not minetest.registered_items[nodename]) or (not tonumber(amount)) or
 		(not tonumber(cost)) then
@@ -40,7 +40,7 @@ minetest.register_on_punchnode(function(pos, node, puncher)
 		end
 
 
-		local chest_inv = minetest.env:get_meta({x=pos.x, y=pos.y - 1, z = pos.z}):get_inventory()
+		local chest_inv = minetest.get_meta({x=pos.x, y=pos.y - 1, z = pos.z}):get_inventory()
 		local puncher_inv = puncher:get_inventory()
 		--BUY
 		if shop_type == "B" then

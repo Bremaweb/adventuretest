@@ -59,8 +59,8 @@ minetest.register_lbm({
 	run_at_every_load = true,
 	action = function(pos, node)
 	
-	local active_object_count = minetest.get_objects_inside_radius(pos,5)
-	local active_object_count_wider = minetest.get_objects_inside_radius(pos,15)
+	local active_object_count = minetest.get_objects_inside_radius(pos,15)
+	local active_object_count_wider = minetest.get_objects_inside_radius(pos,35)
 		
 	local meta = minetest.get_meta(pos)
 	local entity = meta:get_string("entity")
@@ -123,7 +123,7 @@ if randomChance(30) then
 	return
 end
 
-math.randomseed(os.clock())
+--math.randomseed(os.clock())
 local numNPCs = math.random(0,1)
 		--print("Spawning "..tostring(numNPCs).." NPCs")
 		if numNPCs > 0 then
@@ -162,7 +162,7 @@ local numNPCs = math.random(0,1)
 					if mob then
 						mob = mob:get_luaentity()
 						local p = mob.object:getpos()
-						math.randomseed( ( p.x * p.y * p.z ) )
+						--math.randomseed( ( p.x * p.y * p.z ) )
 						
 						minetest.set_node(spawnerpos,{name="mobs:spawner"})
 						local meta = minetest.get_meta(spawnerpos)

@@ -20,6 +20,8 @@ local function adventuretest_globalstep(dtime)
   
   abm_globalstep(dtime)
   --ambience_globalstep(dtime)
+  adventuretest.seed = adventuretest.seed + dtime
+  math.randomseed(adventuretest.seed)
 end
 minetest.register_globalstep(adventuretest_globalstep)
 
@@ -73,6 +75,14 @@ local function adventuretest_dignode(pos, node, digger)
     -- ENERGY
     pd.increment(name,"energy",-0.05)
     
+	-- EXPERIENCE
+  	if minetest.registered_nodes[node.name] ~= nil then
+    	if minetest.registered_nodes[node.name]["skill"] ~= nil then
+       		default.drop_item(pos,"experience:1_exp")
+       		skills.add_exp(name,5)
+    	end
+  	end  
+
     pd.increment(name,STAT_DUG,1)
     local dug = pd.get(name,STAT_DUG)
 	if dug % 100 == 0 then
@@ -150,6 +160,15 @@ end
 minetest.register_on_leaveplayer(on_leave)
 
 local function on_new(player)
+	local hud_id = player:hud_add({
+		hud_elem_type = "image",
+		position = {x = 0.5, y = 0.5},
+		scale = {
+			x = -100,
+			y = -100
+		},
+		text = "adventuretest_spawning_hud.png"
+	})
 	local name = player:get_player_name()
 	pd.load_player(name)
 	-- set some defaults
@@ -166,8 +185,9 @@ local function on_new(player)
 	player:set_hp(6)
 	skills.set_default_skills(name)
 	pd.save_player(name)
-	minetest.after(5,adventuretest.check_spawn,player)
-	--mg_villages.spawnplayer(player)
+	pd.set(name,"spawning_hud",hud_id)
+	adventuretest.teleport(player,game_origin)
+	minetest.after(3,adventuretest.check_spawn,player)
 end
 minetest.register_on_newplayer(on_new)
 

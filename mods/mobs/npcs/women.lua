@@ -24,7 +24,7 @@ type = "npc",
 	lava_damage = 5,
 	light_damage = 0,
 	on_rightclick = nil,
-	walk_chance = 12,
+	walk_chance = 7,
 	attack_type = "dogfight",
 	animation = {
 		speed_normal = 30,
@@ -43,7 +43,7 @@ type = "npc",
 		attack = "default_punch",
 		random =  "mobs_female1_random",
 	},
-	random_freq = 1,
+	random_freq = 5,
 	attacks_monsters=false,
 	peaceful = true,
 	step=2,
@@ -104,7 +104,7 @@ type = "npc",
 		attack = "default_punch",
 		random =  "mobs_female2_random",
 	},
-	random_freq = 1,
+	random_freq = 4,
 	attacks_monsters=false,
 	peaceful = true,
 	step=2,
@@ -115,7 +115,7 @@ type = "npc",
 		{chance=40, item="experience:6_exp"},
 		{chance=60, item="potions:magic_replenish1"},
 	},
-	walk_chance = 5,
+	walk_chance = 4,
 	lifetimer = false,
 	avoid_nodes = {"fire:basic_flame","default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
 	avoid_range = 4,
@@ -176,14 +176,15 @@ type = "npc",
 		{chance=80, item="experience:6_exp 2"},
 		{chance=40, item="potions:magic_replenish1"},
 	},
-	walk_chance = 9,
+	walk_chance = 6,
 	lifetimer = false,
 	avoid_nodes = {"fire:basic_flame","default:water_source","default:water_flowing","default:lava_source","default:lava_flowing"},
 	avoid_range = 4,
+	icon = "mobs:icon_quest",
 })
 
 mobs:register_mob("mobs:mother", {
-type = "npc_special",
+	type = "npc_special",
 	hp_min = 30,
 	hp_max = 75,
 	exp_min = 0,
@@ -257,7 +258,7 @@ type = "npc_special",
 			end
 		end
 		
-		math.randomseed(os.clock())
+		--math.randomseed(os.clock())
 		if math.random(1, 100) < self.activity_level then
 			if mobs.api_throttling(self) then return end
 			-- if there is a player nearby look at them			

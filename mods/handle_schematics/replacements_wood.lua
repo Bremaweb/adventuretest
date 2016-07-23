@@ -165,10 +165,7 @@ replacements_group['wood'].construct_wood_type_list = function()
 	-- default tree and jungletree; no gates available
 	replacements_group['wood'].add_material( {'', 'jungle' },     'default:', '','wood','', 'tree',  '','leaves',  '','sapling',
 		'stairs:stair_', 'wood', 'stairs:slab_', 'wood',   'default:fence_','wood',  'NONE', '' );
-	-- default:pine_needles instead of leaves; no gates available
-	replacements_group['wood'].add_material( {'pine' },           'default:', '','wood','', 'tree',  '','_needles','','_sapling',
-		'stairs:stair_', 'wood', 'stairs:slab_', 'wood',   'default:fence_','wood',  'NONE','' );
-
+	
 	-- https://github.com/Novatux/mg
 	-- trees from nores mapgen
 	replacements_group['wood'].add_material( {'savanna', 'pine' },'mg:',     '','wood','', 'tree',  '','leaves',  '','sapling',
