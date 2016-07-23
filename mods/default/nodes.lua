@@ -781,6 +781,7 @@ default.chest_formspec =
 	"size[8,9]"..
 	"list[current_name;main;0,0;8,4;]"..
 	"list[current_player;main;0,5;8,4;]"
+	.."listring[current_name;main]".."listring[current_player;main]"
 
 function default.get_locked_chest_formspec(pos)
 	local spos = pos.x .. "," .. pos.y .. "," ..pos.z
@@ -788,6 +789,7 @@ function default.get_locked_chest_formspec(pos)
 		"size[8,9]"..
 		"list[nodemeta:".. spos .. ";main;0,0;8,4;]"..
 		"list[current_player;main;0,5;8,4;]"
+		.."listring[[nodemeta:".. spos ..";main]".."listring[current_player;main]"
 	return formspec
 end
 
@@ -993,6 +995,9 @@ function default.get_furnace_active_formspec(pos, percent)
 		"list[current_name;src;2,1;1,1;]"..
 		"list[current_name;dst;5,1;2,2;]"..
 		"list[current_player;main;0,5;8,4;]"
+		.."listring[current_name;dst]".."listring[current_player;main]"
+		.."listring[current_name;src]".."listring[current_player;main]"
+		.."listring[current_name;fuel]".."listring[current_player;main]"
 	return formspec
 end
 
@@ -1013,6 +1018,9 @@ default.furnace_inactive_formspec =
 	"list[current_name;src;2,1;1,1;]"..
 	"list[current_name;dst;5,1;2,2;]"..
 	"list[current_player;main;0,5;8,4;]"
+	.."listring[current_name;dst]".."listring[current_player;main]"
+	.."listring[current_name;src]".."listring[current_player;main]"
+	.."listring[current_name;fuel]".."listring[current_player;main]"
 
 minetest.register_node("default:furnace", {
 	description = "Furnace",
