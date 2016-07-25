@@ -815,16 +815,16 @@ minetest.register_node("default:sign_wall", {
 default.chest_formspec = 
 	"size[8,9]"..
 	"list[current_name;main;0,0;8,4;]"..
-	"list[current_player;main;0,5;8,4;]"
-	.."listring[current_name;main]".."listring[current_player;main]"
+	"list[current_player;main;0,5;8,4;]"..
+	"listring[]"
 
 function default.get_locked_chest_formspec(pos)
 	local spos = pos.x .. "," .. pos.y .. "," ..pos.z
 	local formspec =
 		"size[8,9]"..
 		"list[nodemeta:".. spos .. ";main;0,0;8,4;]"..
-		"list[current_player;main;0,5;8,4;]"
-		.."listring[[nodemeta:".. spos ..";main]".."listring[current_player;main]"
+		"list[current_player;main;0,5;8,4;]"..
+		"listring[]"
 	return formspec
 end
 

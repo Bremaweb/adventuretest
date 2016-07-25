@@ -128,7 +128,7 @@ mg_villages.map_of_world = function( pname )
 	end
 
 	-- code and arrows taken from mapp mod
-	local yaw = player:get_look_yaw()
+	local yaw = player:get_look_horizontal()
 	local rotate = 0;
 	if yaw ~= nil then
 		-- Find rotation and texture based on yaw.

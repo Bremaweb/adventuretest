@@ -14,7 +14,7 @@ function ts_doors.register_door(recipe, description, texture)
 			tiles = {{ name = "[combine:32x38:0,0=" .. texture .. ":0,16=" .. texture .. ":0,32=" .. texture .. ":16,0=" .. texture .. ":16,16=" .. texture .. ":16,32=" .. texture .. "^[transformR270^[colorize:#fff:30^ts_doors_base.png^[noalpha^[makealpha:0,255,0", backface_culling = true }},
 			description = description .. " Door",
 			inventory_image = "[combine:32x38:0,0=" .. texture .. ":0,16=" .. texture .. ":16,0=" .. texture .. ":16,16=" .. texture .. "^[transformR270^[colorize:#fff:30^ts_doors_base_inv.png^[noalpha^[makealpha:0,255,0",
-			groups = groups,
+			groups = door_groups,
 			recipe = {
 				{recipe, recipe},
 				{recipe, recipe},
@@ -23,14 +23,14 @@ function ts_doors.register_door(recipe, description, texture)
 		})
 	
 	
-		groups.level = 2
+		door_groups.level = 2
 	
 		doors.register("ts_door_locked_" .. recipe:gsub(":", "_"), {
 			tiles = {{ name = "[combine:32x38:0,0=" .. texture .. ":0,16=" .. texture .. ":0,32=" .. texture .. ":16,0=" .. texture .. ":16,16=" .. texture .. ":16,32=" .. texture .. "^[transformR270^[colorize:#fff:30^ts_doors_base_locked.png^[noalpha^[makealpha:0,255,0", backface_culling = true }},
 			description = description .. " Locked Door",
 			inventory_image = "[combine:32x38:0,0=" .. texture .. ":0,16=" .. texture .. ":16,0=" .. texture .. ":16,16=" .. texture .. "^[transformR270^[colorize:#fff:30^ts_doors_base_locked_inv.png^[noalpha^[makealpha:0,255,0",
 			protected = true,
-			groups = groups,
+			groups = door_groups,
 			sound_open = "doors_steel_door_open",
 			sound_close = "doors_steel_door_close",
 			recipe = {

@@ -139,7 +139,7 @@ local magicmissle_spell = {
 				local dir = user:get_look_dir()
 				obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
 				obj:setacceleration({x=dir.x*-3, y=-1, z=dir.z*-3})
-				obj:setyaw(user:get_look_yaw()+math.pi)
+				obj:setyaw(user:get_look_horizontal()+math.pi)
 				obj:get_luaentity().player = user
 				magic.update_magic(user,name)
 			else

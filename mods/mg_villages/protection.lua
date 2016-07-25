@@ -44,8 +44,8 @@ minetest.is_protected = function(pos, name)
 		local is_houseowner = false;
 		for nr, p in pairs( mg_villages.all_villages[ village_id ].to_add_data.bpos ) do
 
-			trustedusers = p.can_edit
-			trustedUser = false
+			local trustedusers = p.can_edit
+			local trustedUser = false
 			if trustedusers ~= nil then
 				for _,trusted in pairs(trustedusers) do
 					if trusted == name then
@@ -136,8 +136,10 @@ mg_villages.plotmarker_formspec = function( pos, formname, fields, player )
 		return;
 	end
 
-	local owner      = mg_villages.all_villages[ village_id ].to_add_data.bpos[ plot_nr ].owner;
-	local btype      = mg_villages.all_villages[ village_id ].to_add_data.bpos[ plot_nr ].btype;
+	local village	 = mg_villages.all_villages[ village_id ];
+	local plot	 = village.to_add_data.bpos[ plot_nr ];
+	-- local owner      = mg_villages.all_villages[ village_id ].to_add_data.bpos[ plot_nr ].owner;
+	local btype      = plot.btype;
 
 	local owner_name = plot.owner;
 	if( not( owner_name ) or owner_name == "" ) then
@@ -160,8 +162,7 @@ mg_villages.plotmarker_formspec = function( pos, formname, fields, player )
 	-- create the header
 	local formspec = "size[13,10]"..
 		"label[3.3,0.0;Plot No.: "..tostring( plot_nr )..", with "..tostring( mg_villages.BUILDINGS[ plot.btype ].scm ).."]"..
-		"label[0.3,0.4;Located at:]"      .."label[3.3,0.4;"..(minetest.pos_to_string( pos ) or '?')..", which is "..tostring( distance ).." m away]"
-		                                  .."label[7.3,0.4;from the village center]"..
+		"label[0.3,0.4;Located at:]"      .."label[3.3,0.4;"..(minetest.pos_to_string( pos ) or '?')..", which is "..tostring( distance ).."m from the village center]"..
 		"label[0.3,0.8;Part of village:]" .."label[3.3,0.8;"..(village.name or "- name unknown -").."]"
 		                                  .."label[7.3,0.8;located at "..(village_pos).."]"..
 		"label[0.3,1.2;Owned by:]"        .."label[3.3,1.2;"..(owner_name).."]"..
@@ -338,10 +339,9 @@ mg_villages.plotmarker_formspec = function( pos, formname, fields, player )
 	local original_formspec = "size[8,3]"..
 		"button[7.0,0.0;1.0,0.5;info;Info]"..
 		"label[1.0,0.5;Plot No.: "..tostring( plot_nr ).."]"..
-		"label[2.5,0.5;Building:]"..
-		"label[3.5,0.5;"..tostring( mg_villages.BUILDINGS[btype].scm ).."]"..
+		"label[2.5,0.5;Building: "..tostring( mg_villages.BUILDINGS[btype].scm ).." ]"..
 		"field[20,20;0.1,0.1;pos2str;Pos;"..minetest.pos_to_string( pos ).."]";
-		local formspec = "";
+	local formspec = "";
 	local ifinhabit = "";
 
 	-- Get Price
@@ -368,8 +368,9 @@ mg_villages.plotmarker_formspec = function( pos, formname, fields, player )
 	if (not(owner) or owner=='') then
 
 		formspec = original_formspec ..
-			"label[1,1;You can buy this plot for]".. 
-			"label[3.8,1;"..tostring( price_stack:get_count() ).." x ]"..
+			--"label[1,1;You can buy this plot for]".. 
+			--"label[3.8,1;"..tostring( price_stack:get_count() ).." x ]"..
+			"label[1,1;You can buy this plot for "..tostring( price_stack:get_count() ).." x ]"..
 			"item_image[4.3,0.8;1,1;"..(  price_stack:get_name() ).."]"..
 			ifinhabit..
 			"button[2,2.5;1.5,0.5;buy;Buy plot]"..
