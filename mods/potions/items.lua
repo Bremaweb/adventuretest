@@ -89,7 +89,8 @@ minetest.register_craftitem("potions:magic_replenish1", {
 	inventory_image = "potions_magic.png",
 	on_use = function ( itemstack,player,pointed_thing )
 		local name = player:get_player_name()
-		magic.player_magic[name] = magic.player_magic[name] + 5
+		local m = pd.get_number(name,"mana")
+		pd.increment(name,"mana",5)
 		itemstack:take_item()
 		return itemstack
 	end,
@@ -102,7 +103,7 @@ minetest.register_craftitem("potions:magic_replenish2", {
 	inventory_image = "potions_magic2.png",
 	on_use = function ( itemstack,player,pointed_thing )
 		local name = player:get_player_name()
-		magic.player_magic[name] = magic.player_magic[name] + 10
+		pd.increment(name,"mana",5)
 		itemstack:take_item()
 		return itemstack
 	end,
@@ -115,7 +116,7 @@ minetest.register_craftitem("potions:magic_replenish3", {
 	inventory_image = "potions_magic3.png",
 	on_use = function ( itemstack,player,pointed_thing )
 		local name = player:get_player_name()
-		magic.player_magic[name] = 20
+		pd.set(name,"magic",20)
 		itemstack:take_item()
 		return itemstack
 	end,
