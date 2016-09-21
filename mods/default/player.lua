@@ -218,7 +218,7 @@ adventuretest.register_pl_hook(default.player_globalstep,0)
 if minetest.register_on_punchplayer ~= nil then
 	minetest.register_on_punchplayer( function(player, hitter, time_from_last_punch, tool_capabilities, dir)
 		local name = player:get_player_name()
-		process_weapon(player,time_from_last_punch,tool_capabilities)
+		process_weapon(hitter,time_from_last_punch,tool_capabilities)
 		blood_particles(player:getpos(),0.5,27,"mobs_blood.png")
 		if player_anim[name] == "lay" or player_anim[name] == "sit" then
 			player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
@@ -236,3 +236,12 @@ if minetest.register_on_punchplayer ~= nil then
 	end)
 end
 
+minetest.register_on_player_hpchange(function(player,hp_change)
+	if hp_change < 0 then
+		if math.random(0,3) == 3 then
+			local snum = math.random(1,4)
+			minetest.sound_play("default_hurt"..tostring(snum),{object = player})
+		end
+	end
+end
+,false)

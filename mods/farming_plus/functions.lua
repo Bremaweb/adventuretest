@@ -56,6 +56,7 @@ end
 
 function farming:add_plant(full_grown, names, interval, chance)
 	minetest.register_abm({
+		label = "growing "..full_grown,
 		nodenames = names,
 		neighbors = {"group:soil"},
 		interval = interval,

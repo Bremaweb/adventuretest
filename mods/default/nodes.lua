@@ -40,13 +40,14 @@ minetest.register_node("default:stone_with_iron", {
 })
 
 minetest.register_abm({
+	label = "lava on iron",
 	nodenames = {"default:stone_with_iron"},
 	neighbors = {"group:lava"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		-- change to a fused iron node
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		minetest.set_node(pos, {name = "default:cobble"})
 	end,
 })
@@ -146,12 +147,13 @@ minetest.register_node("default:dirt", {
 })
 
 minetest.register_abm({
+	label = "convert dirt",
 	nodenames = {"default:dirt"},
 	neighbors = {"default:dirt_with_grass","default:water_source","default:water_flowing","default:dirt_with_snow","default:snow","default:snowblock"},
-	interval = 2,
+	interval = 15,
 	chance = 200,
 	action = function(pos, node)
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local name = minetest.get_node(above).name
 		local nodedef = minetest.registered_nodes[name]
@@ -168,12 +170,13 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
+	label = "convert dirt to dry grass",
 	nodenames = {"default:dirt"},
 	neighbors = {"mg:dirt_with_dry_grass"},
-	interval = 6,
+	interval = 15,
 	chance = 200,
 	action = function(pos, node)
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local name = minetest.get_node(above).name
 		local nodedef = minetest.registered_nodes[name]
@@ -192,7 +195,7 @@ minetest.register_abm({
 	interval = 2,
 	chance = 20,
 	action = function(pos, node)
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local name = minetest.get_node(above).name
 		local nodedef = minetest.registered_nodes[name]
@@ -270,15 +273,16 @@ minetest.register_node("default:clay", {
 
 -- Regenerative clay
 minetest.register_abm({
+	label = "regenerate clay",
 	nodenames = {"default:sand"},
 	neighbors = {"default:dirt"},
-	interval = 2,
-	chance = 600,
+	interval = 15,
+	chance = 250,
 	action = function(pos, node)
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local name = minetest.get_node(above).name
-			if name == "default:water_source" then
+			if name == "default:water_source" or name == "default:mg_water_source" then
 				minetest.set_node(pos, {name = "default:clay"})
 			end
 	end
@@ -904,11 +908,12 @@ minetest.register_node("default:npc_chest", {
 
 -- respawn random items in the npc chests
 minetest.register_abm({
+	label = "npc chest",
 	nodenames = {"default:npc_chest"},
 	interval = 10,
 	chance = 600,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		local item_count = math.random(0,5)
 		local items_available = { [0] = "default:apple", [1] = "mobs:meat_raw", [2]="farming_plus:bread",[3]="bushes:berry_pie_cooked",[4]="bushes:basket_empty",[5]="farming_plus:wheat",[6]="throwing:arrow",[7]="default:torch",[8]="farming_plus:string"}
 		local meta = minetest.get_meta(pos)
@@ -1242,6 +1247,7 @@ local function swap_node(pos,name)
 end
 
 minetest.register_abm({
+	label = "furnace",
 	nodenames = {"default:furnace","default:furnace_active"},
 	interval = 1.0,
 	chance = 1,

@@ -171,6 +171,7 @@ local function swap_node(pos,name)
 end
 
 minetest.register_abm({
+	label = "campfire",
 	nodenames = {"campfire:campfire","campfire:campfire_burning"},
 	interval = 1.0,
 	chance = 1,

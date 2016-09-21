@@ -8,7 +8,9 @@ local replaceable_node_types = {
 	"default:lava_flowing", 
 	"default:water_source", 
 	"default:water_flowing", 
-	"air"
+	"air",
+	"default:mg_water_source",
+	"default:mg_water_flowing"
 }
 
 

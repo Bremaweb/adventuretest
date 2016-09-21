@@ -180,8 +180,11 @@ minetest.register_chatcommand("skills", {
 function skills_on_dieplayer (player)
     local name = player:get_player_name()
     local level  = skills.get_player_level(name)
-    local decrease = level.exp * -0.1
-    skills.add_exp(name,decrease)
+
+    if level ~= nil then
+    	local decrease = level.exp * -0.1
+    	skills.add_exp(name,decrease)
+    end
 end
 
 dofile(minetest.get_modpath("skills").."/register_skills.lua")

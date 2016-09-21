@@ -46,7 +46,7 @@ minetest.register_chatcommand("home", {
         end
         local last_moved = pd.get_number(pname,"last_moved")
     	local homepos = pd.get(pname,"homepos")
-        local player = minetest.get_player_by_name(name)
+        local player = minetest.get_player_by_name(pname)
         if player == nil then
             -- just a check to prevent server death
             return false

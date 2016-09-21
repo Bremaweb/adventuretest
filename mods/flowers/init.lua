@@ -39,7 +39,7 @@ minetest.register_node("flowers:magic", {
 	wield_image = "flowers_magic.png",
 	sunlight_propagates = true,
 	paramtype = "light",
-	light_source = 12,
+	light_source = 6,
 	walkable = false,
 	buildable_to = true,
 	floodable = true,
@@ -148,14 +148,15 @@ minetest.register_node("flowers:viola", {
 
 -- regrow some magic flowers
 minetest.register_abm({
-	nodenames = {"default:dirt_with_snow","default:snowblock"},
+	label = "regrow magic flowers",
+	nodenames = {"default:dirt_with_snow","default:snowblock","fireswamp:swamp_grass"},
 	interval = 80,
 	chance = 600,
 	action = function(pos, node)
-		if pos.y < 300 then
+		if ( minetest.get_node(pos).name == "default:dirt_with_snow" or minetest.get_node(pos).name == "default:snowblock") and pos.y < 300 then
 			return
 		end
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		local light = minetest.get_node_light(pos)
 		if not light or light < 10 then
 			return
@@ -163,18 +164,19 @@ minetest.register_abm({
 		local pos2 = {x=pos.x,y=(pos.y+1),z=pos.z}
 		local above = minetest.get_node(pos2).name
 		if above == "default:snow" or above == "air" then
-			minetest.set_node(pos2,"flowers:magic")
+			minetest.set_node(pos2,{name="flowers:magic"})
 		end
 	end,
 })
 
 minetest.register_abm({
+	label = "regrow all flowers",
 	nodenames = {"group:flora"},
 	neighbors = {"default:dirt_with_grass", "default:desert_sand","mg:dirt_with_dry_grass"},
 	interval = 50,
-	chance = 25,
+	chance = 75,
 	action = function(pos, node)
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		pos.y = pos.y - 1
 		local under = minetest.get_node(pos)
 		pos.y = pos.y + 1

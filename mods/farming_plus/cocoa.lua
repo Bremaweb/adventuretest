@@ -38,11 +38,12 @@ minetest.register_node("farming_plus:cocoa_leaves", {
 })
 
 minetest.register_abm({
+	label = "grow cocoa sapling",
 	nodenames = {"farming_plus:cocoa_sapling"},
 	interval = 60,
 	chance = 20,
 	action = function(pos, node)
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		farming:generate_tree(pos, "default:tree", "farming_plus:cocoa_leaves", {"default:sand", "default:desert_sand"}, {["farming_plus:cocoa"]=20})
 	end
 })

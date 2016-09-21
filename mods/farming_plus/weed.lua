@@ -23,11 +23,12 @@ minetest.register_node(":farming_plus:weed", {
 })
 
 minetest.register_abm({
+	label = "growing weeds",
 	nodenames = {"farming_plus:soil_wet", "farming_plus:soil"},
 	interval = 150,
 	chance = 4,
 	action = function(pos, node)
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		if minetest.find_node_near(pos, 4, {"farming_plus:scarecrow", "farming_plus:scarecrow_light"}) ~= nil then
 			return
 		end
@@ -47,6 +48,7 @@ minetest.register_abm({
 
 -- if something is overrun with weeds too long turn it back to regular dirt
 minetest.register_abm({
+	label = "return to earth",
 	nodenames = {"farming_plus:weed"},
 	interval = 700,
 	chance = 3,

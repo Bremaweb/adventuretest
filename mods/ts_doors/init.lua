@@ -6,7 +6,7 @@ function ts_doors.register_door(recipe, description, texture)
 		local groups = node.groups
 		local door_groups = {}
 		for k,v in pairs(groups) do
-			if k ~= "wood" then
+			if k ~= "wood" and k ~= "tree" then
 				door_groups[k] = v
 			end
 		end

@@ -17,11 +17,12 @@ minetest.register_node("farming_plus:soil_wet", {
 })
 
 minetest.register_abm({
+	label = "wetting / drying soil",
 	nodenames = {"farming_plus:soil", "farming_plus:soil_wet"},
 	interval = 15,
 	chance = 4,
 	action = function(pos, node)
-		if abm_limiter() then return end
+		--if abm_limiter() then return end
 		pos.y = pos.y+1
 		local nn = minetest.get_node(pos).name
 		pos.y = pos.y-1

@@ -185,6 +185,7 @@ minetest.register_node("glowcrystals:wall", {
 
 -- convert old torches and remove ceiling placed
 minetest.register_abm({
+	label = "convert old glow crystal torches",
 	nodenames = {"glowcrystals:glowcrystal_torch"},
 	interval = 1,
 	chance = 1,
