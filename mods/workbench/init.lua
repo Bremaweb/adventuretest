@@ -49,6 +49,8 @@ local function inventory_set_formspec(player, size)
 	.."list[current_player;main;"..(fsize_x-msize_x)..","..(fsize_y-msize_y+1.25)..";"..msize_x..","..(msize_y - 1)..";"..msize_x.."]"
 	.."list[current_player;craft;"..(fsize_x-size-2)..",0;"..size..","..size..";]"
 	.."list[current_player;craftpreview;"..(fsize_x-1)..","..(size/2-0.5)..";1,1;]"
+	.."listring[current_player;main]"
+	.."listring[current_player;craft]"
 	for i = 0, msize_x - 1, 1 do
 		formspec = formspec.."image["..(fsize_x-msize_x + i)..","..(fsize_y-msize_y)..";1,1;gui_hb_bg.png]"
 	end
@@ -56,8 +58,8 @@ local function inventory_set_formspec(player, size)
 	-- add the shortcut buttons
 	if size ~= 3 then
 		formspec = formspec .. "image_button[0.25,0.25;1,1;inventory_plus_zcg.png;zcg;]"
-		formspec = formspec .. "image_button[1.25,0.25;1,1;inventory_plus_skins.png;skins;]"
-		formspec = formspec .. "image_button[0.25,1.25;1,1;inventory_plus_armor.png;armor;]"
+			.. "image_button[1.25,0.25;1,1;inventory_plus_skins.png;skins;]"
+			.. "image_button[0.25,1.25;1,1;inventory_plus_armor.png;armor;]"
 	end
 	
 	player:set_inventory_formspec(formspec)

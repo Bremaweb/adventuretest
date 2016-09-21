@@ -5,11 +5,11 @@
 --  * a bed seperated into foot and head reagion so that it can be placed manually; it has
 --    no other functionality than decoration!
 --  * a sleeping mat - mostly for NPC that cannot afford a bet yet
---  * bench - if you don't have 3dforniture:chair, then this is the next best thing
+--  * bench - if you don't have 3dfurniture:chair, then this is the next best thing
 --  * table - very simple one
---  * shelf - for stroring things; this one is 3d
+--  * shelf - for storing things; this one is 3d
 --  * stovepipe - so that the smoke from the furnace can get away
---  * washing place - put it over a water source and you can 'wash' yourshelf
+--  * washing place - put it over a water source and you can 'wash' yourself
 ---------------------------------------------------------------------------------------
 -- TODO: change the textures of the bed (make the clothing white, foot path not entirely covered with cloth)
 
@@ -224,7 +224,8 @@ minetest.register_node("cottages:shelf", {
 	                meta:set_string("formspec",
                                 "size[8,8]"..
                                 "list[current_name;main;0,0;8,3;]"..
-                                "list[current_player;main;0,4;8,4;]")
+                                "list[current_player;main;0,4;8,4;]"..
+				"listring[current_name;main]".."listring[current_player;main]")
                 	meta:set_string("infotext", S("open storage shelf"))
                 	local inv = meta:get_inventory();
                 	inv:set_size("main", 24);

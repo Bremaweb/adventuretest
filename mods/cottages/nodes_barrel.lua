@@ -39,7 +39,10 @@ barrel.on_construct = function( pos )
                                 "list[current_name;input;3,0.5;1,1;]"..
                                 "label[5,3.3;"..S("Fill:").."]"..
                                 "list[current_name;output;5,3.8;1,1;]"..
-                                "list[current_player;main;0,5;8,4;]");
+                                "list[current_player;main;0,5;8,4;]"
+				.."listring[current_name;output]".."listring[current_player;main]"
+				.."listring[current_name;input]".."listring[current_player;main]"
+		)
 
 
    meta:set_string( 'liquid_type', '' ); -- which liquid is in the barrel?

@@ -21,7 +21,7 @@ local throwing_shoot_arrow = function(itemstack, player)
 				local dir = player:get_look_dir()
 				obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
 				obj:setacceleration({x=dir.x*-3, y=weapon_def.drop_rate, z=dir.z*-3})
-				obj:setyaw(player:get_look_yaw()+math.pi)
+				obj:setyaw(player:get_look_horizontal()+math.pi)
 				obj:get_luaentity().player = player
 				obj:get_luaentity().max_damage = obj:get_luaentity().max_damage + weapon_def.damage_modifier
 				minetest.sound_play("throwing_sound", {object=player})

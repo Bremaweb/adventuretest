@@ -63,16 +63,18 @@ local function adventuretest_dignode(pos, node, digger)
   
   if digger ~= nil and digger ~= "" then
     local name= digger:get_player_name()
+
+    -- EXPERIENCE
+    if minetest.registered_nodes[node.name] ~= nil then
+      if minetest.registered_nodes[node.name]["skill"] ~= nil then
+         default.drop_item(pos,"experience:1_exp")
+         skills.add_exp(name,5)
+      end
+    end
+  
+    -- ENERGY
     pd.increment(name,"energy",-0.05)
     
-	-- EXPERIENCE
-  	if minetest.registered_nodes[node.name] ~= nil then
-    	if minetest.registered_nodes[node.name]["skill"] ~= nil then
-       		default.drop_item(pos,"experience:1_exp")
-       		skills.add_exp(name,5)
-    	end
-  	end  
-
     pd.increment(name,STAT_DUG,1)
     local dug = pd.get(name,STAT_DUG)
 	if dug % 100 == 0 then
