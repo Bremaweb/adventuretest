@@ -29,7 +29,6 @@ function adventuretest.player_loop(dtime)
 			adventuretest.pl_hooks[k].timer = adventuretest.pl_hooks[k].timer + dtime
 			if adventuretest.pl_hooks[k].timer >= adventuretest.pl_hooks[k].timeout then
 				reset_hooks[#reset_hooks+1] = k
-				adventuretest.pl_hooks[k].timer = 0
 				adventuretest.pl_hooks[k].func(player,name,dtime)
 			end 
 		end
