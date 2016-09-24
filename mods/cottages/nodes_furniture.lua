@@ -189,6 +189,12 @@ end
 
 minetest.register_node("cottages:table", cottages_table_def );
 
+local cottage_shelf_formspec =
+		"size[8,8]"..
+		"list[current_name;main;0,0;8,3;]"..
+		"list[current_player;main;0,4;8,4;]"..
+		"listring[]"
+
 -- looks better than two slabs impersonating a shelf; also more 3d than a bookshelf 
 -- the infotext shows if it's empty or not
 minetest.register_node("cottages:shelf", {
@@ -221,11 +227,7 @@ minetest.register_node("cottages:shelf", {
 
                 	local meta = minetest.get_meta(pos);
 
-	                meta:set_string("formspec",
-                                "size[8,8]"..
-                                "list[current_name;main;0,0;8,3;]"..
-                                "list[current_player;main;0,4;8,4;]"..
-				"listring[current_name;main]".."listring[current_player;main]")
+	                meta:set_string("formspec", cottage_shelf_formspec)
                 	meta:set_string("infotext", S("open storage shelf"))
                 	local inv = meta:get_inventory();
                 	inv:set_size("main", 24);
@@ -388,5 +390,18 @@ minetest.register_craft({
 	recipe = {
 		{cottages.craftitem_steel, '', cottages.craftitem_steel},
 	}
+})
+
+--------------------------------------------------------------------------------
+-- Update existing nodes to use SHIFT-CLICK
+--------------------------------------------------------------------------------
+minetest.register_lbm({
+        name = "cottages:shelf_lbm",
+        nodenames = {"cottages:shelf"},
+        run_at_every_load = false,
+        action = function(pos, node)
+                local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", cottage_shelf_formspec)
+        end,
 })
 

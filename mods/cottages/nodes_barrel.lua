@@ -25,25 +25,25 @@ local S = cottages.S
 
 barrel = {};
 
+local barrel_formspec = "size[8,9]"..
+			"image[2.6,2;2,3;default_sandstone.png^[lowpart:"..
+			-- (100-percent)..":default_desert_stone.png]".. -- TODO: better images
+			"50:default_desert_stone.png]".. -- TODO: better images
+			"label[2.2,0;"..S("Pour:").."]"..
+			"list[current_name;input;3,0.5;1,1;]"..
+			"label[5,3.3;"..S("Fill:").."]"..
+			"list[current_name;output;5,3.8;1,1;]"..
+			"list[current_player;main;0,5;8,4;]"
+			.."listring[current_name;output]".."listring[current_player;main]"
+			.."listring[current_name;input]".."listring[current_player;main]"
+
 -- prepare formspec
 barrel.on_construct = function( pos )
 
    local meta = minetest.get_meta(pos);
    local percent = math.random( 1, 100 ); -- TODO: show real filling
 
-   meta:set_string( 'formspec', 
-                               "size[8,9]"..
-                                "image[2.6,2;2,3;default_sandstone.png^[lowpart:"..
-                                                (100-percent)..":default_desert_stone.png]".. -- TODO: better images
-                                "label[2.2,0;"..S("Pour:").."]"..
-                                "list[current_name;input;3,0.5;1,1;]"..
-                                "label[5,3.3;"..S("Fill:").."]"..
-                                "list[current_name;output;5,3.8;1,1;]"..
-                                "list[current_player;main;0,5;8,4;]"
-				.."listring[current_name;output]".."listring[current_player;main]"
-				.."listring[current_name;input]".."listring[current_player;main]"
-		)
-
+   meta:set_string( 'formspec', barrel_formspec)
 
    meta:set_string( 'liquid_type', '' ); -- which liquid is in the barrel?
    meta:set_int(    'liquid_level', 0 ); -- how much of the liquid is in there?
@@ -223,3 +223,17 @@ minetest.register_craft({
 		{"cottages:tub"},
 	},
 })
+
+--------------------------------------------------------------------------------
+-- Update existing nodes to use SHIFT-CLICK
+--------------------------------------------------------------------------------
+minetest.register_lbm({
+        name = "cottages:barrel_lbm",
+        nodenames = {"cottages:barrel"},
+        run_at_every_load = false,
+        action = function(pos, node)
+                local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", barrel_formspec)
+        end,
+})
+

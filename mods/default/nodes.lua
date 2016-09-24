@@ -925,6 +925,19 @@ minetest.register_abm({
 	end, 
 })
 
+--------------------------------------------------------------------------------
+-- Update existing nodes to use SHIFT-CLICK
+--------------------------------------------------------------------------------
+minetest.register_lbm({
+	name = "default:chest_lbm",
+	nodenames = {"default:chest", "default:npc_chest"},
+	run_at_every_load = false,
+	action = function(pos, node)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec",default.chest_formspec)
+	end,
+})
+
 
 local function has_locked_chest_privilege(meta, player)
 	if meta ~= nil then

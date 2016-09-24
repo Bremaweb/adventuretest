@@ -99,8 +99,8 @@ local cottages_formspec_treshing_floor =
 					"label[0,3.0;"..S("to get straw and seeds from wheat.").."]"..
                                 "list[current_player;main;0,4;8,4;]"
 				.."listring[current_name;straw]".."listring[current_player;main]"
-				.."listring[current_name;seeds]".."listring[current_player;main]"
 				.."listring[current_name;harvest]".."listring[current_player;main]"
+				.."listring[current_name;seeds]".."listring[current_player;main]"
 
 minetest.register_node("cottages:threshing_floor", {
 	drawtype = "nodebox",
@@ -576,3 +576,31 @@ minetest.register_craft({
 		{"cottages:straw","cottages:straw","cottages:straw"},
 	},
 })
+
+--------------------------------------------------------------------------------
+-- Update existing nodes to use SHIFT-CLICK
+--------------------------------------------------------------------------------
+minetest.register_lbm({
+        name = "cottages:threshing_floor_lbm",
+        nodenames = {"cottages:threshing_floor"},
+        run_at_every_load = false,
+        action = function(pos, node)
+                local meta = minetest.get_meta(pos)
+		meta:set_string("formspec",
+				cottages_formspec_treshing_floor..
+				"label[2.5,-0.5;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]" );
+        end,
+})
+
+minetest.register_lbm({
+        name = "cottages:handmill_lbm",
+        nodenames = {"cottages:handmill"},
+        run_at_every_load = false,
+        action = function(pos, node)
+                local meta = minetest.get_meta(pos)
+		meta:set_string("formspec",
+				cottages_handmill_formspec..
+				"label[2.5,-0.5;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]" );
+        end,
+})
+
