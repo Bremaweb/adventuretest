@@ -22,14 +22,20 @@ end
 adventuretest.pl_hooks = {}
 function adventuretest.player_loop(dtime)
 	local p = minetest.get_connected_players()
+	local reset_hooks = { }
 	for _, player in pairs(p) do
 		local name = player:get_player_name()
 		for k,hook in pairs(adventuretest.pl_hooks) do
 			adventuretest.pl_hooks[k].timer = adventuretest.pl_hooks[k].timer + dtime
 			if adventuretest.pl_hooks[k].timer >= adventuretest.pl_hooks[k].timeout then
-				adventuretest.pl_hooks[k].timer = 0
+				reset_hooks[#reset_hooks+1] = k
 				adventuretest.pl_hooks[k].func(player,name,dtime)
 			end 
+		end
+	end
+	if #reset_hooks > 0 then
+		for _,hid in pairs(reset_hooks) do
+			adventuretest.pl_hooks[hid].timer = 0
 		end
 	end
 end
