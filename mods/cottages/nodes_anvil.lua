@@ -46,8 +46,8 @@ local cottages_anvil_formspec =
 					"label[0,3.0;"..S("Punch anvil with hammer to").."]"..
 					"label[0,3.3;"..S("repair tool in workpiece-slot.").."]"..
                                 "list[current_player;main;0,4;8,4;]"
-				.."listring[current_player;main]".."listring[current_name;hammer]"
 				.."listring[current_player;main]".."listring[current_name;input]"
+				.."listring[current_player;main]".."listring[current_name;hammer]"
 
 
 minetest.register_node("cottages:anvil", {
@@ -301,5 +301,20 @@ minetest.register_craft({
                 {cottages.craftitem_steel,cottages.craftitem_steel,cottages.craftitem_steel},
                 {cottages.craftitem_steel,cottages.craftitem_steel,cottages.craftitem_steel},
                 {'',                   cottages.craftitem_stick,      ''                   } }
+})
+
+--------------------------------------------------------------------------------
+-- Update existing nodes to use SHIFT-CLICK
+--------------------------------------------------------------------------------
+minetest.register_lbm({
+        name = "cottages:anvil_lbm",
+        nodenames = {"cottages:anvil"},
+        run_at_every_load = false,
+        action = function(pos, node)
+                local meta = minetest.get_meta(pos)
+		meta:set_string("formspec",
+				cottages_anvil_formspec..
+				"label[2.5,-0.5;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]");
+        end,
 })
 

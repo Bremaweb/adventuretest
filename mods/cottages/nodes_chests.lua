@@ -59,3 +59,16 @@ minetest.register_node("cottages:chest_storage", {
 	is_ground_content = false,
 })
 
+--------------------------------------------------------------------------------
+-- Update existing nodes to use SHIFT-CLICK
+--------------------------------------------------------------------------------
+minetest.register_lbm({
+        name = "cottages:chests_lbm",
+        nodenames = {"cottages:chest_private", "cottages:chest_work", "cottages:chest_storage"},
+        run_at_every_load = false,
+        action = function(pos, node)
+                local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", default.chest_formspec)
+        end,
+})
+
